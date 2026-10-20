@@ -1,15 +1,31 @@
+
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SARAI — Жөндеу платформасы</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SARAI – Жөндеу платформасы</title>
 </head>
 <body>
-<h1>SARAI</h1>
-<h2>Үй жөндеудің жаңа жолы</h2>
-<p>Жөндеу құнын есептеңіз және сенімді шебер табыңыз.</p>
-<button>Жөндеуді есептеу</button>
-<button>Шебер табу</button>
+  <h1>SARAI</h1>
+  <h2>Үйіңіздің жаңа жолы</h2>
+  <p>Жөндеу құнын есептеңіз және сенімді шебер табыңыз.</p>
+
+  <button onclick="esepteu()">Жөндеуді есептеу</button>
+  <button onclick="sheber()">Шебер табу</button>
+
+  <script>
+    function esepteu() {
+      let a = prompt("Үйдің ауданы қанша м²?");
+      if (a !== null && Number(a) > 0) {
+        alert("Болжамды құны: " + (Number(a) * 15000).toLocaleString() + " ₸");
+      }
+    }
+
+    function sheber() {
+      alert("Шебер іздеу бөлімі әзірленуде!");
+    }
+  </script>
 </body>
 </html>
+
