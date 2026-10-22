@@ -25,7 +25,7 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 <header>
 <a class="brand" href="#top" aria-label="SARAI басты бет">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5.5 9v12h13V9M9.5 21v-7h5v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>SARAI</a>
-<nav aria-label="Басты мәзір"><a href="#services">Қызметтер</a><a href="#calculator">Калькулятор</a><a href="#masters">Шеберлер</a><a href="#order">Тапсырыс</a></nav>
+<nav aria-label="Басты мәзір"><a href="#services">Қызметтер</a><a href="#calculator">Калькулятор</a><a href="#masters">Шеберлер</a><a href="#order">Тапсырыс</a><a href="#contact">Байланыс</a></nav>
 </header>
 <div class="hero">
 <h1>Үйіңіздің жаңа жолы</h1>
@@ -91,15 +91,24 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 <label for="phone">Байланыс телефоны</label><input id="phone" name="phone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx" aria-describedby="phoneHint"><p class="form-note" id="phoneHint">Шебер сізбен осы нөмір арқылы байланыса алады.</p>
 <label for="service">Қызмет түрі</label><select id="service" name="service" required><option value="" disabled selected>Қызметті таңдаңыз</option><option>Толық пәтер жөндеу</option><option>Левкас жұмыстары</option><option>Плитка жұмыстары</option><option>Электрик</option><option>Сантехник</option><option>Маляр жұмыстары</option><option>Гипсокартон</option><option>Әрлеу жұмыстары</option><option>Басқа жөндеу</option></select>
 <label for="details">Жұмыс сипаттамасы</label><textarea id="details" name="details" maxlength="1000" placeholder="Қандай жұмыс қажет, қашан бастағыңыз келеді?"></textarea>
-<div class="actions"><button class="btn" type="submit" id="prepareOrder">Өтінімді дайындау</button></div>
-<p class="form-note" id="orderHint">Дайын өтінімді тексеріп, таңдаған шеберіңізге өзіңіз жібересіз.</p>
+<div class="actions"><button class="btn" type="submit" id="prepareOrder">WhatsApp хабарламасын дайындау</button></div>
+<p class="form-note" id="orderHint">Дайын өтінімді WhatsApp-та ашып, SARAI-ға жіберіңіз.</p>
 <div class="prepared" id="prepared" hidden>
 <h3>Өтінім дайын</h3><p class="form-note" id="preparedInfo"></p>
 <label for="message">Хабарлама мәтіні</label><textarea id="message" readonly rows="9"></textarea>
-<div class="actions"><a class="btn whatsapp" id="sendOrderWhatsApp" target="_blank" rel="noopener noreferrer" hidden>WhatsApp-та ашу</a><button class="btn alt" type="button" id="copy">Мәтінді көшіру</button></div>
+<div class="actions"><a class="btn whatsapp" id="sendOrderWhatsApp" target="_blank" rel="noopener noreferrer" hidden>SARAI-ға WhatsApp-та жіберу</a><button class="btn alt" type="button" id="copy">Мәтінді көшіру</button></div>
 <span class="copy-status" id="copyStatus" role="status" aria-live="polite"></span>
 </div>
 </form>
+</section>
+<section class="wrap" id="contact" aria-labelledby="contactTitle">
+<h2 id="contactTitle">Байланыс</h2>
+<div class="card order-card">
+<span class="pill">Астана</span><h3>SARAI</h3>
+<p>Жөндеу жұмыстары бойынша сұрақтарыңызды WhatsApp-қа жазыңыз.</p>
+<a class="master-phone" href="tel:+77027935200" aria-label="SARAI-ға қоңырау шалу: +7 702 793 52 00">+7 702 793 52 00</a>
+<div class="actions"><a class="btn whatsapp" id="saraiWhatsApp" href="https://wa.me/77027935200" target="_blank" rel="noopener noreferrer">SARAI-ға WhatsApp</a><a class="btn alt" href="tel:+77027935200">Қоңырау шалу</a></div>
+</div>
 </section>
 <section class="wrap" id="join" aria-labelledby="joinTitle">
 <h2 id="joinTitle">Шебер ретінде қосылу</h2>
@@ -108,13 +117,13 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 <label for="masterName">Аты-жөніңіз</label><input id="masterName" required maxlength="80" autocomplete="name" placeholder="Аты-жөніңіз">
 <label for="specialty">Мамандығыңыз</label><input id="specialty" required maxlength="100" placeholder="Мысалы: сантехник">
 <div class="actions"><button class="btn" id="joinButton" type="submit">Тіркелу мәтінін дайындау</button></div>
-<div class="prepared" id="joinPrepared" hidden><label for="joinText">Дайын хабарлама</label><textarea id="joinText" readonly rows="5"></textarea><div class="actions"><button class="btn alt" id="joinCopy" type="button">Көшіру</button></div><span class="copy-status" id="joinCopyStatus" role="status" aria-live="polite"></span></div>
-<p class="muted">Мәтінді көшіріп, SARAI өкіліне жіберіңіз. Шеберлер тізіміне қосылу келісілгеннен кейін орындалады.</p>
+<div class="prepared" id="joinPrepared" hidden><label for="joinText">Дайын хабарлама</label><textarea id="joinText" readonly rows="5"></textarea><div class="actions"><a class="btn whatsapp" id="joinSendWhatsApp" target="_blank" rel="noopener noreferrer">SARAI-ға WhatsApp-та жіберу</a><button class="btn alt" id="joinCopy" type="button">Көшіру</button></div><span class="copy-status" id="joinCopyStatus" role="status" aria-live="polite"></span></div>
+<p class="muted">Дайын хабарламаны WhatsApp-та SARAI-ға жіберіңіз. Шеберлер тізіміне қосылу келісілгеннен кейін орындалады.</p>
 </form>
 </section>
 </main>
-<footer>© 2026 SARAI · Астана<br>Үйіңіздің жаңа жолы</footer>
-<div class="mobile-bar" aria-label="Жылдам әрекеттер"><a class="btn" href="#calculator">Жөндеуді есептеу</a><a class="btn alt" href="#masters">Шебер табу</a></div>
+<footer>© 2026 SARAI · Астана<br>Үйіңіздің жаңа жолы<br><a href="tel:+77027935200">+7 702 793 52 00</a></footer>
+<div class="mobile-bar" aria-label="Жылдам әрекеттер"><a class="btn" href="#calculator">Жөндеуді есептеу</a><a class="btn whatsapp" id="mobileWhatsApp" href="https://wa.me/77027935200" target="_blank" rel="noopener noreferrer" aria-label="SARAI-ға WhatsApp арқылы жазу">WhatsApp</a></div>
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
@@ -125,6 +134,7 @@ const repairs = {
   '60000':{label:'Күрделі',rate:60000}
 };
 const master = {name:'Нұрислам',trade:'Левкас жұмыстары',phone:'77086475501'};
+const saraiContact = {name:'SARAI',phone:'77027935200'};
 const formatNumber = value => new Intl.NumberFormat('kk-KZ',{maximumFractionDigits:1}).format(value);
 const money = value => new Intl.NumberFormat('kk-KZ',{maximumFractionDigits:0}).format(value) + ' ₸';
 function invalidatePrepared() {
@@ -164,7 +174,7 @@ function syncServiceButtons() {
 function renderMaster() {
   $('selectedMasterPanel').hidden = !state.master;
   $('selectedMasterLabel').textContent = state.master ? 'Таңдалған шебер: ' + state.master.name + ' · Левкас шебері' : '';
-  $('prepareOrder').textContent = state.master ? 'WhatsApp хабарламасын дайындау' : 'Өтінімді дайындау';
+  $('orderHint').textContent = 'Дайын өтінімді WhatsApp-та ашып, ' + (state.master ? 'Нұрисламға' : 'SARAI-ға') + ' жіберіңіз.';
 }
 function clearMaster() {
   state.master = null;
@@ -240,12 +250,11 @@ $('orderForm').addEventListener('submit',event => {
   const message = buildOrderMessage();
   $('message').value = message;
   const selected = state.master && $('service').value === state.master.trade;
-  $('sendOrderWhatsApp').hidden = !selected;
-  if (selected) $('sendOrderWhatsApp').href = 'https://wa.me/' + state.master.phone + '?text=' + encodeURIComponent(message);
-  else $('sendOrderWhatsApp').removeAttribute('href');
-  $('preparedInfo').textContent = selected
-    ? 'WhatsApp ашылғанда хабарламаны тексеріп, «Жіберу» батырмасын басыңыз.'
-    : 'Мәтінді көшіріп, өзіңіз таңдаған шеберге жіберіңіз.';
+  const recipient = selected ? state.master : saraiContact;
+  $('sendOrderWhatsApp').hidden = false;
+  $('sendOrderWhatsApp').href = 'https://wa.me/' + recipient.phone + '?text=' + encodeURIComponent(message);
+  $('sendOrderWhatsApp').textContent = selected ? 'Нұрисламға WhatsApp-та жіберу' : 'SARAI-ға WhatsApp-та жіберу';
+  $('preparedInfo').textContent = 'Хабарлама алушы: ' + recipient.name + '. WhatsApp ашылғанда мәтінді тексеріп, «Жіберу» батырмасын басыңыз.';
   $('prepared').hidden = false;
   $('prepared').scrollIntoView({behavior:'smooth',block:'nearest'});
 });
@@ -284,6 +293,10 @@ $('masterTrade').addEventListener('change',filterMasters);
 $('clearMasterSearch').addEventListener('click',clearSearch);
 $('clearEmptySearch').addEventListener('click',clearSearch);
 $('masterWhatsApp').href = 'https://wa.me/' + master.phone + '?text=' + encodeURIComponent('Сәлеметсіз бе, Нұрислам! SARAI сайтынан байланысыңызды таптым. Астанада левкас жұмыстары қажет.');
+const saraiGreeting = 'Сәлеметсіз бе! SARAI арқылы Астанада жөндеу жұмыстары бойынша ақпарат алғым келеді.';
+['saraiWhatsApp','mobileWhatsApp'].forEach(id => {
+  $(id).href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(saraiGreeting);
+});
 $('joinForm').addEventListener('submit',event => {
   event.preventDefault();
   const name = $('masterName').value.trim();
@@ -292,6 +305,7 @@ $('joinForm').addEventListener('submit',event => {
   $('specialty').setCustomValidity(specialty ? '' : 'Мамандығыңызды енгізіңіз.');
   if (!$('joinForm').reportValidity()) return;
   $('joinText').value = ['SARAI шебер ретінде тіркелу','Қала: Астана','Аты-жөні: ' + name,'Мамандығы: ' + specialty].join('\n');
+  $('joinSendWhatsApp').href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent($('joinText').value);
   $('joinPrepared').hidden = false;
   $('joinCopyStatus').textContent = '';
 });
@@ -299,6 +313,7 @@ $('joinForm').addEventListener('input',() => {
   $('masterName').setCustomValidity('');
   $('specialty').setCustomValidity('');
   $('joinPrepared').hidden = true;
+  $('joinSendWhatsApp').removeAttribute('href');
 });
 $('joinCopy').addEventListener('click',() => copyText($('joinText'),'joinCopyStatus'));
 calculate();
@@ -307,4 +322,5 @@ syncServiceButtons();
 </script>
 </body>
 </html>
+
 
