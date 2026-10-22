@@ -88,11 +88,11 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 </div>
 <div class="selection-panel" id="selectedMasterPanel" hidden><p id="selectedMasterLabel"></p><button class="btn alt small" id="clearSelectedMaster" type="button">Шеберді алып тастау</button></div>
 <label for="customer">Атыңыз</label><input id="customer" name="customer" required maxlength="80" autocomplete="name" placeholder="Атыңыз">
-<label for="phone">Байланыс телефоны</label><input id="phone" name="phone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx" aria-describedby="phoneHint"><p class="form-note" id="phoneHint">Шебер сізбен осы нөмір арқылы байланыса алады.</p>
+<label for="phone">Байланыс телефоны</label><input id="phone" name="phone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx" aria-describedby="phoneHint"><p class="form-note" id="phoneHint">SARAI сізбен осы нөмір арқылы байланыса алады.</p>
 <label for="service">Қызмет түрі</label><select id="service" name="service" required><option value="" disabled selected>Қызметті таңдаңыз</option><option>Толық пәтер жөндеу</option><option>Левкас жұмыстары</option><option>Плитка жұмыстары</option><option>Электрик</option><option>Сантехник</option><option>Маляр жұмыстары</option><option>Гипсокартон</option><option>Әрлеу жұмыстары</option><option>Басқа жөндеу</option></select>
 <label for="details">Жұмыс сипаттамасы</label><textarea id="details" name="details" maxlength="1000" placeholder="Қандай жұмыс қажет, қашан бастағыңыз келеді?"></textarea>
 <div class="actions"><button class="btn" type="submit" id="prepareOrder">WhatsApp хабарламасын дайындау</button></div>
-<p class="form-note" id="orderHint">Дайын өтінімді WhatsApp-та ашып, SARAI-ға жіберіңіз.</p>
+<p class="form-note" id="orderHint">Өтінім алдымен SARAI-ға жіберіледі. Таңдаған шеберіңіз хабарламада көрсетіледі.</p>
 <div class="prepared" id="prepared" hidden>
 <h3>Өтінім дайын</h3><p class="form-note" id="preparedInfo"></p>
 <label for="message">Хабарлама мәтіні</label><textarea id="message" readonly rows="9"></textarea>
@@ -174,7 +174,7 @@ function syncServiceButtons() {
 function renderMaster() {
   $('selectedMasterPanel').hidden = !state.master;
   $('selectedMasterLabel').textContent = state.master ? 'Таңдалған шебер: ' + state.master.name + ' · Левкас шебері' : '';
-  $('orderHint').textContent = 'Дайын өтінімді WhatsApp-та ашып, ' + (state.master ? 'Нұрисламға' : 'SARAI-ға') + ' жіберіңіз.';
+  $('orderHint').textContent = 'Өтінім алдымен SARAI-ға жіберіледі.' + (state.master ? ' Таңдаған шеберіңіз хабарламада көрсетіледі.' : ' WhatsApp ашылғанда «Жіберу» батырмасын басыңыз.');
 }
 function clearMaster() {
   state.master = null;
@@ -249,11 +249,10 @@ $('orderForm').addEventListener('submit',event => {
   if (!$('orderForm').reportValidity()) return;
   const message = buildOrderMessage();
   $('message').value = message;
-  const selected = state.master && $('service').value === state.master.trade;
-  const recipient = selected ? state.master : saraiContact;
+  const recipient = saraiContact;
   $('sendOrderWhatsApp').hidden = false;
   $('sendOrderWhatsApp').href = 'https://wa.me/' + recipient.phone + '?text=' + encodeURIComponent(message);
-  $('sendOrderWhatsApp').textContent = selected ? 'Нұрисламға WhatsApp-та жіберу' : 'SARAI-ға WhatsApp-та жіберу';
+  $('sendOrderWhatsApp').textContent = 'SARAI-ға WhatsApp-та жіберу';
   $('preparedInfo').textContent = 'Хабарлама алушы: ' + recipient.name + '. WhatsApp ашылғанда мәтінді тексеріп, «Жіберу» батырмасын басыңыз.';
   $('prepared').hidden = false;
   $('prepared').scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -322,5 +321,3 @@ syncServiceButtons();
 </script>
 </body>
 </html>
-
-
