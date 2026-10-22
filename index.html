@@ -1,63 +1,271 @@
 <!doctype html>
-<html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102b39"><title>SARAI — Үйіңіздің жаңа жолы</title><style>
-:root{font-family:system-ui,-apple-system,Arial,sans-serif;color:#17313b;background:#f5f8fa}*{box-sizing:border-box}body{margin:0}header{background:#102b39;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center}header strong{font-size:27px;letter-spacing:2px}nav a{color:white;text-decoration:none;margin-left:16px;font-size:14px}.hero{background:linear-gradient(130deg,#123443,#177b7b);color:white;padding:70px 6%;text-align:center}.hero h1{font-size:clamp(30px,6vw,54px);margin:0 0 14px}.hero p{font-size:18px;opacity:.95}.btn{display:inline-block;background:#ffca69;border:0;border-radius:12px;color:#17313b;padding:13px 19px;font-weight:700;text-decoration:none;cursor:pointer;margin:7px}.btn.alt{background:white}.wrap{max-width:1050px;margin:auto;padding:38px 18px}h2{text-align:center;font-size:28px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.card{background:white;padding:23px;border-radius:18px;box-shadow:0 5px 25px #153b4910}label{display:block;font-weight:600;margin:12px 0 5px}input,select,textarea{width:100%;padding:13px;border:1px solid #cbd9de;border-radius:10px;font:inherit}textarea{min-height:90px}.result{font-size:26px;font-weight:800;color:#087f76;margin-top:18px}.muted{color:#637681;font-size:13px}.pill{display:inline-block;background:#e5f4f2;color:#08766c;border-radius:30px;padding:6px 10px;font-size:12px}footer{text-align:center;padding:28px;background:#102b39;color:white}section{scroll-margin-top:20px}@media(max-width:540px){header{display:block;text-align:center}nav{margin-top:12px}nav a{margin:0 6px;font-size:12px}.hero{padding:54px 16px}}
-
-[hidden]{display:none!important}
-.search-panel{margin-bottom:20px}.search-controls{display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:end}
-.search-controls label{margin-top:0}.search-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:16px 0 0}
-.search-summary p{margin:0}.search-summary .btn{margin:0;padding:9px 14px;font-size:14px}
-.master-card h3{margin:14px 0 6px;font-size:25px}.master-trade{font-size:19px;font-weight:700;margin:6px 0 12px}
-.master-phone{display:inline-block;margin-bottom:12px;color:#17313b;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
-.master-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:8px}.master-actions .btn{margin:0}.btn.whatsapp{background:#087f76;color:white}
-.empty-results{text-align:center;padding:28px}.selected-master{padding:12px;background:#e5f4f2;border-radius:10px}.selected-master button{margin:8px 0 0}
-@media(max-width:620px){.search-controls{grid-template-columns:1fr}.master-actions .btn{flex:1;text-align:center}.master-actions .order-link{flex-basis:100%}}
-</style></head><body><header><strong>SARAI</strong><nav><a href="#calculator">Калькулятор</a><a href="#masters">Шеберлер</a><a href="#order">Тапсырыс</a></nav></header><div class="hero"><h1>Үйіңіздің жаңа жолы</h1><p>Жөндеу құнын есептеңіз және Астанадан сенімді шебер табуға қадам жасаңыз.</p><a class="btn" href="#calculator">Жөндеуді есептеу</a><a class="btn alt" href="#masters">Шебер табу</a></div><main><section class="wrap" id="calculator"><h2>Жөндеу калькуляторы</h2><div class="card"><label for="area">Ауданы (м²)</label><input id="area" type="number" min="1" max="10000" value="50"><label for="repair">Жөндеу түрі</label><select id="repair"><option value="15000">Косметикалық — 15 000 ₸/м²</option><option value="35000">Стандарт — 35 000 ₸/м²</option><option value="60000">Күрделі — 60 000 ₸/м²</option></select><button class="btn" id="calculate">Есептеу</button><div class="result" id="result" aria-live="polite"></div><p class="muted">Бұл — үлгілік бағалар бойынша алдын ала есеп. Нақты баға материалдар мен жұмыс көлеміне байланысты.</p></div></section><section class="wrap" id="masters" aria-labelledby="mastersTitle">
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102b39">
+<meta name="description" content="SARAI: Астанада жөндеу құнын алдын ала есептеңіз, жұмыс түрін таңдап, шебермен байланысыңыз.">
+<title>SARAI — Үйіңіздің жаңа жолы</title>
+<style>
+:root{font-family:system-ui,-apple-system,Arial,sans-serif;color:#17313b;background:#f5f8fa;--ink:#102b39;--teal:#087f76;--gold:#ffca69}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0}button,input,select,textarea{font:inherit}button,a{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.5}a{color:inherit}:focus-visible{outline:3px solid #d58a12;outline-offset:4px}[hidden]{display:none!important}
+header{background:var(--ink);color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:27px;font-weight:800;letter-spacing:2px}.brand svg{width:23px;height:23px;color:var(--gold)}nav{display:flex;gap:18px;flex-wrap:wrap}nav a{color:white;text-decoration:none;font-size:14px}
+.hero{background:linear-gradient(130deg,#123443,#177b7b);color:white;padding:68px 18px;text-align:center}.hero h1{font-size:clamp(30px,6vw,54px);margin:0 0 14px}.hero p{font-size:18px;line-height:1.6;max-width:720px;margin:0 auto 20px}.hero-note{display:block;margin-top:18px;font-size:14px;opacity:.9}
+.btn{display:inline-block;background:var(--gold);border:0;border-radius:12px;color:#17313b;padding:13px 19px;font-weight:700;text-decoration:none;text-align:center;line-height:1.4;cursor:pointer}.btn.alt{background:#eaf1f3}.hero .btn{margin:6px}.hero .btn.alt{background:white}.btn.whatsapp{background:var(--teal);color:white}.btn.small{padding:9px 13px;font-size:14px}
+.wrap{max-width:1050px;margin:auto;padding:34px 18px}h2{text-align:center;font-size:28px;margin:0 0 24px}.section-intro{text-align:center;max-width:680px;margin:-10px auto 22px;line-height:1.6;color:#526b76}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.card{background:white;padding:23px;border-radius:18px;box-shadow:0 5px 25px #153b4910}.services{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.service-option{min-height:82px;border:1px solid #dce6e9;border-radius:14px;background:white;color:#17313b;padding:16px 12px;text-align:left;font-weight:650;line-height:1.5}.service-option:hover,.service-option[aria-pressed="true"]{background:#e5f4f2;border-color:var(--teal)}
+label{display:block;font-weight:600;margin:14px 0 6px}input,select,textarea{width:100%;max-width:100%;padding:13px;border:1px solid #cbd9de;border-radius:10px;background:white;color:#17313b}textarea{min-height:100px;line-height:1.55;resize:vertical}input[type="checkbox"]{width:auto}.form-note,.muted{color:#637681;font-size:13px;line-height:1.6}.form-note{margin:8px 0 0}.result{font-size:26px;font-weight:800;color:var(--teal);margin-top:20px}.calculator-actions,.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.pill{display:inline-block;background:#e5f4f2;color:#08766c;border-radius:30px;padding:6px 10px;font-size:12px}.search-panel{margin-bottom:18px}.search-controls{display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:end}.search-controls label{margin-top:0}.search-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:16px}.search-summary p{margin:0}.master-card h3{margin:14px 0 6px;font-size:25px}.master-trade{font-size:19px;font-weight:700;margin:6px 0 12px}.master-phone{display:inline-block;margin-bottom:8px;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}.empty-results{text-align:center;padding:28px;line-height:1.6}
+.order-card{max-width:760px;margin:auto}.selection-panel{padding:16px;background:#e5f4f2;border:1px solid #cae8e1;border-radius:12px;margin-bottom:16px;line-height:1.6}.selection-panel p{margin:0 0 8px}.selection-panel .actions{margin-top:12px}.estimate-title{font-weight:750}.estimate-details{color:#36555e;font-size:14px}.estimate-total{display:block;color:var(--teal);font-size:22px;font-weight:800;margin:5px 0}.prepared{margin-top:24px;padding-top:18px;border-top:1px solid #dce6e9}.prepared h3{margin:0 0 6px}.prepared textarea{min-height:220px}.copy-status{display:block;min-height:22px;margin-top:10px;font-size:14px;color:var(--teal)}.order-context{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;font-size:14px;line-height:1.7}section{scroll-margin-top:24px}.mobile-bar{display:none}
+@media(max-width:740px){.services{grid-template-columns:repeat(2,minmax(0,1fr))}nav{gap:12px}nav a{font-size:13px}}
+@media(max-width:620px){body{padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}header{display:block;text-align:center;padding:16px}nav{justify-content:center;margin-top:14px;gap:14px}.hero{padding:44px 16px}.hero p{font-size:16px}.hero .btn{padding:13px 15px}.wrap{padding:28px 16px}h2{font-size:25px}.card{padding:19px}.search-controls{grid-template-columns:1fr}.actions .btn,.calculator-actions .btn{flex:1;min-width:140px}.master-actions .order-link{flex-basis:100%}.mobile-bar{position:fixed;z-index:20;bottom:0;left:0;right:0;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#fffffff5;border-top:1px solid #dce6e9;box-shadow:0 -5px 20px #153b4912}.mobile-bar .btn{padding:12px 8px;font-size:14px}.service-option{font-size:14px;padding:14px 12px}.result{font-size:24px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body id="top">
+<header>
+<a class="brand" href="#top" aria-label="SARAI басты бет">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5.5 9v12h13V9M9.5 21v-7h5v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>SARAI</a>
+<nav aria-label="Басты мәзір"><a href="#services">Қызметтер</a><a href="#calculator">Калькулятор</a><a href="#masters">Шеберлер</a><a href="#order">Тапсырыс</a></nav>
+</header>
+<div class="hero">
+<h1>Үйіңіздің жаңа жолы</h1>
+<p>Астанада жөндеу құнын алдын ала есептеп, қажетті жұмысқа шебер таңдаңыз.</p>
+<a class="btn" href="#calculator">Жөндеуді есептеу</a><a class="btn alt" href="#masters">Шебер табу</a>
+<span class="hero-note">Астана · Пәтер жөндеу және әрлеу жұмыстары</span>
+</div>
+<main>
+<section class="wrap" id="services" aria-labelledby="servicesTitle">
+<h2 id="servicesTitle">Қандай жұмыс қажет?</h2>
+<p class="section-intro">Жұмыс түрін таңдаңыз — ол тапсырысыңызға қосылады.</p>
+<div class="services">
+<button class="service-option" type="button" data-service="Толық пәтер жөндеу" aria-pressed="false">Толық пәтер жөндеу</button>
+<button class="service-option" type="button" data-service="Әрлеу жұмыстары" aria-pressed="false">Әрлеу жұмыстары</button>
+<button class="service-option" type="button" data-service="Плитка жұмыстары" aria-pressed="false">Плитка жұмыстары</button>
+<button class="service-option" type="button" data-service="Электрик" aria-pressed="false">Электрик</button>
+<button class="service-option" type="button" data-service="Сантехник" aria-pressed="false">Сантехник</button>
+<button class="service-option" type="button" data-service="Маляр жұмыстары" aria-pressed="false">Маляр жұмыстары</button>
+<button class="service-option" type="button" data-service="Гипсокартон" aria-pressed="false">Гипсокартон</button>
+<button class="service-option" type="button" data-service="Басқа жөндеу" aria-pressed="false">Басқа жұмыстар</button>
+</div>
+</section>
+<section class="wrap" id="calculator" aria-labelledby="calculatorTitle">
+<h2 id="calculatorTitle">Жөндеу калькуляторы</h2>
+<div class="card">
+<label for="area">Ауданы (м²)</label>
+<input id="area" type="number" min="1" max="10000" step="0.1" inputmode="decimal" value="50">
+<label for="repair">Жөндеу түрі</label>
+<select id="repair"><option value="15000">Косметикалық — 15 000 ₸/м²</option><option value="35000">Стандарт — 35 000 ₸/м²</option><option value="60000">Күрделі — 60 000 ₸/м²</option></select>
+<div class="result" id="result" aria-live="polite"></div>
+<p class="muted">Бұл — үлгілік бағалар бойынша алдын ала есеп. Нақты баға материалдар мен жұмыс көлеміне байланысты.</p>
+<div class="calculator-actions"><button class="btn alt" id="calculate" type="button">Қайта есептеу</button><button class="btn" id="useEstimate" type="button">Осы есеппен тапсырыс беру</button></div>
+</div>
+</section>
+<section class="wrap" id="masters" aria-labelledby="mastersTitle">
 <h2 id="mastersTitle">Астанадағы шеберлер</h2>
 <div class="card search-panel">
-  <div class="search-controls">
-    <div><label for="masterSearch">Аты немесе жұмыс түрі бойынша іздеу</label>
-    <input id="masterSearch" type="search" placeholder="Мысалы: Нұрислам немесе левкас" aria-controls="masterResults" autocomplete="off"></div>
-    <div><label for="masterTrade">Мамандығы</label>
-    <select id="masterTrade" aria-controls="masterResults">
-      <option value="all">Барлық мамандық</option>
-      <option value="levkas">Левкас шебері</option>
-      <option value="electrician">Электрик</option>
-      <option value="plumber">Сантехник</option>
-      <option value="finisher">Әрлеу шебері</option>
-    </select></div>
-  </div>
-  <div class="search-summary"><p id="masterCount" role="status" aria-live="polite">1 шебер табылды</p>
-  <button class="btn alt" id="clearMasterSearch" type="button">Сүзгіні тазарту</button></div>
+<div class="search-controls">
+<div><label for="masterSearch">Аты немесе жұмыс түрі бойынша іздеу</label><input id="masterSearch" type="search" placeholder="Мысалы: Нұрислам немесе левкас" aria-controls="masterResults" autocomplete="off"></div>
+<div><label for="masterTrade">Мамандығы</label><select id="masterTrade" aria-controls="masterResults"><option value="all">Барлық мамандық</option><option value="levkas">Левкас шебері</option><option value="electrician">Электрик</option><option value="plumber">Сантехник</option><option value="finisher">Әрлеу шебері</option></select></div>
+</div>
+<div class="search-summary"><p id="masterCount" role="status" aria-live="polite">1 шебер табылды</p><button class="btn alt small" id="clearMasterSearch" type="button">Сүзгіні тазарту</button></div>
 </div>
 <div class="grid" id="masterResults">
-  <article class="card master-card" id="masterNurislam" data-trade="levkas">
-    <span class="pill">Астана</span>
-    <h3>Нұрислам</h3>
-    <p class="master-trade">Левкас шебері</p>
-    <p>Левкас жұмыстары.</p>
-    <a class="master-phone" href="tel:+77086475501" aria-label="Нұрисламға қоңырау шалу: +7 708 647 55 01">+7 708 647 55 01</a>
-    <div class="master-actions">
-      <a class="btn" href="tel:+77086475501">Қоңырау шалу</a>
-      <a class="btn whatsapp" id="masterWhatsApp" href="https://wa.me/77086475501" target="_blank" rel="noopener noreferrer" aria-label="Нұрисламға WhatsApp арқылы жазу">WhatsApp</a>
-      <a class="btn alt order-link" id="orderNurislam" href="#order">Өтінім дайындау</a>
-    </div>
-  </article>
+<article class="card master-card" id="masterNurislam" data-trade="levkas">
+<span class="pill">Астана</span><h3>Нұрислам</h3><p class="master-trade">Левкас шебері</p><p>Левкас жұмыстары.</p>
+<a class="master-phone" href="tel:+77086475501" aria-label="Нұрисламға қоңырау шалу: +7 708 647 55 01">+7 708 647 55 01</a>
+<div class="actions master-actions"><a class="btn" href="tel:+77086475501">Қоңырау шалу</a><a class="btn whatsapp" id="masterWhatsApp" href="https://wa.me/77086475501" target="_blank" rel="noopener noreferrer" aria-label="Нұрисламға WhatsApp арқылы жазу">WhatsApp</a><a class="btn alt order-link" id="orderNurislam" href="#order">Осы шеберге өтінім</a></div>
+</article>
 </div>
-<div class="card empty-results" id="noMasters" hidden>
-  <p>Бұл іздеу бойынша шебер табылмады. Басқа сөзбен іздеңіз немесе мамандық сүзгісін өзгертіңіз.</p>
+<div class="card empty-results" id="noMasters" hidden><p>Бұл іздеу бойынша шебер табылмады. Басқа сөзбен іздеңіз немесе мамандық сүзгісін өзгертіңіз.</p><button class="btn alt" id="clearEmptySearch" type="button">Барлық шеберді көрсету</button></div>
+</section>
+<section class="wrap" id="order" aria-labelledby="orderTitle">
+<h2 id="orderTitle">Тапсырыс қалдыру</h2>
+<form class="card order-card" id="orderForm">
+<div class="order-context"><span class="pill">Қала: Астана</span></div>
+<div class="selection-panel" id="estimatePanel" hidden>
+<p class="estimate-title">Жөндеудің алдын ала есебі</p><p class="estimate-details" id="estimateDetails"></p><strong class="estimate-total" id="estimateTotal"></strong><p class="muted">Бұл мәлімет дайын өтінімге қосылады. Бағаны шебермен нақтылаңыз.</p>
+<div class="actions"><a class="btn alt small" href="#calculator">Есепті өзгерту</a><button class="btn alt small" id="clearEstimate" type="button">Есепті алып тастау</button></div>
 </div>
-</section><section class="wrap" id="order"><h2>Тапсырыс қалдыру</h2><form class="card" id="orderForm">
-<input id="orderMaster" type="hidden" value="">
-<div class="selected-master" id="selectedMasterPanel" hidden><p id="selectedMasterLabel" aria-live="polite"></p>
-<button class="btn alt" id="clearSelectedMaster" type="button">Шеберді алып тастау</button></div><label for="customer">Атыңыз</label><input id="customer" required maxlength="80" placeholder="Атыңыз"><label for="phone">Байланыс телефоны</label><input id="phone" type="tel" required maxlength="30" placeholder="+7 ..."><label for="service">Қызмет түрі</label><select id="service"><option>Левкас жұмыстары</option><option>Электрик</option><option>Сантехник</option><option>Әрлеу жұмыстары</option><option>Басқа жөндеу</option></select><label for="details">Жұмыс сипаттамасы</label><textarea id="details" maxlength="1000" placeholder="Қандай жұмыс қажет?"></textarea><button class="btn" type="submit">Өтінім мәтінін дайындау</button><p class="muted">Өтінім серверге жіберілмейді. Дайын мәтінді көшіріп, өзіңіз таңдаған байланыс арнасымен жібересіз.</p><div id="prepared" hidden><label for="message">Дайын өтінім</label><textarea id="message" readonly rows="7"></textarea><button class="btn alt" type="button" id="copy">Мәтінді көшіру</button><span id="copyStatus" aria-live="polite"></span>
-<a class="btn whatsapp" id="sendOrderWhatsApp" href="https://wa.me/77086475501" target="_blank" rel="noopener noreferrer" hidden>Нұрисламға WhatsApp арқылы жіберу</a></div></form></section><section class="wrap" id="join"><h2>Шебер ретінде қосылу</h2><div class="card"><p>Астанада қызмет көрсетесіз бе? Болашақ SARAI шеберлер тізіміне қосылуға арналған хабарлама дайындаңыз.</p><label for="masterName">Аты-жөніңіз</label><input id="masterName" placeholder="Аты-жөніңіз"><label for="specialty">Мамандығыңыз</label><input id="specialty" placeholder="Мысалы: сантехник"><button class="btn" id="joinButton">Тіркелу мәтінін дайындау</button><textarea id="joinText" readonly hidden></textarea><button class="btn alt" id="joinCopy" hidden>Көшіру</button><p class="muted">Әзірге автоматты тіркелу және дерекқор жоқ.</p></div></section></main><footer>© 2026 SARAI · Астана · Үйіңіздің жаңа жолы</footer><script>
-const $=id=>document.getElementById(id);$('calculate').onclick=()=>{const a=Number($('area').value);if(!Number.isFinite(a)||a<=0||a>10000){$('result').textContent='1–10 000 м² аралығындағы аудан енгізіңіз';return}$('result').textContent='Шамамен: '+(a*Number($('repair').value)).toLocaleString('kk-KZ')+' ₸'};$('calculate').click();$('orderForm').addEventListener('submit',e=>{e.preventDefault();$('message').value=`SARAI тапсырыс\nҚала: Астана\nАты: ${$('customer').value}\nТелефон: ${$('phone').value}\nҚызмет: ${$('service').value}${$('orderMaster').value ? '\nШебер: '+$('orderMaster').value : ''}\nСипаттама: ${$('details').value}`;$('prepared').hidden=false;$('prepared').scrollIntoView({behavior:'smooth',block:'nearest'})});async function copyText(v,status){try{await navigator.clipboard.writeText(v);$(status).textContent=' Көшірілді!'}catch(e){$(status).textContent=' Мәтінді белгілеп, қолмен көшіріңіз.'}}$('copy').onclick=()=>copyText($('message').value,'copyStatus');$('joinButton').onclick=()=>{if(!$('masterName').value.trim()||!$('specialty').value.trim()){alert('Аты-жөніңіз бен мамандығыңызды енгізіңіз');return}$('joinText').hidden=false;$('joinCopy').hidden=false;$('joinText').value=`SARAI шебер ретінде тіркелу\nҚала: Астана\nАты-жөні: ${$('masterName').value}\nМамандығы: ${$('specialty').value}`};$('joinCopy').onclick=()=>copyText($('joinText').value,'joinCopy');
-
-// Нақты шебердің байланысы; қоңырау мен хабарлама пайдаланушы таңдағанда ашылады.
+<div class="selection-panel" id="selectedMasterPanel" hidden><p id="selectedMasterLabel"></p><button class="btn alt small" id="clearSelectedMaster" type="button">Шеберді алып тастау</button></div>
+<label for="customer">Атыңыз</label><input id="customer" name="customer" required maxlength="80" autocomplete="name" placeholder="Атыңыз">
+<label for="phone">Байланыс телефоны</label><input id="phone" name="phone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx" aria-describedby="phoneHint"><p class="form-note" id="phoneHint">Шебер сізбен осы нөмір арқылы байланыса алады.</p>
+<label for="service">Қызмет түрі</label><select id="service" name="service" required><option value="" disabled selected>Қызметті таңдаңыз</option><option>Толық пәтер жөндеу</option><option>Левкас жұмыстары</option><option>Плитка жұмыстары</option><option>Электрик</option><option>Сантехник</option><option>Маляр жұмыстары</option><option>Гипсокартон</option><option>Әрлеу жұмыстары</option><option>Басқа жөндеу</option></select>
+<label for="details">Жұмыс сипаттамасы</label><textarea id="details" name="details" maxlength="1000" placeholder="Қандай жұмыс қажет, қашан бастағыңыз келеді?"></textarea>
+<div class="actions"><button class="btn" type="submit" id="prepareOrder">Өтінімді дайындау</button></div>
+<p class="form-note" id="orderHint">Дайын өтінімді тексеріп, таңдаған шеберіңізге өзіңіз жібересіз.</p>
+<div class="prepared" id="prepared" hidden>
+<h3>Өтінім дайын</h3><p class="form-note" id="preparedInfo"></p>
+<label for="message">Хабарлама мәтіні</label><textarea id="message" readonly rows="9"></textarea>
+<div class="actions"><a class="btn whatsapp" id="sendOrderWhatsApp" target="_blank" rel="noopener noreferrer" hidden>WhatsApp-та ашу</a><button class="btn alt" type="button" id="copy">Мәтінді көшіру</button></div>
+<span class="copy-status" id="copyStatus" role="status" aria-live="polite"></span>
+</div>
+</form>
+</section>
+<section class="wrap" id="join" aria-labelledby="joinTitle">
+<h2 id="joinTitle">Шебер ретінде қосылу</h2>
+<form class="card order-card" id="joinForm">
+<p>Астанада қызмет көрсетесіз бе? SARAI шеберлер тізіміне қосылуға арналған хабарлама дайындаңыз.</p>
+<label for="masterName">Аты-жөніңіз</label><input id="masterName" required maxlength="80" autocomplete="name" placeholder="Аты-жөніңіз">
+<label for="specialty">Мамандығыңыз</label><input id="specialty" required maxlength="100" placeholder="Мысалы: сантехник">
+<div class="actions"><button class="btn" id="joinButton" type="submit">Тіркелу мәтінін дайындау</button></div>
+<div class="prepared" id="joinPrepared" hidden><label for="joinText">Дайын хабарлама</label><textarea id="joinText" readonly rows="5"></textarea><div class="actions"><button class="btn alt" id="joinCopy" type="button">Көшіру</button></div><span class="copy-status" id="joinCopyStatus" role="status" aria-live="polite"></span></div>
+<p class="muted">Мәтінді көшіріп, SARAI өкіліне жіберіңіз. Шеберлер тізіміне қосылу келісілгеннен кейін орындалады.</p>
+</form>
+</section>
+</main>
+<footer>© 2026 SARAI · Астана<br>Үйіңіздің жаңа жолы</footer>
+<div class="mobile-bar" aria-label="Жылдам әрекеттер"><a class="btn" href="#calculator">Жөндеуді есептеу</a><a class="btn alt" href="#masters">Шебер табу</a></div>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const state = {estimate:null, master:null};
+const repairs = {
+  '15000':{label:'Косметикалық',rate:15000},
+  '35000':{label:'Стандарт',rate:35000},
+  '60000':{label:'Күрделі',rate:60000}
+};
+const master = {name:'Нұрислам',trade:'Левкас жұмыстары',phone:'77086475501'};
+const formatNumber = value => new Intl.NumberFormat('kk-KZ',{maximumFractionDigits:1}).format(value);
+const money = value => new Intl.NumberFormat('kk-KZ',{maximumFractionDigits:0}).format(value) + ' ₸';
+function invalidatePrepared() {
+  $('prepared').hidden = true;
+  $('sendOrderWhatsApp').hidden = true;
+  $('sendOrderWhatsApp').removeAttribute('href');
+  $('copyStatus').textContent = '';
+}
+function readEstimate() {
+  const area = Number($('area').value);
+  const repair = repairs[$('repair').value];
+  if (!Number.isFinite(area) || area < 1 || area > 10000 || !repair || !$('area').checkValidity()) return null;
+  return {area:area,label:repair.label,rate:repair.rate,total:Math.round(area * repair.rate)};
+}
+function renderEstimate() {
+  const estimate = state.estimate;
+  $('estimatePanel').hidden = !estimate;
+  if (estimate) {
+    $('estimateDetails').textContent = formatNumber(estimate.area) + ' м² · ' + estimate.label + ' · ' + money(estimate.rate) + '/м²';
+    $('estimateTotal').textContent = 'Шамамен: ' + money(estimate.total);
+  }
+}
+function calculate() {
+  const estimate = readEstimate();
+  $('result').textContent = estimate ? 'Шамамен: ' + money(estimate.total) : '1–10 000 м² аралығындағы аудан енгізіңіз';
+  $('useEstimate').disabled = !estimate;
+  if (state.estimate && (!estimate || estimate.area !== state.estimate.area || estimate.rate !== state.estimate.rate)) {
+    state.estimate = null;
+    renderEstimate();
+    invalidatePrepared();
+  }
+  return estimate;
+}
+function syncServiceButtons() {
+  document.querySelectorAll('[data-service]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.service === $('service').value)));
+}
+function renderMaster() {
+  $('selectedMasterPanel').hidden = !state.master;
+  $('selectedMasterLabel').textContent = state.master ? 'Таңдалған шебер: ' + state.master.name + ' · Левкас шебері' : '';
+  $('prepareOrder').textContent = state.master ? 'WhatsApp хабарламасын дайындау' : 'Өтінімді дайындау';
+}
+function clearMaster() {
+  state.master = null;
+  renderMaster();
+  invalidatePrepared();
+}
+function showOrder() {
+  $('order').scrollIntoView({behavior:'smooth',block:'start'});
+  $('customer').focus({preventScroll:true});
+}
+function selectService(service, moveToOrder) {
+  $('service').value = service;
+  if (state.master && service !== state.master.trade) clearMaster();
+  syncServiceButtons();
+  invalidatePrepared();
+  if (moveToOrder) showOrder();
+}
+$('calculate').addEventListener('click',calculate);
+$('area').addEventListener('input',calculate);
+$('repair').addEventListener('change',calculate);
+$('useEstimate').addEventListener('click',() => {
+  const estimate = calculate();
+  if (!estimate) return;
+  state.estimate = estimate;
+  renderEstimate();
+  if (!state.master) selectService('Толық пәтер жөндеу',false);
+  invalidatePrepared();
+  showOrder();
+});
+$('clearEstimate').addEventListener('click',() => {
+  state.estimate = null;
+  renderEstimate();
+  invalidatePrepared();
+});
+document.querySelectorAll('[data-service]').forEach(button => button.addEventListener('click',() => selectService(button.dataset.service,true)));
+$('orderNurislam').addEventListener('click',() => {
+  state.master = master;
+  $('service').value = master.trade;
+  renderMaster();
+  syncServiceButtons();
+  invalidatePrepared();
+});
+$('clearSelectedMaster').addEventListener('click',clearMaster);
+$('service').addEventListener('change',() => selectService($('service').value,false));
+$('orderForm').addEventListener('input',() => {
+  $('customer').setCustomValidity('');
+  $('phone').setCustomValidity('');
+  invalidatePrepared();
+});
+function normalizePhone(value) {
+  let digits = value.replace(/\D/g,'');
+  if (digits.length === 10) digits = '7' + digits;
+  if (digits.length === 11 && digits[0] === '8') digits = '7' + digits.slice(1);
+  return /^7\d{10}$/.test(digits) ? '+' + digits : null;
+}
+function buildOrderMessage() {
+  const lines = ['SARAI тапсырыс','Қала: Астана','Аты: ' + $('customer').value.trim(),'Телефон: ' + normalizePhone($('phone').value),'Қызмет: ' + $('service').value];
+  if (state.master) lines.push('Шебер: ' + state.master.name);
+  if (state.estimate) {
+    lines.push('','Жөндеудің алдын ала есебі:','Ауданы: ' + formatNumber(state.estimate.area) + ' м²','Жөндеу түрі: ' + state.estimate.label,'Үлгілік баға: ' + money(state.estimate.rate) + '/м²','Болжамды жалпы құны: ' + money(state.estimate.total),'Нақты баға жұмыс көлеміне байланысты келісіліп анықталады.');
+  }
+  const details = $('details').value.trim();
+  if (details) lines.push('','Сипаттама: ' + details);
+  return lines.join('\n');
+}
+$('orderForm').addEventListener('submit',event => {
+  event.preventDefault();
+  const name = $('customer').value.trim();
+  const phone = normalizePhone($('phone').value);
+  $('customer').setCustomValidity(name ? '' : 'Атыңызды енгізіңіз.');
+  $('phone').setCustomValidity(phone ? '' : 'Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.');
+  if (!$('orderForm').reportValidity()) return;
+  const message = buildOrderMessage();
+  $('message').value = message;
+  const selected = state.master && $('service').value === state.master.trade;
+  $('sendOrderWhatsApp').hidden = !selected;
+  if (selected) $('sendOrderWhatsApp').href = 'https://wa.me/' + state.master.phone + '?text=' + encodeURIComponent(message);
+  else $('sendOrderWhatsApp').removeAttribute('href');
+  $('preparedInfo').textContent = selected
+    ? 'WhatsApp ашылғанда хабарламаны тексеріп, «Жіберу» батырмасын басыңыз.'
+    : 'Мәтінді көшіріп, өзіңіз таңдаған шеберге жіберіңіз.';
+  $('prepared').hidden = false;
+  $('prepared').scrollIntoView({behavior:'smooth',block:'nearest'});
+});
+async function copyText(field,statusId) {
+  const status = $(statusId);
+  try {
+    if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(field.value);
+    status.textContent = 'Мәтін көшірілді.';
+  } catch (error) {
+    field.focus();
+    field.select();
+    status.textContent = 'Мәтін таңдалды. Телефоныңыздағы «Көшіру» пәрменін басыңыз.';
+  }
+}
+$('copy').addEventListener('click',() => copyText($('message'),'copyStatus'));
 const masterAliases = 'Нұрислам Нурислам левкас левкасшы левкасшик левкасщик 87086475501 77086475501 +7 708 647 55 01';
 function normalizeMasterSearch(value) {
   const letters = {'ұ':'у','ү':'у','і':'и','ә':'а','ң':'н','ө':'о','ғ':'г','қ':'к','ё':'е'};
-  return value.toLowerCase().replace(/[ұүіәңөғқё]/g, c => letters[c]).replace(/[^a-zа-я0-9]/g, '');
+  return value.toLowerCase().replace(/[ұүіәңөғқё]/g,letter => letters[letter]).replace(/[^a-zа-я0-9]/g,'');
 }
 function filterMasters() {
   const query = normalizeMasterSearch($('masterSearch').value);
@@ -66,41 +274,37 @@ function filterMasters() {
   $('noMasters').hidden = matches;
   $('masterCount').textContent = matches ? '1 шебер табылды' : '0 шебер табылды';
 }
-$('masterSearch').addEventListener('input', filterMasters);
-$('masterTrade').addEventListener('change', filterMasters);
-$('clearMasterSearch').addEventListener('click', () => {
+function clearSearch() {
   $('masterSearch').value = '';
   $('masterTrade').value = 'all';
   filterMasters();
-});
-const masterGreeting = 'Сәлеметсіз бе, Нұрислам! SARAI сайтынан байланысыңызды таптым. Астанада левкас жұмыстары қажет.';
-$('masterWhatsApp').href = 'https://wa.me/77086475501?text=' + encodeURIComponent(masterGreeting);
-function clearSelectedMaster() {
-  $('orderMaster').value = '';
-  $('selectedMasterPanel').hidden = true;
-  $('prepared').hidden = true;
-  $('sendOrderWhatsApp').hidden = true;
 }
-$('orderNurislam').addEventListener('click', () => {
-  $('service').value = 'Левкас жұмыстары';
-  $('orderMaster').value = 'Нұрислам';
-  $('selectedMasterLabel').textContent = 'Таңдалған шебер: Нұрислам · Левкас шебері';
-  $('selectedMasterPanel').hidden = false;
-  $('prepared').hidden = true;
-  $('sendOrderWhatsApp').hidden = true;
+$('masterSearch').addEventListener('input',filterMasters);
+$('masterTrade').addEventListener('change',filterMasters);
+$('clearMasterSearch').addEventListener('click',clearSearch);
+$('clearEmptySearch').addEventListener('click',clearSearch);
+$('masterWhatsApp').href = 'https://wa.me/' + master.phone + '?text=' + encodeURIComponent('Сәлеметсіз бе, Нұрислам! SARAI сайтынан байланысыңызды таптым. Астанада левкас жұмыстары қажет.');
+$('joinForm').addEventListener('submit',event => {
+  event.preventDefault();
+  const name = $('masterName').value.trim();
+  const specialty = $('specialty').value.trim();
+  $('masterName').setCustomValidity(name ? '' : 'Аты-жөніңізді енгізіңіз.');
+  $('specialty').setCustomValidity(specialty ? '' : 'Мамандығыңызды енгізіңіз.');
+  if (!$('joinForm').reportValidity()) return;
+  $('joinText').value = ['SARAI шебер ретінде тіркелу','Қала: Астана','Аты-жөні: ' + name,'Мамандығы: ' + specialty].join('\n');
+  $('joinPrepared').hidden = false;
+  $('joinCopyStatus').textContent = '';
 });
-$('clearSelectedMaster').addEventListener('click', clearSelectedMaster);
-$('service').addEventListener('change', () => {
-  if ($('service').value !== 'Левкас жұмыстары') clearSelectedMaster();
+$('joinForm').addEventListener('input',() => {
+  $('masterName').setCustomValidity('');
+  $('specialty').setCustomValidity('');
+  $('joinPrepared').hidden = true;
 });
-$('orderForm').addEventListener('input', () => {
-  $('prepared').hidden = true;
-  $('sendOrderWhatsApp').hidden = true;
-});
-$('orderForm').addEventListener('submit', () => {
-  const selected = $('orderMaster').value === 'Нұрислам';
-  $('sendOrderWhatsApp').hidden = !selected;
-  if (selected) $('sendOrderWhatsApp').href = 'https://wa.me/77086475501?text=' + encodeURIComponent($('message').value);
-});
+$('joinCopy').addEventListener('click',() => copyText($('joinText'),'joinCopyStatus'));
+calculate();
 filterMasters();
-</script></body></html>
+syncServiceButtons();
+</script>
+</body>
+</html>
+
