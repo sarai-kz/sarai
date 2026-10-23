@@ -1,4 +1,18 @@
 {
   "version": 1,
-  "jobs": []
+  "jobs": [
+    {
+      "id": "SARAI-20261023-001",
+      "status": "open",
+      "city": "Астана",
+      "service": "Плитка жұмыстары",
+      "title": "Плитка жұмыстары",
+      "description": "Кафель төсеу керек. Требуется укладка кафеля.",
+      "district": "",
+      "area": null,
+      "budget": null,
+      "start": "Келісеміз",
+      "published_at": "2026-10-23T23:25:03+05:00"
+    }
+  ]
 }
