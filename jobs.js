@@ -41,11 +41,11 @@
     const phone = normalizePhone(byId('jobPhone').value);
     byId('jobCustomer').setCustomValidity(name ? '' : 'Атыңызды енгізіңіз.');
     byId('jobPhone').setCustomValidity(phone ? '' : 'Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.');
-    const title = validatePublicText('jobTitle', 8, 'Жұмыс атауы');
     const description = validatePublicText('jobDescription', 20, 'Жұмыс сипаттамасы');
     const district = validatePublicText('jobDistrict', 0, 'Аудан атауы');
     if (!byId('postJobForm').reportValidity()) return;
     const service = byId('jobService').value;
+    const title = (service + (district ? ' · ' + district : '')).slice(0, 100);
     const area = byId('jobArea').value === '' ? null : Number(byId('jobArea').value);
     const budget = byId('jobBudget').value === '' ? null : Number(byId('jobBudget').value);
     const start = byId('jobStart').value;
@@ -56,7 +56,7 @@
     publicLines.push('Бастау мерзімі: ' + start, '', 'Сипаттама: ' + description);
     const message = ['SARAI — жұмыс жариялау өтінімі', '', 'Байланыс мәліметтері (ашық тізімге қоспау):', 'Аты: ' + name, 'Телефон: ' + phone, '', 'Жариялауға арналған мәліметтер:', ...publicLines, '', 'Клиенттің аты мен телефонын жарияламай, тексергеннен кейін жұмыс тізіміне қосуды сұраймын.'].join('\n');
     byId('jobPreviewTitle').textContent = title;
-    byId('jobPreviewMeta').textContent = ['Астана', service, district, area === null ? '' : formatNumber(area) + ' м²', budget === null ? 'Бюджет: келісімді' : money(budget), start].filter(Boolean).join(' · ');
+    byId('jobPreviewMeta').textContent = ['Астана', area === null ? '' : formatNumber(area) + ' м²', budget === null ? 'Бюджет: келісімді' : money(budget), start].filter(Boolean).join(' · ');
     byId('jobPreviewDescription').textContent = description;
     byId('jobMessage').value = message;
     byId('sendJobWhatsApp').href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(message);

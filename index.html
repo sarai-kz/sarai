@@ -83,7 +83,6 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 <div class="job-form-grid">
 <div><label for="jobCustomer">Атыңыз *</label><input id="jobCustomer" name="jobCustomer" required maxlength="80" autocomplete="name" placeholder="Атыңыз"></div>
 <div><label for="jobPhone">Телефоныңыз *</label><input id="jobPhone" name="jobPhone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx" aria-describedby="jobPrivacy"></div>
-<div class="wide"><label for="jobTitle">Қандай жұмыс қажет? *</label><input id="jobTitle" name="jobTitle" required minlength="8" maxlength="100" placeholder="Мысалы: жуынатын бөлмеге плитка төсеу"></div>
 <div><label for="jobService">Жұмыс түрі *</label><select id="jobService" name="jobService" required><option value="" disabled selected>Жұмыс түрін таңдаңыз</option><option>Толық пәтер жөндеу</option><option>Левкас жұмыстары</option><option>Плитка жұмыстары</option><option>Электрик</option><option>Сантехник</option><option>Маляр жұмыстары</option><option>Гипсокартон</option><option>Әрлеу жұмыстары</option><option>Басқа жөндеу</option></select></div>
 <div><label for="jobDistrict">Аудан немесе тұрғын үй кешені <span class="field-optional">(міндетті емес)</span></label><input id="jobDistrict" name="jobDistrict" maxlength="80" placeholder="Көше, үй және пәтер нөмірін жазбаңыз"></div>
 <div><label for="jobArea">Ауданы, м² <span class="field-optional">(міндетті емес)</span></label><input id="jobArea" name="jobArea" type="number" min="1" max="10000" step="0.1" inputmode="decimal" placeholder="Мысалы: 25"></div>
@@ -375,6 +374,6 @@ calculate();
 filterMasters();
 syncServiceButtons();
 </script>
-<script src="./jobs.js"></script>
+<script src="./jobs.js?v=2"></script>
 </body>
 </html>
