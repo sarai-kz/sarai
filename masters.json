@@ -20,7 +20,16 @@
       "active": true,
       "updated_at": "2026-10-23T09:19:58.152Z",
       "last_request": 2
+    },
+    {
+      "id": "m-4f63ac32-1499-45fb-b979-0ed0e8581a47",
+      "name": "Нұрсыла",
+      "city": "Астана",
+      "trade": "levkas",
+      "description": "Левкас, красска",
+      "active": true,
+      "updated_at": "2026-10-23T18:13:00.590Z",
+      "last_request": 3
     }
   ]
 }
-
