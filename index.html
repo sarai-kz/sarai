@@ -23,6 +23,10 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 @media(max-width:800px){.job-list-controls{grid-template-columns:1fr 1fr}.job-list-controls>div:first-child{grid-column:1/-1}}
 @media(max-width:620px){.job-form-grid,.job-list-controls{grid-template-columns:1fr}.job-form-grid .wide,.job-list-controls>div:first-child{grid-column:auto}.jobs-section{border-radius:0}.job-facts{gap:14px}.job-steps{gap:6px}.job-steps span{padding:7px 9px;font-size:12px}}
 .master-card{min-width:0}.master-card h3,.master-description{overflow-wrap:anywhere}.master-description{white-space:pre-wrap;line-height:1.6}.owner-link{display:inline-block;margin-top:14px;font-size:12px;text-underline-offset:3px;color:#c5d6dc}
+
+header{display:grid;grid-template-columns:auto minmax(0,1fr) auto}header nav{justify-content:center}
+.language-switch{display:flex;gap:4px;align-items:center;padding:4px;border:1px solid #64828f;border-radius:12px;white-space:nowrap}.language-switch a{padding:8px 10px;border-radius:8px;color:white;text-decoration:none;font-size:13px;font-weight:750;line-height:1.2}.language-switch a[aria-current]{background:var(--gold);color:var(--ink)}
+@media(max-width:620px){header{grid-template-columns:1fr auto;text-align:left;gap:14px}header nav{grid-column:1/-1;grid-row:2;margin-top:0}.language-switch{grid-column:2;grid-row:1;justify-self:end}.brand{justify-self:start}}
 </style>
 </head>
 <body id="top">
@@ -30,6 +34,7 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 <a class="brand" href="#top" aria-label="SARAI басты бет">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5.5 9v12h13V9M9.5 21v-7h5v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>SARAI</a>
 <nav aria-label="Басты мәзір"><a href="#post-job">Жұмыс жариялау</a><a href="#jobs">Жұмыстар</a><a href="#calculator">Калькулятор</a><a href="#masters">Шеберлер</a><a href="#order">Тапсырыс</a><a href="#contact">Байланыс</a></nav>
+<div class="language-switch" role="navigation" aria-label="Тілді таңдау"><a href="?lang=kk" data-language="kk" lang="kk" hreflang="kk" aria-current="true">ҚАЗ</a><a href="?lang=ru" data-language="ru" lang="ru" hreflang="ru">РУС</a></div>
 </header>
 <div class="hero">
 <h1>Үйіңіздің жаңа жолы</h1>
@@ -59,7 +64,7 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 <div class="card search-panel">
 <div class="search-controls job-list-controls">
 <div><label for="jobSearch">Жұмысты іздеу</label><input id="jobSearch" type="search" maxlength="100" placeholder="Мысалы: плитка, левкас, пәтер" aria-controls="jobResults" autocomplete="off"></div>
-<div><label for="jobServiceFilter">Жұмыс түрі</label><select id="jobServiceFilter" aria-controls="jobResults"><option value="all">Барлық жұмыс</option><option>Толық пәтер жөндеу</option><option>Левкас жұмыстары</option><option>Плитка жұмыстары</option><option>Электрик</option><option>Сантехник</option><option>Маляр жұмыстары</option><option>Гипсокартон</option><option>Әрлеу жұмыстары</option><option>Басқа жөндеу</option></select></div>
+<div><label for="jobServiceFilter">Жұмыс түрі</label><select id="jobServiceFilter" aria-controls="jobResults"><option value="all">Барлық жұмыс</option><option value="Толық пәтер жөндеу">Толық пәтер жөндеу</option><option value="Левкас жұмыстары">Левкас жұмыстары</option><option value="Плитка жұмыстары">Плитка жұмыстары</option><option value="Электрик">Электрик</option><option value="Сантехник">Сантехник</option><option value="Маляр жұмыстары">Маляр жұмыстары</option><option value="Гипсокартон">Гипсокартон</option><option value="Әрлеу жұмыстары">Әрлеу жұмыстары</option><option value="Басқа жөндеу">Басқа жөндеу</option></select></div>
 <div><label for="jobSort">Реті</label><select id="jobSort" aria-controls="jobResults"><option value="newest">Жаңалары алдымен</option><option value="budget">Бюджеті жоғары</option></select></div>
 </div>
 <div class="search-summary"><p id="jobCount" role="status" aria-live="polite">Жұмыстар жүктелуде…</p><button class="btn alt small" id="refreshJobs" type="button">Жаңарту</button></div>
@@ -84,11 +89,11 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 <div class="job-form-grid">
 <div><label for="jobCustomer">Атыңыз *</label><input id="jobCustomer" name="jobCustomer" required maxlength="80" autocomplete="name" placeholder="Атыңыз"></div>
 <div><label for="jobPhone">Телефоныңыз *</label><input id="jobPhone" name="jobPhone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx" aria-describedby="jobPrivacy"></div>
-<div><label for="jobService">Жұмыс түрі *</label><select id="jobService" name="jobService" required><option value="" disabled selected>Жұмыс түрін таңдаңыз</option><option>Толық пәтер жөндеу</option><option>Левкас жұмыстары</option><option>Плитка жұмыстары</option><option>Электрик</option><option>Сантехник</option><option>Маляр жұмыстары</option><option>Гипсокартон</option><option>Әрлеу жұмыстары</option><option>Басқа жөндеу</option></select></div>
+<div><label for="jobService">Жұмыс түрі *</label><select id="jobService" name="jobService" required><option value="" disabled selected>Жұмыс түрін таңдаңыз</option><option value="Толық пәтер жөндеу">Толық пәтер жөндеу</option><option value="Левкас жұмыстары">Левкас жұмыстары</option><option value="Плитка жұмыстары">Плитка жұмыстары</option><option value="Электрик">Электрик</option><option value="Сантехник">Сантехник</option><option value="Маляр жұмыстары">Маляр жұмыстары</option><option value="Гипсокартон">Гипсокартон</option><option value="Әрлеу жұмыстары">Әрлеу жұмыстары</option><option value="Басқа жөндеу">Басқа жөндеу</option></select></div>
 <div><label for="jobDistrict">Аудан немесе тұрғын үй кешені <span class="field-optional">(міндетті емес)</span></label><input id="jobDistrict" name="jobDistrict" maxlength="80" placeholder="Көше, үй және пәтер нөмірін жазбаңыз"></div>
 <div><label for="jobArea">Ауданы, м² <span class="field-optional">(міндетті емес)</span></label><input id="jobArea" name="jobArea" type="number" min="1" max="10000" step="0.1" inputmode="decimal" placeholder="Мысалы: 25"></div>
 <div><label for="jobBudget">Жұмыс бюджеті, ₸ <span class="field-optional">(міндетті емес)</span></label><input id="jobBudget" name="jobBudget" type="number" min="1" max="100000000" step="1" inputmode="numeric" placeholder="Белгісіз болса, бос қалдырыңыз"></div>
-<div class="wide"><label for="jobStart">Қашан бастау керек?</label><select id="jobStart" name="jobStart"><option>Келісеміз</option><option>Мүмкіндігінше тез</option><option>Бір апта ішінде</option><option>Бір ай ішінде</option></select></div>
+<div class="wide"><label for="jobStart">Қашан бастау керек?</label><select id="jobStart" name="jobStart"><option value="Келісеміз">Келісеміз</option><option value="Мүмкіндігінше тез">Мүмкіндігінше тез</option><option value="Бір апта ішінде">Бір апта ішінде</option><option value="Бір ай ішінде">Бір ай ішінде</option></select></div>
 <div class="wide"><label for="jobDescription">Жұмыс сипаттамасы *</label><textarea id="jobDescription" name="jobDescription" required minlength="20" maxlength="1200" rows="5" placeholder="Қандай жұмыс, көлемі және қазіргі жағдайы қандай? Телефон мен нақты мекенжайды қоспаңыз."></textarea></div>
 </div>
 <p class="privacy-note" id="jobPrivacy">Атыңыз бен телефоныңыз тек SARAI-ға жіберіледі. Ашық тізімге жұмыс сипаттамасы, аудан, көлемі және бюджеті ғана шығады.</p>
@@ -142,7 +147,7 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 <div class="selection-panel" id="selectedMasterPanel" hidden><p id="selectedMasterLabel"></p><button class="btn alt small" id="clearSelectedMaster" type="button">Шеберді алып тастау</button></div>
 <label for="customer">Атыңыз</label><input id="customer" name="customer" required maxlength="80" autocomplete="name" placeholder="Атыңыз">
 <label for="phone">Байланыс телефоны</label><input id="phone" name="phone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx" aria-describedby="phoneHint"><p class="form-note" id="phoneHint">SARAI сізбен осы нөмір арқылы байланыса алады.</p>
-<label for="service">Қызмет түрі</label><select id="service" name="service" required><option value="" disabled selected>Қызметті таңдаңыз</option><option>Толық пәтер жөндеу</option><option>Левкас жұмыстары</option><option>Плитка жұмыстары</option><option>Электрик</option><option>Сантехник</option><option>Маляр жұмыстары</option><option>Гипсокартон</option><option>Әрлеу жұмыстары</option><option>Басқа жөндеу</option></select>
+<label for="service">Қызмет түрі</label><select id="service" name="service" required><option value="" disabled selected>Қызметті таңдаңыз</option><option value="Толық пәтер жөндеу">Толық пәтер жөндеу</option><option value="Левкас жұмыстары">Левкас жұмыстары</option><option value="Плитка жұмыстары">Плитка жұмыстары</option><option value="Электрик">Электрик</option><option value="Сантехник">Сантехник</option><option value="Маляр жұмыстары">Маляр жұмыстары</option><option value="Гипсокартон">Гипсокартон</option><option value="Әрлеу жұмыстары">Әрлеу жұмыстары</option><option value="Басқа жөндеу">Басқа жөндеу</option></select>
 <label for="details">Жұмыс сипаттамасы</label><textarea id="details" name="details" maxlength="1000" placeholder="Қандай жұмыс қажет, қашан бастағыңыз келеді?"></textarea>
 <div class="actions"><button class="btn" type="submit" id="prepareOrder">WhatsApp хабарламасын дайындау</button></div>
 <p class="form-note" id="orderHint">Өтінім алдымен SARAI-ға жіберіледі. Таңдаған шеберіңіз хабарламада көрсетіледі.</p>
@@ -178,8 +183,320 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 <footer>© 2026 SARAI · Астана<br>Үйіңіздің жаңа жолы<br><a href="tel:+77027935200">+7 702 793 52 00</a><br><a class="owner-link" href="./admin.html">Иесіне: шеберлерді басқару</a></footer>
 <div class="mobile-bar" aria-label="Жылдам әрекеттер"><a class="btn" href="#calculator">Жөндеуді есептеу</a><a class="btn whatsapp" id="mobileWhatsApp" href="https://wa.me/77027935200" target="_blank" rel="noopener noreferrer" aria-label="SARAI-ға WhatsApp арқылы жазу">WhatsApp</a></div>
 <script>
+(function (root) {
+  'use strict';
+  const ru = {
+    'SARAI — Үйіңіздің жаңа жолы': 'SARAI — Новый путь вашего дома',
+    'SARAI: Астанада жөндеу жұмысын жариялаңыз, ашық тапсырыстарды көріңіз, жөндеу құнын есептеп, шебер табыңыз.': 'SARAI: разместите заявку на ремонт в Астане, посмотрите заказы, рассчитайте примерную стоимость и найдите мастера.',
+    'SARAI басты бет': 'SARAI — главная',
+    'Басты мәзір': 'Главное меню',
+    'Тілді таңдау': 'Выбор языка',
+    'Жұмыс жариялау': 'Разместить заказ',
+    'Жұмыстар': 'Заказы',
+    'Калькулятор': 'Калькулятор',
+    'Шеберлер': 'Мастера',
+    'Тапсырыс': 'Заявка',
+    'Байланыс': 'Контакты',
+    'Үйіңіздің жаңа жолы': 'Новый путь вашего дома',
+    'Астанада жөндеу құнын алдын ала есептеп, қажетті жұмысқа шебер таңдаңыз.': 'Рассчитайте примерную стоимость ремонта и выберите мастера в Астане.',
+    'Жөндеуді есептеу': 'Рассчитать ремонт',
+    'Шебер табу': 'Найти мастера',
+    'Жұмыстарды көру →': 'Посмотреть заказы →',
+    'Астана · Пәтер жөндеу және әрлеу жұмыстары': 'Астана · Ремонт квартир и отделочные работы',
+    'Қандай жұмыс қажет?': 'Какая работа нужна?',
+    'Жұмыс түрін таңдаңыз — ол тапсырысыңызға қосылады.': 'Выберите вид работ — он будет добавлен в заявку.',
+    'Толық пәтер жөндеу': 'Ремонт квартиры под ключ',
+    'Әрлеу жұмыстары': 'Отделочные работы',
+    'Плитка жұмыстары': 'Плиточные работы',
+    'Электрик': 'Электрик',
+    'Сантехник': 'Сантехник',
+    'Маляр жұмыстары': 'Малярные работы',
+    'Гипсокартон': 'Гипсокартон',
+    'Басқа жөндеу': 'Другие ремонтные работы',
+    'Басқа жұмыстар': 'Другие работы',
+    'Левкас жұмыстары': 'Левкасные работы',
+    'Левкас жұмыстары.': 'Левкасные работы.',
+    'Левкас шебері': 'Мастер по левкасу',
+    'Әрлеу шебері': 'Мастер отделочных работ',
+    'Плитка шебері': 'Плиточник',
+    'Маляр': 'Маляр',
+    'Гипсокартон шебері': 'Мастер по гипсокартону',
+    'Пәтер жөндеу': 'Ремонт квартир',
+    'Басқа жөндеу жұмыстары': 'Другие ремонтные работы',
+    'Жұмыстарды көру': 'Посмотреть заказы',
+    'Астанадағы жарияланған жөндеу жұмыстары. Қолайлы жұмысқа ұсынысыңызды SARAI арқылы жіберіңіз.': 'Опубликованные заказы на ремонт в Астане. Отправьте предложение по подходящему заказу через SARAI.',
+    'Жұмысты іздеу': 'Поиск заказов',
+    'Мысалы: плитка, левкас, пәтер': 'Например: плитка, левкас, квартира',
+    'Жұмыс түрі': 'Вид работ',
+    'Барлық жұмыс': 'Все работы',
+    'Реті': 'Сортировка',
+    'Жаңалары алдымен': 'Сначала новые',
+    'Бюджеті жоғары': 'По убыванию бюджета',
+    'Жұмыстар жүктелуде…': 'Заказы загружаются…',
+    'Жаңарту': 'Обновить',
+    'Әзірге жарияланған жұмыс жоқ': 'Пока нет опубликованных заказов',
+    'Жөндеу қажет пе? Жұмысыңызды сипаттап, SARAI-ға жариялау өтінімін жіберіңіз.': 'Нужен ремонт? Опишите работу и отправьте заявку на публикацию в SARAI.',
+    'Сүзгіге сай жұмыс табылмады': 'Заказы по выбранным условиям не найдены',
+    'Басқа сөзбен іздеп көріңіз немесе барлық жұмысты ашыңыз.': 'Попробуйте другой запрос или посмотрите все заказы.',
+    'Барлық жұмысты көрсету': 'Показать все заказы',
+    'Жұмыстарды жүктеу мүмкін болмады': 'Не удалось загрузить заказы',
+    'Интернет байланысын тексеріп, қайта жүктеңіз.': 'Проверьте подключение к интернету и попробуйте снова.',
+    'Қайта жүктеу': 'Попробовать снова',
+    'Жұмыстар тізімін көру үшін браузерде JavaScript қосыңыз. Көмек үшін': 'Чтобы увидеть список заказов, включите JavaScript в браузере. Для помощи',
+    'SARAI-ға WhatsApp арқылы жазыңыз': 'напишите в SARAI через WhatsApp',
+    'Клиенттің аты мен телефоны ашық тізімге шығарылмайды. Жұмыс бойынша байланысты SARAI үйлестіреді.': 'Имя и телефон клиента не публикуются в открытом списке. Связь по заказу организует SARAI.',
+    'Жұмысты сипаттап, жариялау өтінімін SARAI-ға жіберіңіз. Тексерілгеннен кейін жұмысыңыз ашық тізімге қосылады.': 'Опишите работу и отправьте заявку на публикацию в SARAI. После проверки заказ появится в открытом списке.',
+    'Жариялау қадамдары': 'Этапы публикации',
+    '1. Жұмысты сипаттаңыз': '1. Опишите работу',
+    '2. WhatsApp-та жіберіңіз': '2. Отправьте в WhatsApp',
+    '3. SARAI тексеріп жариялайды': '3. SARAI проверит и опубликует',
+    'Қала: Астана': 'Город: Астана',
+    '* — міндетті өрістер': '* — обязательные поля',
+    'Атыңыз *': 'Ваше имя *',
+    'Атыңыз': 'Ваше имя',
+    'Телефоныңыз *': 'Ваш телефон *',
+    'Жұмыс түрі *': 'Вид работ *',
+    'Жұмыс түрін таңдаңыз': 'Выберите вид работ',
+    'Аудан немесе тұрғын үй кешені': 'Район или жилой комплекс',
+    '(міндетті емес)': '(необязательно)',
+    'Көше, үй және пәтер нөмірін жазбаңыз': 'Не указывайте улицу, номер дома и квартиры',
+    'Ауданы, м²': 'Площадь, м²',
+    'Мысалы: 25': 'Например: 25',
+    'Жұмыс бюджеті, ₸': 'Бюджет работ, ₸',
+    'Белгісіз болса, бос қалдырыңыз': 'Оставьте пустым, если пока не знаете',
+    'Қашан бастау керек?': 'Когда нужно начать?',
+    'Келісеміз': 'По договорённости',
+    'Мүмкіндігінше тез': 'Как можно скорее',
+    'Бір апта ішінде': 'В течение недели',
+    'Бір ай ішінде': 'В течение месяца',
+    'Жұмыс сипаттамасы *': 'Описание работы *',
+    'Қандай жұмыс, көлемі және қазіргі жағдайы қандай? Телефон мен нақты мекенжайды қоспаңыз.': 'Какая работа нужна, каков объём и текущее состояние? Не добавляйте телефон и точный адрес.',
+    'Атыңыз бен телефоныңыз тек SARAI-ға жіберіледі. Ашық тізімге жұмыс сипаттамасы, аудан, көлемі және бюджеті ғана шығады.': 'Имя и телефон будут отправлены только в SARAI. В открытом списке появятся описание работы, район, объём и бюджет.',
+    'Жариялау өтінімін дайындау': 'Подготовить заявку на публикацию',
+    'Дайындағаннан кейін WhatsApp-та «Жіберу» батырмасын басыңыз. Жұмыс SARAI тексеріп жариялағаннан кейін тізімде көрінеді.': 'После подготовки нажмите «Отправить» в WhatsApp. Заказ появится в списке после проверки и публикации SARAI.',
+    'Жариялау өтінімі дайын': 'Заявка на публикацию готова',
+    'Әзірге өтінім жіберілген жоқ. Төмендегі батырмамен WhatsApp ашып, хабарламаны SARAI-ға жіберіңіз.': 'Заявка ещё не отправлена. Откройте WhatsApp кнопкой ниже и отправьте сообщение в SARAI.',
+    'Ашық тізімге арналған мәліметтер': 'Данные для открытого списка',
+    'SARAI-ға жіберілетін толық хабарлама': 'Полное сообщение для SARAI',
+    'SARAI-ға WhatsApp-та жіберу': 'Отправить в SARAI через WhatsApp',
+    'Мәтінді көшіру': 'Скопировать текст',
+    'Жөндеу калькуляторы': 'Калькулятор ремонта',
+    'Ауданы (м²)': 'Площадь (м²)',
+    'Жөндеу түрі': 'Вид ремонта',
+    'Косметикалық — 15 000 ₸/м²': 'Косметический — 15 000 ₸/м²',
+    'Стандарт — 35 000 ₸/м²': 'Стандартный — 35 000 ₸/м²',
+    'Күрделі — 60 000 ₸/м²': 'Капитальный — 60 000 ₸/м²',
+    'Косметикалық': 'Косметический',
+    'Стандарт': 'Стандартный',
+    'Күрделі': 'Капитальный',
+    'Бұл — үлгілік бағалар бойынша алдын ала есеп. Нақты баға материалдар мен жұмыс көлеміне байланысты.': 'Это предварительный расчёт по примерным расценкам. Итоговая стоимость зависит от материалов и объёма работ.',
+    'Қайта есептеу': 'Пересчитать',
+    'Осы есеппен тапсырыс беру': 'Оставить заявку с этим расчётом',
+    'Астанадағы шеберлер': 'Мастера в Астане',
+    'Шеберді таңдаңыз — SARAI өтінімді қабылдап, сізбен байланысады.': 'Выберите мастера — SARAI получит заявку и свяжется с вами.',
+    'Аты немесе жұмыс түрі бойынша іздеу': 'Поиск по имени или виду работ',
+    'Мысалы: Нұрислам немесе левкас': 'Например: Нурислам или левкас',
+    'Мамандығы': 'Специальность',
+    'Барлық мамандық': 'Все специальности',
+    'Шеберлер жүктелуде…': 'Мастера загружаются…',
+    'Сүзгіні тазарту': 'Сбросить фильтр',
+    'Шеберлерді жүктеу мүмкін болмады. Интернет байланысын тексеріңіз.': 'Не удалось загрузить мастеров. Проверьте подключение к интернету.',
+    'Бұл іздеу бойынша шебер табылмады.': 'Мастера по этому запросу не найдены.',
+    'Барлық шеберді көрсету': 'Показать всех мастеров',
+    'Тапсырыс қалдыру': 'Оставить заявку',
+    'Жөндеудің алдын ала есебі': 'Предварительный расчёт ремонта',
+    'Бұл мәлімет дайын өтінімге қосылады. Бағаны шебермен нақтылаңыз.': 'Этот расчёт будет добавлен в заявку. Уточните стоимость у мастера.',
+    'Есепті өзгерту': 'Изменить расчёт',
+    'Есепті алып тастау': 'Убрать расчёт',
+    'Шеберді алып тастау': 'Убрать мастера',
+    'Байланыс телефоны': 'Контактный телефон',
+    'SARAI сізбен осы нөмір арқылы байланыса алады.': 'SARAI сможет связаться с вами по этому номеру.',
+    'Қызмет түрі': 'Вид услуги',
+    'Қызметті таңдаңыз': 'Выберите услугу',
+    'Жұмыс сипаттамасы': 'Описание работы',
+    'Қандай жұмыс қажет, қашан бастағыңыз келеді?': 'Какая работа нужна и когда вы хотите начать?',
+    'WhatsApp хабарламасын дайындау': 'Подготовить сообщение для WhatsApp',
+    'Өтінім алдымен SARAI-ға жіберіледі. Таңдаған шеберіңіз хабарламада көрсетіледі.': 'Заявка сначала отправляется в SARAI. Выбранный мастер будет указан в сообщении.',
+    'Өтінім дайын': 'Заявка готова',
+    'Хабарлама мәтіні': 'Текст сообщения',
+    'Жөндеу жұмыстары бойынша сұрақтарыңызды WhatsApp-қа жазыңыз.': 'По вопросам ремонта пишите нам в WhatsApp.',
+    'SARAI-ға қоңырау шалу: +7 702 793 52 00': 'Позвонить в SARAI: +7 702 793 52 00',
+    'SARAI-ға WhatsApp': 'Написать в SARAI',
+    'Қоңырау шалу': 'Позвонить',
+    'Шебер ретінде қосылу': 'Стать мастером SARAI',
+    'Астанада қызмет көрсетесіз бе? SARAI шеберлер тізіміне қосылуға арналған хабарлама дайындаңыз.': 'Работаете в Астане? Подготовьте сообщение, чтобы присоединиться к мастерам SARAI.',
+    'Аты-жөніңіз': 'Ваше имя',
+    'Мамандығыңыз': 'Ваша специальность',
+    'Мысалы: сантехник': 'Например: сантехник',
+    'Тіркелу мәтінін дайындау': 'Подготовить заявку мастера',
+    'Дайын хабарлама': 'Готовое сообщение',
+    'Көшіру': 'Скопировать',
+    'Дайын хабарламаны WhatsApp-та SARAI-ға жіберіңіз. Шеберлер тізіміне қосылу келісілгеннен кейін орындалады.': 'Отправьте готовое сообщение в SARAI через WhatsApp. Мастер будет добавлен в список после согласования.',
+    'Иесіне: шеберлерді басқару': 'Владельцу: управление мастерами',
+    'Жылдам әрекеттер': 'Быстрые действия',
+    'SARAI-ға WhatsApp арқылы жазу': 'Написать в SARAI через WhatsApp',
+    'Шамамен: {amount}': 'Примерно: {amount}',
+    '1–10 000 м² аралығындағы аудан енгізіңіз': 'Введите площадь от 1 до 10 000 м²',
+    'Таңдалған шебер: {name} · {trade}': 'Выбранный мастер: {name} · {trade}',
+    'Өтінім алдымен SARAI-ға жіберіледі.': 'Заявка сначала отправляется в SARAI.',
+    'Таңдаған шеберіңіз хабарламада көрсетіледі.': 'Выбранный мастер будет указан в сообщении.',
+    'WhatsApp ашылғанда «Жіберу» батырмасын басыңыз.': 'Когда откроется WhatsApp, нажмите «Отправить».',
+    'SARAI тапсырыс': 'Заявка SARAI',
+    'Аты:': 'Имя:',
+    'Телефон:': 'Телефон:',
+    'Қызмет:': 'Услуга:',
+    'Шебер:': 'Мастер:',
+    'Жөндеудің алдын ала есебі:': 'Предварительный расчёт ремонта:',
+    'Ауданы:': 'Площадь:',
+    'Жөндеу түрі:': 'Вид ремонта:',
+    'Үлгілік баға:': 'Примерная расценка:',
+    'Болжамды жалпы құны:': 'Примерная общая стоимость:',
+    'Нақты баға жұмыс көлеміне байланысты келісіліп анықталады.': 'Итоговая стоимость согласовывается с учётом объёма работ.',
+    'Сипаттама:': 'Описание:',
+    'Атыңызды енгізіңіз.': 'Введите ваше имя.',
+    'Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.': 'Введите полный номер телефона: +7 7xx xxx xx xx.',
+    'Хабарлама алушы: {name}. WhatsApp ашылғанда мәтінді тексеріп, «Жіберу» батырмасын басыңыз.': 'Получатель сообщения: {name}. Когда откроется WhatsApp, проверьте текст и нажмите «Отправить».',
+    'Мәтін көшірілді.': 'Текст скопирован.',
+    'Мәтін таңдалды. Телефоныңыздағы «Көшіру» пәрменін басыңыз.': 'Текст выделен. Нажмите «Копировать» на телефоне.',
+    'Сәлеметсіз бе! SARAI арқылы Астанада жөндеу жұмыстары бойынша ақпарат алғым келеді.': 'Здравствуйте! Хочу узнать о ремонте в Астане через SARAI.',
+    'Аты-жөніңізді енгізіңіз.': 'Введите ваше имя.',
+    'Мамандығыңызды енгізіңіз.': 'Введите вашу специальность.',
+    'SARAI шебер ретінде тіркелу': 'Заявка на регистрацию мастера SARAI',
+    'Аты-жөні:': 'Имя:',
+    'Мамандығы:': 'Специальность:',
+    'Осы шеберге өтінім': 'Оставить заявку этому мастеру',
+    '{name} шеберіне SARAI арқылы өтінім беру': 'Оставить заявку мастеру {name} через SARAI',
+    'Бұл іздеу бойынша шебер табылмады. Басқа сөзбен іздеңіз немесе мамандық сүзгісін өзгертіңіз.': 'Мастера по этому запросу не найдены. Измените запрос или специальность.',
+    'Әзірге жарияланған шебер жоқ. Тапсырысыңызды SARAI-ға қалдыра аласыз.': 'Пока нет опубликованных мастеров. Вы можете оставить заявку в SARAI.',
+    '{count} шебер табылды': 'Найдено мастеров: {count}',
+    'Тізім жүктелмеді': 'Не удалось загрузить список',
+    '{label} кемінде {count} таңба болуы керек.': '{label}: не менее {count} символов.',
+    'Телефон мен сілтемені осы өріске қоспаңыз. Телефонды бөлек өріске енгізіңіз.': 'Не добавляйте телефон и ссылки в это поле. Укажите телефон в отдельном поле.',
+    'Аудан атауы': 'Название района',
+    'Жұмыс:': 'Работа:',
+    'Қала:': 'Город:',
+    'Аудан / тұрғын үй кешені:': 'Район / жилой комплекс:',
+    'Нақтыланады': 'Уточняется',
+    'Жұмыс бюджеті:': 'Бюджет работ:',
+    'Келісімді': 'По договорённости',
+    'Бастау мерзімі:': 'Когда начать:',
+    'SARAI — жұмыс жариялау өтінімі': 'SARAI — заявка на публикацию заказа',
+    'Байланыс мәліметтері (ашық тізімге қоспау):': 'Контактные данные (не публиковать в открытом списке):',
+    'Жариялауға арналған мәліметтер:': 'Данные для публикации:',
+    'Клиенттің аты мен телефонын жарияламай, тексергеннен кейін жұмыс тізіміне қосуды сұраймын.': 'Прошу после проверки добавить заказ в список, не публикуя имя и телефон клиента.',
+    'Бюджет: келісімді': 'Бюджет: по договорённости',
+    'Аудан / тұрғын үй кешені': 'Район / жилой комплекс',
+    'Ауданы': 'Площадь',
+    'Жұмыс бюджеті': 'Бюджет работ',
+    'Бастау мерзімі': 'Когда начать',
+    'Осы жұмысқа ұсыныс беру': 'Предложить услуги по этому заказу',
+    '{title} жұмысына ұсыныс беру': 'Предложить услуги по заказу «{title}»',
+    'Сәлеметсіз бе! SARAI сайтындағы жұмысқа ұсыныс бергім келеді.': 'Здравствуйте! Хочу предложить услуги по заказу на сайте SARAI.',
+    'Жұмыс нөмірі:': 'Номер заказа:',
+    'Мамандығым:': 'Моя специальность:',
+    'Ұсынысым:': 'Моё предложение:',
+    'Бос уақытым:': 'Когда могу начать:',
+    '{count} жұмыс көрсетілді': 'Показано заказов: {count}',
+    'барлығы {count}': 'всего {count}',
+    'Жұмыстар жүктелмеді': 'Не удалось загрузить заказы',
+    'Бұл өрісті толтырыңыз.': 'Заполните это поле.',
+    'Енгізілген мәнді тексеріңіз.': 'Проверьте введённое значение.'
+  };
+  let language = 'kk';
+  const entries = [];
+  function text(original, values) {
+    const translated = language === 'ru' && Object.prototype.hasOwnProperty.call(ru, original) ? ru[original] : original;
+    return translated.replace(/\{(\w+)\}/g, (match, key) => values && Object.prototype.hasOwnProperty.call(values, key) ? String(values[key]) : match);
+  }
+  function title(job) {
+    const prefix = job.service + ' · ';
+    if (job.title === job.service) return text(job.service);
+    return job.title.startsWith(prefix) ? text(job.service) + job.title.slice(job.service.length) : job.title;
+  }
+  function clearValidation() {
+    root.document.querySelectorAll('input, select, textarea').forEach(field => field.setCustomValidity(''));
+  }
+  function apply() {
+    entries.forEach(entry => {
+      const translated = text(entry.original);
+      if (entry.attribute) entry.node.setAttribute(entry.attribute, translated);
+      else entry.node.nodeValue = entry.before + translated + entry.after;
+    });
+    root.document.documentElement.lang = language;
+    root.document.title = text('SARAI — Үйіңіздің жаңа жолы');
+    root.document.querySelector('meta[name="description"]').content = text('SARAI: Астанада жөндеу жұмысын жариялаңыз, ашық тапсырыстарды көріңіз, жөндеу құнын есептеп, шебер табыңыз.');
+    root.document.querySelectorAll('[data-language]').forEach(link => {
+      if (link.dataset.language === language) link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    });
+  }
+  function setLanguage(next, updateUrl) {
+    if (!['kk', 'ru'].includes(next)) return;
+    language = next;
+    apply();
+    clearValidation();
+    try { root.localStorage.setItem('sarai-language', language); } catch (error) { /* Storage may be disabled. */ }
+    if (updateUrl !== false) {
+      const url = new URL(root.location.href);
+      url.searchParams.set('lang', language);
+      try { root.history.replaceState(null, '', url.href); } catch (error) { /* Language switching also works without history access. */ }
+    }
+    root.document.dispatchEvent(new Event('sarai:languagechange'));
+  }
+  function init() {
+    // Preserve canonical form values before translating their visible option labels.
+    root.document.querySelectorAll('option').forEach(option => {
+      if (!option.hasAttribute('value')) option.value = option.textContent;
+    });
+    const walker = root.document.createTreeWalker(root.document.body, 4);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (node.parentElement.closest('script, style, textarea, [data-no-translate]')) continue;
+      const original = node.nodeValue.trim();
+      if (Object.prototype.hasOwnProperty.call(ru, original)) {
+        const before = node.nodeValue.match(/^\s*/)[0];
+        const after = node.nodeValue.match(/\s*$/)[0];
+        entries.push({node, original, before, after});
+      }
+    }
+    root.document.querySelectorAll('[placeholder], [aria-label]').forEach(element => {
+      ['placeholder', 'aria-label'].forEach(attribute => {
+        const original = element.getAttribute(attribute);
+        if (Object.prototype.hasOwnProperty.call(ru, original)) entries.push({node: element, attribute, original});
+      });
+    });
+    let saved;
+    try { saved = root.localStorage.getItem('sarai-language'); } catch (error) { /* Use the default language. */ }
+    const requested = new URL(root.location.href).searchParams.get('lang');
+    language = ['kk', 'ru'].includes(requested) ? requested : ['kk', 'ru'].includes(saved) ? saved : 'kk';
+    root.document.querySelectorAll('[data-language]').forEach(link => link.addEventListener('click', event => {
+      // Modified clicks keep the shareable link's normal browser behaviour.
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button) return;
+      event.preventDefault();
+      setLanguage(link.dataset.language);
+    }));
+    root.document.addEventListener('invalid', event => {
+      const field = event.target;
+      if (field.validity.customError) return;
+      field.setCustomValidity(text(field.validity.valueMissing ? 'Бұл өрісті толтырыңыз.' : 'Енгізілген мәнді тексеріңіз.'));
+    }, true);
+    ['input', 'change'].forEach(type => root.document.addEventListener(type, event => {
+      if (typeof event.target.setCustomValidity === 'function') event.target.setCustomValidity('');
+    }));
+    setLanguage(language, false);
+  }
+  const api = Object.freeze({text, title, setLanguage, get language() { return language; }, get locale() { return language === 'ru' ? 'ru-KZ' : 'kk-KZ'; }});
+  root.SaraiI18n = api;
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  if (root.document) init();
+}(typeof window === 'undefined' ? globalThis : window));
+
+</script>
+<script>
 'use strict';
 const $ = id => document.getElementById(id);
+const i18n = SaraiI18n;
+const t = i18n.text;
 const state = {estimate:null, master:null};
 const repairs = {
   '15000':{label:'Косметикалық',rate:15000},
@@ -187,8 +504,8 @@ const repairs = {
   '60000':{label:'Күрделі',rate:60000}
 };
 const saraiContact = {name:'SARAI',phone:'77027935200'};
-const formatNumber = value => new Intl.NumberFormat('kk-KZ',{maximumFractionDigits:1}).format(value);
-const money = value => new Intl.NumberFormat('kk-KZ',{maximumFractionDigits:0}).format(value) + ' ₸';
+const formatNumber = value => new Intl.NumberFormat(i18n.locale,{maximumFractionDigits:1}).format(value);
+const money = value => new Intl.NumberFormat(i18n.locale,{maximumFractionDigits:0}).format(value) + ' ₸';
 function invalidatePrepared() {
   $('prepared').hidden = true;
   $('sendOrderWhatsApp').hidden = true;
@@ -205,13 +522,13 @@ function renderEstimate() {
   const estimate = state.estimate;
   $('estimatePanel').hidden = !estimate;
   if (estimate) {
-    $('estimateDetails').textContent = formatNumber(estimate.area) + ' м² · ' + estimate.label + ' · ' + money(estimate.rate) + '/м²';
-    $('estimateTotal').textContent = 'Шамамен: ' + money(estimate.total);
+    $('estimateDetails').textContent = formatNumber(estimate.area) + ' м² · ' + t(estimate.label) + ' · ' + money(estimate.rate) + '/м²';
+    $('estimateTotal').textContent = t('Шамамен: {amount}',{amount:money(estimate.total)});
   }
 }
 function calculate() {
   const estimate = readEstimate();
-  $('result').textContent = estimate ? 'Шамамен: ' + money(estimate.total) : '1–10 000 м² аралығындағы аудан енгізіңіз';
+  $('result').textContent = estimate ? t('Шамамен: {amount}',{amount:money(estimate.total)}) : t('1–10 000 м² аралығындағы аудан енгізіңіз');
   $('useEstimate').disabled = !estimate;
   if (state.estimate && (!estimate || estimate.area !== state.estimate.area || estimate.rate !== state.estimate.rate)) {
     state.estimate = null;
@@ -225,8 +542,8 @@ function syncServiceButtons() {
 }
 function renderMaster() {
   $('selectedMasterPanel').hidden = !state.master;
-  $('selectedMasterLabel').textContent = state.master ? 'Таңдалған шебер: ' + state.master.name + ' · ' + state.master.trade : '';
-  $('orderHint').textContent = 'Өтінім алдымен SARAI-ға жіберіледі.' + (state.master ? ' Таңдаған шеберіңіз хабарламада көрсетіледі.' : ' WhatsApp ашылғанда «Жіберу» батырмасын басыңыз.');
+  $('selectedMasterLabel').textContent = state.master ? t('Таңдалған шебер: {name} · {trade}',{name:state.master.name,trade:t(state.master.trade)}) : '';
+  $('orderHint').textContent = t('Өтінім алдымен SARAI-ға жіберіледі.') + ' ' + t(state.master ? 'Таңдаған шеберіңіз хабарламада көрсетіледі.' : 'WhatsApp ашылғанда «Жіберу» батырмасын басыңыз.');
 }
 function clearMaster() {
   state.master = null;
@@ -284,29 +601,31 @@ function normalizePhone(value) {
   return /^7\d{10}$/.test(digits) ? '+' + digits : null;
 }
 function buildOrderMessage() {
-  const lines = ['SARAI тапсырыс','Қала: Астана','Аты: ' + $('customer').value.trim(),'Телефон: ' + normalizePhone($('phone').value),'Қызмет: ' + $('service').value];
-  if (state.master) lines.push('Шебер: ' + state.master.name);
+  const lines = [t('SARAI тапсырыс'),t('Қала: Астана'),t('Аты:') + ' ' + $('customer').value.trim(),t('Телефон:') + ' ' + normalizePhone($('phone').value),t('Қызмет:') + ' ' + t($('service').value)];
+  if (state.master) lines.push(t('Шебер:') + ' ' + state.master.name);
   if (state.estimate) {
-    lines.push('','Жөндеудің алдын ала есебі:','Ауданы: ' + formatNumber(state.estimate.area) + ' м²','Жөндеу түрі: ' + state.estimate.label,'Үлгілік баға: ' + money(state.estimate.rate) + '/м²','Болжамды жалпы құны: ' + money(state.estimate.total),'Нақты баға жұмыс көлеміне байланысты келісіліп анықталады.');
+    lines.push('',t('Жөндеудің алдын ала есебі:'),t('Ауданы:') + ' ' + formatNumber(state.estimate.area) + ' м²',t('Жөндеу түрі:') + ' ' + t(state.estimate.label),t('Үлгілік баға:') + ' ' + money(state.estimate.rate) + '/м²',t('Болжамды жалпы құны:') + ' ' + money(state.estimate.total),t('Нақты баға жұмыс көлеміне байланысты келісіліп анықталады.'));
   }
   const details = $('details').value.trim();
-  if (details) lines.push('','Сипаттама: ' + details);
+  if (details) lines.push('',t('Сипаттама:') + ' ' + details);
   return lines.join('\n');
+}
+function refreshOrderMessage() {
+  const message = buildOrderMessage();
+  $('message').value = message;
+  $('sendOrderWhatsApp').hidden = false;
+  $('sendOrderWhatsApp').href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(message);
+  $('sendOrderWhatsApp').textContent = t('SARAI-ға WhatsApp-та жіберу');
+  $('preparedInfo').textContent = t('Хабарлама алушы: {name}. WhatsApp ашылғанда мәтінді тексеріп, «Жіберу» батырмасын басыңыз.',{name:saraiContact.name});
 }
 $('orderForm').addEventListener('submit',event => {
   event.preventDefault();
   const name = $('customer').value.trim();
   const phone = normalizePhone($('phone').value);
-  $('customer').setCustomValidity(name ? '' : 'Атыңызды енгізіңіз.');
-  $('phone').setCustomValidity(phone ? '' : 'Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.');
+  $('customer').setCustomValidity(name ? '' : t('Атыңызды енгізіңіз.'));
+  $('phone').setCustomValidity(phone ? '' : t('Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.'));
   if (!$('orderForm').reportValidity()) return;
-  const message = buildOrderMessage();
-  $('message').value = message;
-  const recipient = saraiContact;
-  $('sendOrderWhatsApp').hidden = false;
-  $('sendOrderWhatsApp').href = 'https://wa.me/' + recipient.phone + '?text=' + encodeURIComponent(message);
-  $('sendOrderWhatsApp').textContent = 'SARAI-ға WhatsApp-та жіберу';
-  $('preparedInfo').textContent = 'Хабарлама алушы: ' + recipient.name + '. WhatsApp ашылғанда мәтінді тексеріп, «Жіберу» батырмасын басыңыз.';
+  refreshOrderMessage();
   $('prepared').hidden = false;
   $('prepared').scrollIntoView({behavior:'smooth',block:'nearest'});
 });
@@ -315,27 +634,32 @@ async function copyText(field,statusId) {
   try {
     if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('Clipboard unavailable');
     await navigator.clipboard.writeText(field.value);
-    status.textContent = 'Мәтін көшірілді.';
+    status.textContent = t('Мәтін көшірілді.');
   } catch (error) {
     field.focus();
     field.select();
-    status.textContent = 'Мәтін таңдалды. Телефоныңыздағы «Көшіру» пәрменін басыңыз.';
+    status.textContent = t('Мәтін таңдалды. Телефоныңыздағы «Көшіру» пәрменін басыңыз.');
   }
 }
 $('copy').addEventListener('click',() => copyText($('message'),'copyStatus'));
-const saraiGreeting = 'Сәлеметсіз бе! SARAI арқылы Астанада жөндеу жұмыстары бойынша ақпарат алғым келеді.';
-['saraiWhatsApp','mobileWhatsApp'].forEach(id => {
-  $(id).href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(saraiGreeting);
-});
+function refreshContactLinks() {
+  const greeting = t('Сәлеметсіз бе! SARAI арқылы Астанада жөндеу жұмыстары бойынша ақпарат алғым келеді.');
+  ['saraiWhatsApp','mobileWhatsApp'].forEach(id => {
+    $(id).href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(greeting);
+  });
+}
+function refreshJoinMessage() {
+  $('joinText').value = [t('SARAI шебер ретінде тіркелу'),t('Қала: Астана'),t('Аты-жөні:') + ' ' + $('masterName').value.trim(),t('Мамандығы:') + ' ' + $('specialty').value.trim()].join('\n');
+  $('joinSendWhatsApp').href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent($('joinText').value);
+}
 $('joinForm').addEventListener('submit',event => {
   event.preventDefault();
   const name = $('masterName').value.trim();
   const specialty = $('specialty').value.trim();
-  $('masterName').setCustomValidity(name ? '' : 'Аты-жөніңізді енгізіңіз.');
-  $('specialty').setCustomValidity(specialty ? '' : 'Мамандығыңызды енгізіңіз.');
+  $('masterName').setCustomValidity(name ? '' : t('Аты-жөніңізді енгізіңіз.'));
+  $('specialty').setCustomValidity(specialty ? '' : t('Мамандығыңызды енгізіңіз.'));
   if (!$('joinForm').reportValidity()) return;
-  $('joinText').value = ['SARAI шебер ретінде тіркелу','Қала: Астана','Аты-жөні: ' + name,'Мамандығы: ' + specialty].join('\n');
-  $('joinSendWhatsApp').href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent($('joinText').value);
+  refreshJoinMessage();
   $('joinPrepared').hidden = false;
   $('joinCopyStatus').textContent = '';
 });
@@ -346,12 +670,24 @@ $('joinForm').addEventListener('input',() => {
   $('joinSendWhatsApp').removeAttribute('href');
 });
 $('joinCopy').addEventListener('click',() => copyText($('joinText'),'joinCopyStatus'));
+document.addEventListener('sarai:languagechange',() => {
+  calculate();
+  renderEstimate();
+  renderMaster();
+  refreshContactLinks();
+  if (!$('prepared').hidden) refreshOrderMessage();
+  if (!$('joinPrepared').hidden) refreshJoinMessage();
+  $('copyStatus').textContent = '';
+  $('joinCopyStatus').textContent = '';
+});
 calculate();
 syncServiceButtons();
+renderMaster();
+refreshContactLinks();
 </script>
 <script src="./master-model.js?v=2"></script>
-<script src="./masters.js?v=2"></script>
-<script src="./jobs.js?v=2"></script>
+<script src="./masters.js?v=3"></script>
+<script src="./jobs.js?v=3"></script>
 </body>
 </html>
 

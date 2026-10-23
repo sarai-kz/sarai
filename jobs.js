@@ -1,6 +1,7 @@
 (function () {
   'use strict';
   const byId = id => document.getElementById(id);
+  const t = SaraiI18n.text;
   const boardState = {jobs: [], status: 'loading'};
   const serviceNames = new Set(Array.from(byId('jobService').options).map(option => option.value).filter(Boolean));
   const startChoices = new Set(Array.from(byId('jobStart').options).map(option => option.value));
@@ -24,8 +25,8 @@
     const field = byId(id);
     const value = cleanText(field.value);
     let message = '';
-    if (value.length < minimum) message = label + ' кемінде ' + minimum + ' таңба болуы керек.';
-    if (containsContact(value)) message = 'Телефон мен сілтемені осы өріске қоспаңыз. Телефонды бөлек өріске енгізіңіз.';
+    if (value.length < minimum) message = t('{label} кемінде {count} таңба болуы керек.',{label:t(label),count:minimum});
+    if (containsContact(value)) message = t('Телефон мен сілтемені осы өріске қоспаңыз. Телефонды бөлек өріске енгізіңіз.');
     field.setCustomValidity(message);
     return value;
   }
@@ -35,32 +36,36 @@
     invalidateJobRequest();
   });
   byId('postJobForm').addEventListener('change', invalidateJobRequest);
-  byId('postJobForm').addEventListener('submit', event => {
-    event.preventDefault();
+  function prepareJobRequest() {
     const name = cleanText(byId('jobCustomer').value);
     const phone = normalizePhone(byId('jobPhone').value);
-    byId('jobCustomer').setCustomValidity(name ? '' : 'Атыңызды енгізіңіз.');
-    byId('jobPhone').setCustomValidity(phone ? '' : 'Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.');
+    byId('jobCustomer').setCustomValidity(name ? '' : t('Атыңызды енгізіңіз.'));
+    byId('jobPhone').setCustomValidity(phone ? '' : t('Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.'));
     const description = validatePublicText('jobDescription', 20, 'Жұмыс сипаттамасы');
     const district = validatePublicText('jobDistrict', 0, 'Аудан атауы');
-    if (!byId('postJobForm').reportValidity()) return;
+    if (!byId('postJobForm').reportValidity()) return false;
     const service = byId('jobService').value;
-    const title = (service + (district ? ' · ' + district : '')).slice(0, 100);
+    const title = (t(service) + (district ? ' · ' + district : '')).slice(0, 100);
     const area = byId('jobArea').value === '' ? null : Number(byId('jobArea').value);
     const budget = byId('jobBudget').value === '' ? null : Number(byId('jobBudget').value);
     const start = byId('jobStart').value;
-    const publicLines = ['Жұмыс: ' + title, 'Қала: Астана', 'Қызмет: ' + service];
-    if (district) publicLines.push('Аудан / тұрғын үй кешені: ' + district);
-    publicLines.push('Ауданы: ' + (area === null ? 'Нақтыланады' : formatNumber(area) + ' м²'));
-    publicLines.push('Жұмыс бюджеті: ' + (budget === null ? 'Келісімді' : money(budget)));
-    publicLines.push('Бастау мерзімі: ' + start, '', 'Сипаттама: ' + description);
-    const message = ['SARAI — жұмыс жариялау өтінімі', '', 'Байланыс мәліметтері (ашық тізімге қоспау):', 'Аты: ' + name, 'Телефон: ' + phone, '', 'Жариялауға арналған мәліметтер:', ...publicLines, '', 'Клиенттің аты мен телефонын жарияламай, тексергеннен кейін жұмыс тізіміне қосуды сұраймын.'].join('\n');
+    const publicLines = [t('Жұмыс:') + ' ' + title, t('Қала: Астана'), t('Қызмет:') + ' ' + t(service)];
+    if (district) publicLines.push(t('Аудан / тұрғын үй кешені:') + ' ' + district);
+    publicLines.push(t('Ауданы:') + ' ' + (area === null ? t('Нақтыланады') : formatNumber(area) + ' м²'));
+    publicLines.push(t('Жұмыс бюджеті:') + ' ' + (budget === null ? t('Келісімді') : money(budget)));
+    publicLines.push(t('Бастау мерзімі:') + ' ' + t(start), '', t('Сипаттама:') + ' ' + description);
+    const message = [t('SARAI — жұмыс жариялау өтінімі'), '', t('Байланыс мәліметтері (ашық тізімге қоспау):'), t('Аты:') + ' ' + name, t('Телефон:') + ' ' + phone, '', t('Жариялауға арналған мәліметтер:'), ...publicLines, '', t('Клиенттің аты мен телефонын жарияламай, тексергеннен кейін жұмыс тізіміне қосуды сұраймын.')].join('\n');
     byId('jobPreviewTitle').textContent = title;
-    byId('jobPreviewMeta').textContent = ['Астана', area === null ? '' : formatNumber(area) + ' м²', budget === null ? 'Бюджет: келісімді' : money(budget), start].filter(Boolean).join(' · ');
+    byId('jobPreviewMeta').textContent = ['Астана', area === null ? '' : formatNumber(area) + ' м²', budget === null ? t('Бюджет: келісімді') : money(budget), t(start)].filter(Boolean).join(' · ');
     byId('jobPreviewDescription').textContent = description;
     byId('jobMessage').value = message;
     byId('sendJobWhatsApp').href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(message);
     byId('jobPrepared').hidden = false;
+    return true;
+  }
+  byId('postJobForm').addEventListener('submit', event => {
+    event.preventDefault();
+    if (!prepareJobRequest()) return;
     byId('jobPreparedTitle').focus({preventScroll: true});
     byId('jobPrepared').scrollIntoView({behavior: 'smooth', block: 'nearest'});
   });
@@ -95,14 +100,14 @@
     card.id = 'job-' + job.id;
     const meta = document.createElement('div');
     meta.className = 'job-meta';
-    meta.append(textElement('span', 'pill', job.city), textElement('span', 'pill', job.service));
-    card.append(meta, textElement('h3', '', job.title), textElement('p', 'job-description', job.description));
+    meta.append(textElement('span', 'pill', job.city), textElement('span', 'pill', t(job.service)));
+    card.append(meta, textElement('h3', '', SaraiI18n.title(job)), textElement('p', 'job-description', job.description));
     const facts = document.createElement('dl');
     facts.className = 'job-facts';
-    const entries = [['Аудан / тұрғын үй кешені', job.district || 'Нақтыланады'], ['Ауданы', job.area === null ? 'Нақтыланады' : formatNumber(job.area) + ' м²'], ['Жұмыс бюджеті', job.budget === null ? 'Келісімді' : money(job.budget)], ['Бастау мерзімі', job.start]];
+    const entries = [['Аудан / тұрғын үй кешені', job.district || t('Нақтыланады')], ['Ауданы', job.area === null ? t('Нақтыланады') : formatNumber(job.area) + ' м²'], ['Жұмыс бюджеті', job.budget === null ? t('Келісімді') : money(job.budget)], ['Бастау мерзімі', t(job.start)]];
     entries.forEach(([label, value]) => {
       const item = document.createElement('div');
-      item.append(textElement('dt', '', label), textElement('dd', '', value));
+      item.append(textElement('dt', '', t(label)), textElement('dd', '', value));
       facts.append(item);
     });
     const dateParts = new Intl.DateTimeFormat('en-GB', {day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Almaty'}).formatToParts(new Date(job.published_at));
@@ -110,11 +115,11 @@
     card.append(facts, textElement('p', 'job-date', job.id + ' · ' + date));
     const actions = document.createElement('div');
     actions.className = 'actions';
-    const offer = textElement('a', 'btn whatsapp', 'Осы жұмысқа ұсыныс беру');
+    const offer = textElement('a', 'btn whatsapp', t('Осы жұмысқа ұсыныс беру'));
     offer.target = '_blank';
     offer.rel = 'noopener noreferrer';
-    offer.setAttribute('aria-label', job.title + ' жұмысына ұсыныс беру');
-    const message = ['Сәлеметсіз бе! SARAI сайтындағы жұмысқа ұсыныс бергім келеді.', 'Жұмыс нөмірі: ' + job.id, 'Жұмыс: ' + job.title, 'Қызмет: ' + job.service, '', 'Мамандығым: ', 'Ұсынысым: ', 'Бос уақытым: '].join('\n');
+    offer.setAttribute('aria-label', t('{title} жұмысына ұсыныс беру',{title:SaraiI18n.title(job)}));
+    const message = [t('Сәлеметсіз бе! SARAI сайтындағы жұмысқа ұсыныс бергім келеді.'), t('Жұмыс нөмірі:') + ' ' + job.id, t('Жұмыс:') + ' ' + SaraiI18n.title(job), t('Қызмет:') + ' ' + t(job.service), '', t('Мамандығым:') + ' ', t('Ұсынысым:') + ' ', t('Бос уақытым:') + ' '].join('\n');
     offer.href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(message);
     actions.append(offer);
     card.append(actions);
@@ -126,7 +131,7 @@
     const words = normalizedWords(byId('jobSearch').value).split(' ').filter(Boolean);
     const service = byId('jobServiceFilter').value;
     const jobs = boardState.jobs.filter(job => {
-      const text = normalizedWords([job.title, job.description, job.service, job.city, job.district].join(' '));
+      const text = normalizedWords([job.title, SaraiI18n.title(job), job.description, job.service, t(job.service), job.city, job.district].join(' '));
       return (service === 'all' || job.service === service) && words.every(word => text.includes(word));
     }).sort((a, b) => byId('jobSort').value === 'budget' ? (b.budget || 0) - (a.budget || 0) || Date.parse(b.published_at) - Date.parse(a.published_at) : Date.parse(b.published_at) - Date.parse(a.published_at));
     byId('jobResults').replaceChildren(...(ready ? jobs.map(renderJob) : []));
@@ -136,7 +141,7 @@
     byId('jobsNoMatch').hidden = !ready || boardState.jobs.length === 0 || jobs.length > 0;
     byId('jobBoard').setAttribute('aria-busy', String(boardState.status === 'loading'));
     byId('refreshJobs').disabled = boardState.status === 'loading';
-    byId('jobCount').textContent = ready ? jobs.length + ' жұмыс көрсетілді' + (jobs.length !== boardState.jobs.length ? ' / барлығы ' + boardState.jobs.length : '') : boardState.status === 'error' ? 'Жұмыстар жүктелмеді' : 'Жұмыстар жүктелуде…';
+    byId('jobCount').textContent = ready ? t('{count} жұмыс көрсетілді',{count:jobs.length}) + (jobs.length !== boardState.jobs.length ? ' / ' + t('барлығы {count}',{count:boardState.jobs.length}) : '') : t(boardState.status === 'error' ? 'Жұмыстар жүктелмеді' : 'Жұмыстар жүктелуде…');
   }
 
   async function loadJobs() {
@@ -173,6 +178,11 @@
     byId('jobServiceFilter').value = 'all';
     byId('jobSort').value = 'newest';
     renderJobs();
+  });
+  document.addEventListener('sarai:languagechange', () => {
+    renderJobs();
+    if (!byId('jobPrepared').hidden) prepareJobRequest();
+    byId('jobCopyStatus').textContent = '';
   });
   loadJobs();
 }());
