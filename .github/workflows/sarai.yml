@@ -1,0 +1,65 @@
+name: SARAI site and master management
+
+"on":
+  push:
+    branches: [main]
+  workflow_dispatch:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  manage:
+    if: >-
+      github.event_name == 'issues' &&
+      github.actor == github.repository_owner &&
+      github.event.issue.user.id == github.event.repository.owner.id &&
+      startsWith(github.event.issue.title, '[SARAI] Шебер')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Validate owner request and update masters
+        run: node manage-masters.cjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  deploy:
+    needs: manage
+    if: ${{ always() && (github.event_name != 'issues' || needs.manage.result == 'success') }}
+    runs-on: ubuntu-latest
+    concurrency:
+      group: sarai-pages
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/configure-pages@v5
+      - name: Prepare public site files
+        run: |
+          node -e "require('./master-model.js').feed(require('./masters.json'))"
+          mkdir -p _site/data
+          cp index.html jobs.js masters.js master-model.js masters.json admin.html admin.js _site/
+          cp data/jobs.json _site/data/
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Deploy site
+        id: deployment
+        uses: actions/deploy-pages@v4
