@@ -22,6 +22,7 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 .job-shortcuts{display:flex;justify-content:center;flex-wrap:wrap;gap:18px;margin-top:20px;font-size:15px}.job-shortcuts a{color:white;text-underline-offset:4px}.job-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.job-form-grid .wide{grid-column:1/-1}.field-optional{font-weight:400;color:#637681;font-size:13px}.job-steps{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 22px}.job-steps span{background:#eaf1f3;border-radius:30px;padding:8px 13px;font-size:13px}.job-list-controls{grid-template-columns:2fr 1fr 1fr}.job-card{display:flex;flex-direction:column;gap:14px;min-width:0}.job-card h3{font-size:21px;line-height:1.4;margin:0;overflow-wrap:anywhere}.job-meta{display:flex;flex-wrap:wrap;gap:8px}.job-description{margin:0;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}.job-facts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0}.job-facts div{min-width:0}.job-facts dt{font-size:12px;color:#637681}.job-facts dd{margin:3px 0 0;font-weight:650;overflow-wrap:anywhere}.job-card .actions{margin-top:auto;padding-top:6px}.job-card .actions .btn{width:100%}.job-date{font-size:12px;color:#637681;margin:0}.job-preview{padding:18px;background:#f5f8fa;border:1px solid #dce6e9;border-radius:12px;margin:16px 0}.job-preview h4{margin:0 0 12px}.job-preview p{margin:6px 0;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.privacy-note{border-left:3px solid var(--teal);padding:10px 12px;background:#e5f4f2;border-radius:0 8px 8px 0;font-size:14px;line-height:1.6}.job-feedback{padding:24px;text-align:center;line-height:1.65}.job-feedback h3{margin-top:0}.job-feedback p{margin:8px 0 18px}.jobs-section{background:#edf4f5;border-radius:24px}.job-required-note{font-size:13px;color:#637681}.job-public-note{font-size:14px;line-height:1.6;margin:20px 0 0;color:#526b76}
 @media(max-width:800px){.job-list-controls{grid-template-columns:1fr 1fr}.job-list-controls>div:first-child{grid-column:1/-1}}
 @media(max-width:620px){.job-form-grid,.job-list-controls{grid-template-columns:1fr}.job-form-grid .wide,.job-list-controls>div:first-child{grid-column:auto}.jobs-section{border-radius:0}.job-facts{gap:14px}.job-steps{gap:6px}.job-steps span{padding:7px 9px;font-size:12px}}
+.master-card{min-width:0}.master-card h3,.master-description{overflow-wrap:anywhere}.master-description{white-space:pre-wrap;line-height:1.6}.owner-link{display:inline-block;margin-top:14px;font-size:12px;text-underline-offset:3px;color:#c5d6dc}
 </style>
 </head>
 <body id="top">
@@ -120,18 +121,14 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 <div class="card search-panel">
 <div class="search-controls">
 <div><label for="masterSearch">Аты немесе жұмыс түрі бойынша іздеу</label><input id="masterSearch" type="search" placeholder="Мысалы: Нұрислам немесе левкас" aria-controls="masterResults" autocomplete="off"></div>
-<div><label for="masterTrade">Мамандығы</label><select id="masterTrade" aria-controls="masterResults"><option value="all">Барлық мамандық</option><option value="levkas">Левкас шебері</option><option value="electrician">Электрик</option><option value="plumber">Сантехник</option><option value="finisher">Әрлеу шебері</option></select></div>
+<div><label for="masterTrade">Мамандығы</label><select id="masterTrade" aria-controls="masterResults"><option value="all">Барлық мамандық</option></select></div>
 </div>
-<div class="search-summary"><p id="masterCount" role="status" aria-live="polite">1 шебер табылды</p><button class="btn alt small" id="clearMasterSearch" type="button">Сүзгіні тазарту</button></div>
+<div class="search-summary"><p id="masterCount" role="status" aria-live="polite">Шеберлер жүктелуде…</p><button class="btn alt small" id="clearMasterSearch" type="button">Сүзгіні тазарту</button></div>
 </div>
-<div class="grid" id="masterResults">
-<article class="card master-card" id="masterNurislam" data-trade="levkas">
-<span class="pill">Астана</span><h3>Нұрислам</h3><p class="master-trade">Левкас шебері</p><p>Левкас жұмыстары.</p>
-<a class="master-phone" href="tel:+77086475501" aria-label="Нұрисламға қоңырау шалу: +7 708 647 55 01">+7 708 647 55 01</a>
-<div class="actions master-actions"><a class="btn" href="tel:+77086475501">Қоңырау шалу</a><a class="btn whatsapp" id="masterWhatsApp" href="https://wa.me/77086475501" target="_blank" rel="noopener noreferrer" aria-label="Нұрисламға WhatsApp арқылы жазу">WhatsApp</a><a class="btn alt order-link" id="orderNurislam" href="#order">Осы шеберге өтінім</a></div>
-</article>
-</div>
-<div class="card empty-results" id="noMasters" hidden><p>Бұл іздеу бойынша шебер табылмады. Басқа сөзбен іздеңіз немесе мамандық сүзгісін өзгертіңіз.</p><button class="btn alt" id="clearEmptySearch" type="button">Барлық шеберді көрсету</button></div>
+<div class="grid" id="masterResults" aria-busy="true"></div>
+<div class="card empty-results" id="mastersLoading">Шеберлер жүктелуде…</div>
+<div class="card empty-results" id="mastersError" role="alert" hidden><p>Шеберлерді жүктеу мүмкін болмады. Интернет байланысын тексеріңіз.</p><button class="btn alt" id="retryMasters" type="button">Қайта жүктеу</button></div>
+<div class="card empty-results" id="noMasters" hidden><p id="noMastersText">Бұл іздеу бойынша шебер табылмады.</p><button class="btn alt" id="clearEmptySearch" type="button">Барлық шеберді көрсету</button></div>
 </section>
 <section class="wrap" id="order" aria-labelledby="orderTitle">
 <h2 id="orderTitle">Тапсырыс қалдыру</h2>
@@ -177,7 +174,7 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 </form>
 </section>
 </main>
-<footer>© 2026 SARAI · Астана<br>Үйіңіздің жаңа жолы<br><a href="tel:+77027935200">+7 702 793 52 00</a></footer>
+<footer>© 2026 SARAI · Астана<br>Үйіңіздің жаңа жолы<br><a href="tel:+77027935200">+7 702 793 52 00</a><br><a class="owner-link" href="./admin.html">Иесіне: шеберлерді басқару</a></footer>
 <div class="mobile-bar" aria-label="Жылдам әрекеттер"><a class="btn" href="#calculator">Жөндеуді есептеу</a><a class="btn whatsapp" id="mobileWhatsApp" href="https://wa.me/77027935200" target="_blank" rel="noopener noreferrer" aria-label="SARAI-ға WhatsApp арқылы жазу">WhatsApp</a></div>
 <script>
 'use strict';
@@ -188,7 +185,6 @@ const repairs = {
   '35000':{label:'Стандарт',rate:35000},
   '60000':{label:'Күрделі',rate:60000}
 };
-const master = {name:'Нұрислам',trade:'Левкас жұмыстары',phone:'77086475501'};
 const saraiContact = {name:'SARAI',phone:'77027935200'};
 const formatNumber = value => new Intl.NumberFormat('kk-KZ',{maximumFractionDigits:1}).format(value);
 const money = value => new Intl.NumberFormat('kk-KZ',{maximumFractionDigits:0}).format(value) + ' ₸';
@@ -228,7 +224,7 @@ function syncServiceButtons() {
 }
 function renderMaster() {
   $('selectedMasterPanel').hidden = !state.master;
-  $('selectedMasterLabel').textContent = state.master ? 'Таңдалған шебер: ' + state.master.name + ' · Левкас шебері' : '';
+  $('selectedMasterLabel').textContent = state.master ? 'Таңдалған шебер: ' + state.master.name + ' · ' + state.master.trade : '';
   $('orderHint').textContent = 'Өтінім алдымен SARAI-ға жіберіледі.' + (state.master ? ' Таңдаған шеберіңіз хабарламада көрсетіледі.' : ' WhatsApp ашылғанда «Жіберу» батырмасын басыңыз.');
 }
 function clearMaster() {
@@ -265,13 +261,14 @@ $('clearEstimate').addEventListener('click',() => {
   invalidatePrepared();
 });
 document.querySelectorAll('[data-service]').forEach(button => button.addEventListener('click',() => selectService(button.dataset.service,true)));
-$('orderNurislam').addEventListener('click',() => {
-  state.master = master;
-  $('service').value = master.trade;
+function selectMaster(record) {
+  state.master = record;
+  $('service').value = record.trade;
   renderMaster();
   syncServiceButtons();
   invalidatePrepared();
-});
+  showOrder();
+}
 $('clearSelectedMaster').addEventListener('click',clearMaster);
 $('service').addEventListener('change',() => selectService($('service').value,false));
 $('orderForm').addEventListener('input',() => {
@@ -325,28 +322,6 @@ async function copyText(field,statusId) {
   }
 }
 $('copy').addEventListener('click',() => copyText($('message'),'copyStatus'));
-const masterAliases = 'Нұрислам Нурислам левкас левкасшы левкасшик левкасщик 87086475501 77086475501 +7 708 647 55 01';
-function normalizeMasterSearch(value) {
-  const letters = {'ұ':'у','ү':'у','і':'и','ә':'а','ң':'н','ө':'о','ғ':'г','қ':'к','ё':'е'};
-  return value.toLowerCase().replace(/[ұүіәңөғқё]/g,letter => letters[letter]).replace(/[^a-zа-я0-9]/g,'');
-}
-function filterMasters() {
-  const query = normalizeMasterSearch($('masterSearch').value);
-  const matches = ($('masterTrade').value === 'all' || $('masterTrade').value === 'levkas') && normalizeMasterSearch(masterAliases).includes(query);
-  $('masterNurislam').hidden = !matches;
-  $('noMasters').hidden = matches;
-  $('masterCount').textContent = matches ? '1 шебер табылды' : '0 шебер табылды';
-}
-function clearSearch() {
-  $('masterSearch').value = '';
-  $('masterTrade').value = 'all';
-  filterMasters();
-}
-$('masterSearch').addEventListener('input',filterMasters);
-$('masterTrade').addEventListener('change',filterMasters);
-$('clearMasterSearch').addEventListener('click',clearSearch);
-$('clearEmptySearch').addEventListener('click',clearSearch);
-$('masterWhatsApp').href = 'https://wa.me/' + master.phone + '?text=' + encodeURIComponent('Сәлеметсіз бе, Нұрислам! SARAI сайтынан байланысыңызды таптым. Астанада левкас жұмыстары қажет.');
 const saraiGreeting = 'Сәлеметсіз бе! SARAI арқылы Астанада жөндеу жұмыстары бойынша ақпарат алғым келеді.';
 ['saraiWhatsApp','mobileWhatsApp'].forEach(id => {
   $(id).href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(saraiGreeting);
@@ -371,9 +346,10 @@ $('joinForm').addEventListener('input',() => {
 });
 $('joinCopy').addEventListener('click',() => copyText($('joinText'),'joinCopyStatus'));
 calculate();
-filterMasters();
 syncServiceButtons();
 </script>
+<script src="./master-model.js?v=1"></script>
+<script src="./masters.js?v=1"></script>
 <script src="./jobs.js?v=2"></script>
 </body>
 </html>

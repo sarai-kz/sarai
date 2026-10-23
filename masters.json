@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "masters": [
+    {
+      "id": "nurislam",
+      "name": "Нұрислам",
+      "city": "Астана",
+      "trade": "levkas",
+      "phone": "77086475501",
+      "description": "Левкас жұмыстары.",
+      "active": true,
+      "updated_at": "2026-10-23T00:00:00.000Z",
+      "last_request": null
+    }
+  ]
+}
