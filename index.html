@@ -24,9 +24,10 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 @media(max-width:620px){.job-form-grid,.job-list-controls{grid-template-columns:1fr}.job-form-grid .wide,.job-list-controls>div:first-child{grid-column:auto}.jobs-section{border-radius:0}.job-facts{gap:14px}.job-steps{gap:6px}.job-steps span{padding:7px 9px;font-size:12px}}
 .master-card{min-width:0}.master-card h3,.master-description{overflow-wrap:anywhere}.master-description{white-space:pre-wrap;line-height:1.6}.owner-link{display:inline-block;margin-top:14px;font-size:12px;text-underline-offset:3px;color:#c5d6dc}
 
-header{display:grid;grid-template-columns:auto minmax(0,1fr) auto}header nav{justify-content:center}
+header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto}header nav{justify-content:center}
 .language-switch{display:flex;gap:4px;align-items:center;padding:4px;border:1px solid #64828f;border-radius:12px;white-space:nowrap}.language-switch a{padding:8px 10px;border-radius:8px;color:white;text-decoration:none;font-size:13px;font-weight:750;line-height:1.2}.language-switch a[aria-current]{background:var(--gold);color:var(--ink)}
-@media(max-width:620px){header{grid-template-columns:1fr auto;text-align:left;gap:14px}header nav{grid-column:1/-1;grid-row:2;margin-top:0}.language-switch{grid-column:2;grid-row:1;justify-self:end}.brand{justify-self:start}}
+.site-share{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 13px;border:1px solid #64828f;border-radius:12px;background:transparent;color:white;font-weight:650;font-size:14px;white-space:nowrap}.site-share:hover{background:#ffffff14}.site-share svg{width:20px;height:20px;flex:none}.site-share-dialog{width:min(420px,calc(100% - 32px));max-height:calc(100% - 32px);overflow:auto;border:0;border-radius:18px;padding:24px;color:var(--ink);background:white;box-shadow:0 16px 64px #102b3940}.site-share-dialog::backdrop{background:#102b3980}.share-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.share-heading h2{font-size:22px;text-align:left;margin:0}.share-close{display:flex;align-items:center;justify-content:center;width:44px;height:44px;flex:none;border:0;border-radius:10px;background:#eaf1f3;color:var(--ink);font-size:26px}.site-share-dialog p{line-height:1.6}.site-share-dialog input{font-size:14px}.share-actions{display:grid;gap:10px;margin-top:18px}.share-actions .btn{width:100%}.site-share-dialog .copy-status{margin-bottom:0}
+@media(max-width:620px){header{grid-template-columns:auto minmax(0,1fr) auto;text-align:left;gap:10px}header nav{grid-column:1/-1;grid-row:2;margin-top:0}.language-switch{grid-column:2;grid-row:1;justify-self:end}.brand{justify-self:start;font-size:24px;letter-spacing:1.5px;gap:8px}.brand svg{width:21px;height:21px}.site-share{grid-column:3;grid-row:1;width:44px;height:44px;padding:10px}.site-share-label{display:none}.site-share-dialog{padding:20px}}
 </style>
 </head>
 <body id="top">
@@ -35,7 +36,15 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto}header nav{jus
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5.5 9v12h13V9M9.5 21v-7h5v7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>SARAI</a>
 <nav aria-label="Басты мәзір"><a href="#post-job">Жұмыс жариялау</a><a href="#jobs">Жұмыстар</a><a href="#calculator">Калькулятор</a><a href="#masters">Шеберлер</a><a href="#order">Тапсырыс</a><a href="#contact">Байланыс</a></nav>
 <div class="language-switch" role="navigation" aria-label="Тілді таңдау"><a href="?lang=kk" data-language="kk" lang="kk" hreflang="kk" aria-current="true">ҚАЗ</a><a href="?lang=ru" data-language="ru" lang="ru" hreflang="ru">РУС</a></div>
+<button class="site-share" id="shareSite" type="button" aria-label="Сайтпен бөлісу" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"/></svg><span class="site-share-label">Бөлісу</span></button>
 </header>
+<dialog class="site-share-dialog" id="siteShareDialog" aria-labelledby="siteShareTitle">
+<div class="share-heading"><h2 id="siteShareTitle">Сайтпен бөлісу</h2><button class="share-close" id="closeSiteShare" type="button" aria-label="Жабу">×</button></div>
+<p>Сайтты WhatsApp арқылы жіберіңіз немесе сілтемесін көшіріңіз.</p>
+<label for="siteShareUrl">Сайт сілтемесі</label><input id="siteShareUrl" type="url" readonly spellcheck="false" autocomplete="off" data-no-translate>
+<div class="share-actions"><a class="btn whatsapp" id="siteShareWhatsApp" target="_blank" rel="noopener noreferrer">WhatsApp арқылы бөлісу</a><button class="btn alt" id="copySiteShare" type="button">Сілтемені көшіру</button></div>
+<p class="copy-status" id="siteShareStatus" role="status" aria-live="polite"></p>
+</dialog>
 <div class="hero">
 <h1>Үйіңіздің жаңа жолы</h1>
 <p>Астанада жөндеу құнын алдын ала есептеп, қажетті жұмысқа шебер таңдаңыз.</p>
@@ -191,6 +200,16 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto}header nav{jus
     'SARAI басты бет': 'SARAI — главная',
     'Басты мәзір': 'Главное меню',
     'Тілді таңдау': 'Выбор языка',
+    'Бөлісу': 'Поделиться',
+    'Сайтпен бөлісу': 'Поделиться сайтом',
+    'Жабу': 'Закрыть',
+    'Сайтты WhatsApp арқылы жіберіңіз немесе сілтемесін көшіріңіз.': 'Отправьте сайт через WhatsApp или скопируйте ссылку.',
+    'Сайт сілтемесі': 'Ссылка на сайт',
+    'WhatsApp арқылы бөлісу': 'Поделиться в WhatsApp',
+    'Сілтемені көшіру': 'Скопировать ссылку',
+    'Сілтеме көшірілді. Енді оны хабарламаға қоя аласыз.': 'Ссылка скопирована. Теперь её можно вставить в сообщение.',
+    'Сілтеме таңдалды. Құрылғыңыздағы «Көшіру» пәрменін басыңыз.': 'Ссылка выделена. Нажмите «Копировать» на своём устройстве.',
+    'Астанада жөндеуге шебер табыңыз, жұмыс жариялаңыз және жөндеу құнын есептеңіз.': 'Найдите мастера в Астане, разместите заказ и рассчитайте примерную стоимость ремонта.',
     'Жұмыс жариялау': 'Разместить заказ',
     'Жұмыстар': 'Заказы',
     'Калькулятор': 'Калькулятор',
@@ -684,6 +703,63 @@ calculate();
 syncServiceButtons();
 renderMaster();
 refreshContactLinks();
+</script>
+<script>
+(function () {
+  'use strict';
+  const button = document.getElementById('shareSite');
+  const dialog = document.getElementById('siteShareDialog');
+  const linkField = document.getElementById('siteShareUrl');
+  const status = document.getElementById('siteShareStatus');
+  const t = SaraiI18n.text;
+  function shareData() {
+    // Share only the public homepage and selected language, never form data or URL parameters.
+    const url = new URL('https://sarai-kz.github.io/sarai/');
+    url.searchParams.set('lang', SaraiI18n.language);
+    return {title: 'SARAI', text: t('Астанада жөндеуге шебер табыңыз, жұмыс жариялаңыз және жөндеу құнын есептеңіз.'), url: url.href};
+  }
+  function refreshShare() {
+    const data = shareData();
+    linkField.value = data.url;
+    document.getElementById('siteShareWhatsApp').href = 'https://wa.me/?text=' + encodeURIComponent(data.text + '\n' + data.url);
+    status.textContent = '';
+    return data;
+  }
+  function openShareOptions() {
+    refreshShare();
+    if (!dialog.open) dialog.showModal();
+  }
+  button.addEventListener('click', async () => {
+    if (typeof navigator.share !== 'function') {
+      openShareOptions();
+      return;
+    }
+    button.disabled = true;
+    try {
+      // Keep the native share call in the user's click event so mobile browsers allow it.
+      await navigator.share(shareData());
+    } catch (error) {
+      if (!error || error.name !== 'AbortError') openShareOptions();
+    } finally {
+      button.disabled = false;
+    }
+  });
+  document.getElementById('closeSiteShare').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('close', () => button.focus());
+  document.getElementById('copySiteShare').addEventListener('click', async () => {
+    try {
+      if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') throw new Error('Clipboard unavailable');
+      await navigator.clipboard.writeText(linkField.value);
+      status.textContent = t('Сілтеме көшірілді. Енді оны хабарламаға қоя аласыз.');
+    } catch (error) {
+      linkField.focus();
+      linkField.select();
+      status.textContent = t('Сілтеме таңдалды. Құрылғыңыздағы «Көшіру» пәрменін басыңыз.');
+    }
+  });
+  document.addEventListener('sarai:languagechange', refreshShare);
+  refreshShare();
+}());
 </script>
 <script src="./master-model.js?v=2"></script>
 <script src="./masters.js?v=3"></script>
