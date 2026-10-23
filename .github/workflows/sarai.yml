@@ -54,7 +54,7 @@ jobs:
         run: |
           node -e "require('./master-model.js').feed(require('./masters.json'))"
           mkdir -p _site/data
-          cp index.html jobs.js masters.js master-model.js masters.json admin.html admin.js _site/
+          cp index.html sarai-logo.png jobs.js masters.js master-model.js masters.json admin.html admin.js _site/
           cp data/jobs.json _site/data/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4
