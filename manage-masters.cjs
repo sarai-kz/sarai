@@ -1,6 +1,6 @@
 'use strict';
 const model = require('./master-model.js');
-const BEGIN = '<!-- SARAI_MASTER_REQUEST_V1 -->\n```json\n';
+const BEGIN = '<!-- SARAI_MASTER_REQUEST_V2 -->\n```json\n';
 const END = '\n```\n<!-- END_SARAI_MASTER_REQUEST -->';
 
 function parseBody(body) {
@@ -14,14 +14,14 @@ function parseBody(body) {
 function applyRequest(source, payload, identity, now = new Date().toISOString()) {
   if (!identity || identity.ownerLogin !== 'sarai-kz' || identity.repository !== 'sarai-kz/sarai' || identity.actor !== identity.ownerLogin || !Number.isSafeInteger(identity.ownerId) || identity.ownerId <= 0 || identity.authorId !== identity.ownerId || identity.authorLogin !== identity.ownerLogin) throw new Error('Only the repository owner may publish masters');
   if (!Number.isSafeInteger(identity.issueNumber) || identity.issueNumber < 1) throw new Error('Invalid request number');
-  if (!payload || Object.keys(payload).some(key => !['version', 'action', 'expected_updated_at', 'master'].includes(key)) || payload.version !== 1 || payload.action !== 'upsert') throw new Error('Invalid request action');
+  if (!payload || Object.keys(payload).some(key => !['version', 'action', 'expected_updated_at', 'master'].includes(key)) || payload.version !== 2 || payload.action !== 'upsert') throw new Error('Invalid request action');
   const feed = model.feed(source);
   const nextMaster = model.master(payload.master);
   const index = feed.masters.findIndex(record => record.id === nextMaster.id);
   const current = index >= 0 ? feed.masters[index] : null;
   if (current && current.last_request === identity.issueNumber) return {feed, changed: false};
   if ((current ? current.updated_at : null) !== payload.expected_updated_at) throw new Error('The master changed. Reload the management page before editing again.');
-  if (feed.masters.some(record => record.id !== nextMaster.id && record.phone === nextMaster.phone && record.trade === nextMaster.trade && record.name.toLowerCase() === nextMaster.name.toLowerCase())) throw new Error('This master already exists');
+  if (feed.masters.some(record => record.id !== nextMaster.id && record.trade === nextMaster.trade && record.name.toLowerCase() === nextMaster.name.toLowerCase() && record.description === nextMaster.description)) throw new Error('This master already exists');
   if (!current && feed.masters.length >= 500) throw new Error('Master limit reached');
   const record = {...nextMaster, updated_at: now, last_request: identity.issueNumber};
   if (current) feed.masters[index] = record;
@@ -38,7 +38,7 @@ async function main() {
   if (event.action !== 'opened' || !issue.title.startsWith('[SARAI] Шебер')) throw new Error('Unsupported event');
   const payload = parseBody(issue.body);
   // Authorize and validate before making any authenticated API request.
-  applyRequest({version: 1, masters: []}, {...payload, expected_updated_at: null}, identity);
+  applyRequest({version: 2, masters: []}, {...payload, expected_updated_at: null}, identity);
   const token = process.env.GH_TOKEN;
   if (!token) throw new Error('Missing repository token');
   const url = 'https://api.github.com/repos/sarai-kz/sarai/contents/masters.json';
@@ -64,3 +64,4 @@ async function main() {
 
 module.exports = {parseBody, applyRequest};
 if (require.main === module) main().catch(error => {console.error(error.message); process.exitCode = 1;});
+

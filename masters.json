@@ -1,12 +1,11 @@
 {
-  "version": 1,
+  "version": 2,
   "masters": [
     {
       "id": "nurislam",
       "name": "Нұрислам",
       "city": "Астана",
       "trade": "levkas",
-      "phone": "77086475501",
       "description": "Левкас жұмыстары.",
       "active": true,
       "updated_at": "2026-10-23T09:14:28.024Z",
@@ -17,7 +16,6 @@
       "name": "Бақыт",
       "city": "Астана",
       "trade": "tile",
-      "phone": "77027935200",
       "description": "Кафель, гипсовая шпукатурка, левкас, ламинат.",
       "active": true,
       "updated_at": "2026-10-23T09:19:58.152Z",
@@ -25,3 +23,4 @@
     }
   ]
 }
+

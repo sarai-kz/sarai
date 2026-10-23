@@ -21,7 +21,7 @@
     $('editorTrade').append(option);
   });
   function core(record) {
-    return {id: record.id, name: record.name, city: record.city, trade: record.trade, phone: record.phone, description: record.description, active: record.active};
+    return {id: record.id, name: record.name, city: record.city, trade: record.trade, description: record.description, active: record.active};
   }
   function resetEditor() {
     editing = null;
@@ -36,7 +36,6 @@
     editing = record;
     $('editorName').value = record.name;
     $('editorTrade').value = record.trade;
-    $('editorPhone').value = model.formatPhone(record.phone);
     $('editorDescription').value = record.description;
     $('editorActive').checked = record.active;
     $('editorTitle').textContent = 'Шебер мәліметін өзгерту';
@@ -50,13 +49,13 @@
   function render() {
     const query = model.search($('adminMasterSearch').value).split(' ').filter(Boolean);
     const visibleRecords = records.filter(record => {
-      const haystack = model.search(record.name + ' ' + record.phone + ' ' + model.trades[record.trade].label);
+      const haystack = model.search(record.name + ' ' + model.trades[record.trade].label);
       return query.every(word => haystack.includes(word));
     });
     $('adminMasterList').replaceChildren(...visibleRecords.map(record => {
       const row = make('article', 'master-row', '');
       row.dataset.masterId = record.id;
-      row.append(make('span', record.active ? 'pill' : 'pill hidden', record.active ? 'Сайтта көрсетілген' : 'Жасырылған'), make('h3', '', record.name), make('p', '', model.trades[record.trade].label), make('p', 'phone', model.formatPhone(record.phone)));
+      row.append(make('span', record.active ? 'pill' : 'pill hidden', record.active ? 'Сайтта көрсетілген' : 'Жасырылған'), make('h3', '', record.name), make('p', '', model.trades[record.trade].label));
       if (record.description) row.append(make('p', 'desc', record.description));
       const actions = make('div', 'actions', '');
       const editButton = make('button', 'btn alt small', 'Өзгерту');
@@ -141,7 +140,7 @@
     event.preventDefault();
     if (!loaded || !$('masterEditor').reportValidity()) return;
     const id = editing ? editing.id : 'm-' + (typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10));
-    prepare({id, name: $('editorName').value, city: 'Астана', trade: $('editorTrade').value, phone: $('editorPhone').value, description: $('editorDescription').value, active: $('editorActive').checked}, editing ? editing.updated_at : null);
+    prepare({id, name: $('editorName').value, city: 'Астана', trade: $('editorTrade').value, description: $('editorDescription').value, active: $('editorActive').checked}, editing ? editing.updated_at : null);
   });
   $('masterEditor').addEventListener('input', () => {
     $('editorError').hidden = true;
@@ -153,3 +152,4 @@
   document.addEventListener('visibilitychange', () => {if (!document.hidden && pending) load(true);});
   load();
 }());
+

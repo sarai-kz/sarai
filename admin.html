@@ -11,7 +11,7 @@
 <body>
 <header><a class="brand" href="./">SARAI</a><a class="back" href="./#masters">Клиенттік сайтты ашу ↗</a></header>
 <main class="wrap">
-<div class="intro"><h1>Шеберлерді басқару</h1><p>Шеберді өзің қосып, байланысын өзгертіп немесе тізімнен жасыра аласың. Жарияланған мәлімет барлық клиентке көрінеді.</p></div>
+<div class="intro"><h1>Шеберлерді басқару</h1><p>Шеберді өзің қосып, мәліметін өзгертіп немесе тізімнен жасыра аласың. Клиент өтінімдері SARAI-ға келеді. Шебердің байланысын өз WhatsApp-ыңда сақта.</p></div>
 <div class="steps" aria-label="Жариялау қадамдары"><span>1. Мәліметті толтыр</span><span>2. GitHub-та «Create» бас</span><span>3. Шебер сайтта көрінеді</span></div>
 <p class="owner-note">Өзгерістерді тек <strong>sarai-kz</strong> GitHub аккаунты жариялай алады. «Жариялау» батырмасы дайын сұрауды GitHub-та ашады; сол жерде <strong>«Create»</strong> батырмасын басып растайсың. Жаңару әдетте бірнеше минут алады.</p>
 <div class="layout">
@@ -21,10 +21,9 @@
 <span class="pill">Астана</span>
 <label for="editorName">Аты-жөні *</label><input id="editorName" required minlength="2" maxlength="60" autocomplete="name" placeholder="Мысалы: Нұрислам">
 <label for="editorTrade">Мамандығы *</label><select id="editorTrade" required><option value="" disabled selected>Мамандықты таңда</option></select>
-<label for="editorPhone">Телефон / WhatsApp *</label><input id="editorPhone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx">
 <label for="editorDescription">Қысқаша сипаттама <span class="muted">(міндетті емес)</span></label><textarea id="editorDescription" maxlength="240" placeholder="Қандай жұмыстарды орындайды?"></textarea>
 <label class="check"><input type="checkbox" id="editorActive" checked><span>Шеберді клиенттерге көрсету</span></label>
-<p class="muted">Аты, мамандығы, сипаттамасы және көрсетілген телефон нөмірі клиенттік сайтта ашық көрінеді.</p>
+<p class="muted">Клиенттерге аты, мамандығы және сипаттамасы көрінеді. Байланыс нөмірлерін WhatsApp-та жеке сақта.</p>
 <div class="actions form-actions"><button class="btn primary" type="submit" id="publishMaster" disabled>GitHub-та жариялау</button><button class="btn alt" type="button" id="cancelMasterEdit" hidden>Өзгертуден бас тарту</button></div>
 <p class="status error" id="editorError" role="alert" hidden></p>
 </form>
@@ -33,7 +32,7 @@
 </section>
 <section class="card" aria-labelledby="listTitle">
 <div class="toolbar"><h2 id="listTitle">Шеберлер тізімі</h2><button class="btn alt small" id="reloadMasterList" type="button">Тізімді жаңарту</button></div>
-<div class="search"><label for="adminMasterSearch">Шеберді іздеу</label><input type="search" id="adminMasterSearch" placeholder="Аты немесе телефон нөмірі" autocomplete="off"></div>
+<div class="search"><label for="adminMasterSearch">Шеберді іздеу</label><input type="search" id="adminMasterSearch" placeholder="Аты немесе мамандығы" autocomplete="off"></div>
 <div class="stats"><span class="pill" id="activeMasterTotal">Жүктелуде…</span><span class="pill hidden" id="hiddenMasterTotal" hidden></span></div>
 <p class="list-loading" id="adminLoading">Шеберлер жүктелуде…</p>
 <p class="status error" id="adminLoadError" role="alert" hidden>Тізімді жүктеу мүмкін болмады. Интернетті тексеріп, «Тізімді жаңарту» батырмасын бас.</p>
@@ -42,8 +41,9 @@
 <div class="small-links"><a href="./#masters" target="_blank" rel="noopener noreferrer">Клиентке қалай көрінеді ↗</a><a href="https://github.com/sarai-kz/sarai/actions" target="_blank" rel="noopener noreferrer">Жариялану барысы ↗</a></div>
 </section>
 </div>
-<details class="card help"><summary>Қалай қосып көремін?</summary><p>Формаға WhatsApp-қа келген шебердің атын, мамандығын және телефонын енгіз. «GitHub-та жариялау» батырмасын бас. Ашылған GitHub бетінде sarai-kz аккаунтына кіріп, «Create» батырмасын бас. Осы бетке қайтып келіп, тізімнің жаңарғанын күт немесе «Тізімді жаңарту» батырмасын бас.</p><p>Мәліметін түзету үшін карточкадағы «Өзгерту» батырмасын бас. «Жасыру» шеберді клиенттер тізімінен алып тастайды; кейін «Қайта көрсету» арқылы қайтара аласың.</p></details>
+<details class="card help"><summary>Қалай қосып көремін?</summary><p>Формаға WhatsApp-қа келген шебердің атын, мамандығын және жұмыс сипаттамасын енгіз. Байланыс нөмірін өз WhatsApp-ыңда сақта. «GitHub-та жариялау» батырмасын бас. Ашылған GitHub бетінде sarai-kz аккаунтына кіріп, «Create» батырмасын бас. Осы бетке қайтып келіп, тізімнің жаңарғанын күт немесе «Тізімді жаңарту» батырмасын бас.</p><p>Мәліметін түзету үшін карточкадағы «Өзгерту» батырмасын бас. «Жасыру» шеберді клиенттер тізімінен алып тастайды; кейін «Қайта көрсету» арқылы қайтара аласың.</p></details>
 <p class="note">Форманы толтырудың өзі шеберді сайтқа қоспайды. Сұрау GitHub-та расталып, жариялау аяқталғаннан кейін ғана өзгеріс клиенттерге көрінеді.</p>
 </main>
-<script src="./master-model.js?v=1"></script><script src="./admin.js?v=1"></script>
+<script src="./master-model.js?v=2"></script><script src="./admin.js?v=2"></script>
 </body></html>
+

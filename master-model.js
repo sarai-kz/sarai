@@ -14,14 +14,10 @@
     renovation: {label: 'Пәтер жөндеу', service: 'Толық пәтер жөндеу'},
     other: {label: 'Басқа жөндеу жұмыстары', service: 'Басқа жөндеу'}
   });
-  const fields = ['id', 'name', 'city', 'trade', 'phone', 'description', 'active'];
-  function phone(value) {
-    if (typeof value !== 'string') return null;
-    let digits = value.replace(/\D/g, '');
-    if (digits.length === 10) digits = '7' + digits;
-    if (digits.length === 11 && digits[0] === '8') digits = '7' + digits.slice(1);
-    return /^77\d{9}$/.test(digits) ? digits : null;
-  }
+  const fields = ['id', 'name', 'city', 'trade', 'description', 'active'];
+  const phoneInText = /\+?[78](?:[\s().-]*\d){10}(?!\d)|(?:^|\D)7\d{2}[\s().-]*\d{3}[\s().-]*\d{2}[\s().-]*\d{2}(?!\d)/;
+  const otherContactInText = /(?:https?:\/\/|www\.|wa\.me\/|t\.me\/|[\w.+-]+@[\w.-]+\.[a-z]{2,})/i;
+  const containsContact = value => phoneInText.test(value) || otherContactInText.test(value);
   function text(value, min, max, label) {
     if (typeof value !== 'string') throw new Error(label + ' енгізіңіз.');
     const result = value.trim();
@@ -35,14 +31,13 @@
     const name = text(value.name, 2, 60, 'Аты-жөні');
     if (!/^[\p{L}\p{M}\d .’'()-]+$/u.test(name)) throw new Error('Аты-жөніне әріптер мен бос орын енгізіңіз.');
     if (value.city !== 'Астана' || !Object.prototype.hasOwnProperty.call(trades, value.trade)) throw new Error('Қала немесе мамандық дұрыс емес.');
-    const normalizedPhone = phone(value.phone);
-    if (!normalizedPhone) throw new Error('Қазақстанның ұялы нөмірін енгізіңіз: +7 7xx xxx xx xx.');
     const description = text(value.description, 0, 240, 'Қысқаша сипаттама');
+    if ([name, description].some(containsContact)) throw new Error('Байланыс нөмірлері мен сілтемелерді WhatsApp-та жеке сақтаңыз.');
     if (typeof value.active !== 'boolean') throw new Error('Көріну күйі дұрыс емес.');
-    return {id: value.id, name, city: 'Астана', trade: value.trade, phone: normalizedPhone, description, active: value.active};
+    return {id: value.id, name, city: 'Астана', trade: value.trade, description, active: value.active};
   }
   function feed(value) {
-    if (!value || value.version !== 1 || !Array.isArray(value.masters) || value.masters.length > 500) throw new Error('Шеберлер тізімін оқу мүмкін болмады.');
+    if (!value || value.version !== 2 || !Array.isArray(value.masters) || value.masters.length > 500) throw new Error('Шеберлер тізімін оқу мүмкін болмады.');
     const seen = new Set();
     const masters = value.masters.map(record => {
       if (!record || typeof record !== 'object' || Object.keys(record).some(key => ![...fields, 'updated_at', 'last_request'].includes(key))) throw new Error('Шебер жазбасы дұрыс емес.');
@@ -53,29 +48,26 @@
       if (record.last_request !== null && (!Number.isSafeInteger(record.last_request) || record.last_request <= 0)) throw new Error('Өзгеріс нөмірі дұрыс емес.');
       return {...core, updated_at: record.updated_at, last_request: record.last_request};
     });
-    return {version: 1, masters};
-  }
-  function formatPhone(value) {
-    const digits = phone(value);
-    return digits ? '+7 ' + digits.slice(1, 4) + ' ' + digits.slice(4, 7) + ' ' + digits.slice(7, 9) + ' ' + digits.slice(9) : '';
+    return {version: 2, masters};
   }
   function search(value) {
     const map = {'ұ':'у','ү':'у','і':'и','ә':'а','ң':'н','ө':'о','ғ':'г','қ':'к','ё':'е'};
     return value.toLowerCase().replace(/[ұүіәңөғқё]/g, letter => map[letter]).replace(/[^a-zа-я0-9]+/g, ' ').trim();
   }
   function request(record, expectedUpdatedAt) {
-    return {version: 1, action: 'upsert', expected_updated_at: expectedUpdatedAt, master: master(record)};
+    return {version: 2, action: 'upsert', expected_updated_at: expectedUpdatedAt, master: master(record)};
   }
   function issueUrl(payload) {
     const record = master(payload.master);
     const operation = record.active ? 'жариялау' : 'жасыру';
     const title = '[SARAI] Шеберді ' + operation + ': ' + record.name;
-    const body = 'Шеберлер тізімін жаңарту.\n\n[Басқаруға оралу](https://sarai-kz.github.io/sarai/admin.html)\n\n<!-- SARAI_MASTER_REQUEST_V1 -->\n```json\n' + JSON.stringify(payload) + '\n```\n<!-- END_SARAI_MASTER_REQUEST -->';
+    const body = 'Шеберлер тізімін жаңарту.\n\n[Басқаруға оралу](https://sarai-kz.github.io/sarai/admin.html)\n\n<!-- SARAI_MASTER_REQUEST_V2 -->\n```json\n' + JSON.stringify(payload) + '\n```\n<!-- END_SARAI_MASTER_REQUEST -->';
     const url = new URL('https://github.com/sarai-kz/sarai/issues/new');
     url.searchParams.set('title', title);
     url.searchParams.set('body', body);
     if (url.href.length > 7500) throw new Error('Сипаттаманы қысқартып көріңіз.');
     return url.href;
   }
-  return Object.freeze({trades, master, feed, phone, formatPhone, search, request, issueUrl});
+  return Object.freeze({trades, master, feed, search, request, issueUrl});
 }));
+

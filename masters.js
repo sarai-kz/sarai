@@ -20,22 +20,12 @@
     article.id = 'master-' + record.id;
     article.append(make('span', 'pill', record.city), make('h3', '', record.name), make('p', 'master-trade', trade.label));
     if (record.description) article.append(make('p', 'master-description', record.description));
-    const phone = make('a', 'master-phone', model.formatPhone(record.phone));
-    phone.href = 'tel:+' + record.phone;
-    phone.setAttribute('aria-label', record.name + ': ' + model.formatPhone(record.phone));
-    article.append(phone);
     const actions = make('div', 'actions master-actions', '');
-    const call = make('a', 'btn', 'Қоңырау шалу');
-    call.href = phone.href;
-    const whatsapp = make('a', 'btn whatsapp', 'WhatsApp');
-    whatsapp.href = 'https://wa.me/' + record.phone + '?text=' + encodeURIComponent('Сәлеметсіз бе, ' + record.name + '! SARAI сайтынан байланысыңызды таптым. Астанада ' + trade.service.toLowerCase() + ' қажет.');
-    whatsapp.target = '_blank';
-    whatsapp.rel = 'noopener noreferrer';
-    whatsapp.setAttribute('aria-label', record.name + ' шеберіне WhatsApp арқылы жазу');
-    const order = make('button', 'btn alt order-link', 'Осы шеберге өтінім');
+    const order = make('button', 'btn order-link', 'Осы шеберге өтінім');
     order.type = 'button';
-    order.addEventListener('click', () => selectMaster({id: record.id, name: record.name, trade: trade.service, phone: record.phone}));
-    actions.append(call, whatsapp, order);
+    order.setAttribute('aria-label', record.name + ' шеберіне SARAI арқылы өтінім беру');
+    order.addEventListener('click', () => selectMaster({id: record.id, name: record.name, trade: trade.service}));
+    actions.append(order);
     article.append(actions);
     return article;
   }
@@ -45,7 +35,7 @@
     const active = listState.records.filter(record => record.active);
     const records = active.filter(record => {
       const aliases = record.trade === 'levkas' ? 'левкасшы левкасшик левкасщик' : '';
-      const text = model.search([record.name, record.description, model.trades[record.trade].label, record.phone, '8' + record.phone.slice(1), aliases].join(' '));
+      const text = model.search([record.name, record.description, model.trades[record.trade].label, aliases].join(' '));
       return (trade === 'all' || record.trade === trade) && query.every(word => text.includes(word));
     });
     const ready = listState.status === 'ready';
@@ -86,3 +76,4 @@
   element('retryMasters').addEventListener('click', load);
   load();
 }());
+
