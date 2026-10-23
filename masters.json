@@ -11,6 +11,17 @@
       "active": true,
       "updated_at": "2026-10-23T09:14:28.024Z",
       "last_request": 1
+    },
+    {
+      "id": "m-c5ee16ac-329d-488c-bc94-9afc55804070",
+      "name": "Бақыт",
+      "city": "Астана",
+      "trade": "tile",
+      "phone": "77027935200",
+      "description": "Кафель, гипсовая шпукатурка, левкас, ламинат.",
+      "active": true,
+      "updated_at": "2026-10-23T09:19:58.152Z",
+      "last_request": 2
     }
   ]
 }
