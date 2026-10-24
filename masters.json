@@ -40,6 +40,16 @@
       "active": true,
       "updated_at": "2026-10-24T16:56:18.729Z",
       "last_request": 4
+    },
+    {
+      "id": "m-64d824c9-43e8-47cb-9ab1-951cb3af15e0",
+      "name": "Биржан",
+      "city": "Астана",
+      "trade": "carpenter",
+      "description": "Опыт работа 8 лет",
+      "active": true,
+      "updated_at": "2026-10-24T17:05:55.063Z",
+      "last_request": 5
     }
   ]
 }
