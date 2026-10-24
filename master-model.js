@@ -11,6 +11,7 @@
     tile: {label: 'Плитка шебері', service: 'Плитка жұмыстары'},
     painter: {label: 'Маляр', service: 'Маляр жұмыстары'},
     drywall: {label: 'Гипсокартон шебері', service: 'Гипсокартон'},
+    carpenter: {label: 'Ағаш ұстасы', service: 'Ағаш ұстасы'},
     renovation: {label: 'Пәтер жөндеу', service: 'Толық пәтер жөндеу'},
     other: {label: 'Басқа жөндеу жұмыстары', service: 'Басқа жөндеу'}
   });

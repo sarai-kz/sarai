@@ -75,6 +75,7 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}head
 <button class="service-option" type="button" data-service="Сантехник" aria-pressed="false">Сантехник</button>
 <button class="service-option" type="button" data-service="Маляр жұмыстары" aria-pressed="false">Маляр жұмыстары</button>
 <button class="service-option" type="button" data-service="Гипсокартон" aria-pressed="false">Гипсокартон</button>
+<button class="service-option" type="button" data-service="Ағаш ұстасы" aria-pressed="false">Ағаш ұстасы</button>
 <button class="service-option" type="button" data-service="Басқа жөндеу" aria-pressed="false">Басқа жұмыстар</button>
 </div>
 </section>
@@ -84,7 +85,7 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}head
 <div class="card search-panel">
 <div class="search-controls job-list-controls">
 <div><label for="jobSearch">Жұмысты іздеу</label><input id="jobSearch" type="search" maxlength="100" placeholder="Мысалы: плитка, левкас, пәтер" aria-controls="jobResults" autocomplete="off"></div>
-<div><label for="jobServiceFilter">Жұмыс түрі</label><select id="jobServiceFilter" aria-controls="jobResults"><option value="all">Барлық жұмыс</option><option value="Толық пәтер жөндеу">Толық пәтер жөндеу</option><option value="Левкас жұмыстары">Левкас жұмыстары</option><option value="Плитка жұмыстары">Плитка жұмыстары</option><option value="Электрик">Электрик</option><option value="Сантехник">Сантехник</option><option value="Маляр жұмыстары">Маляр жұмыстары</option><option value="Гипсокартон">Гипсокартон</option><option value="Әрлеу жұмыстары">Әрлеу жұмыстары</option><option value="Басқа жөндеу">Басқа жөндеу</option></select></div>
+<div><label for="jobServiceFilter">Жұмыс түрі</label><select id="jobServiceFilter" aria-controls="jobResults"><option value="all">Барлық жұмыс</option><option value="Толық пәтер жөндеу">Толық пәтер жөндеу</option><option value="Левкас жұмыстары">Левкас жұмыстары</option><option value="Плитка жұмыстары">Плитка жұмыстары</option><option value="Электрик">Электрик</option><option value="Сантехник">Сантехник</option><option value="Маляр жұмыстары">Маляр жұмыстары</option><option value="Гипсокартон">Гипсокартон</option><option value="Ағаш ұстасы">Ағаш ұстасы</option><option value="Әрлеу жұмыстары">Әрлеу жұмыстары</option><option value="Басқа жөндеу">Басқа жөндеу</option></select></div>
 <div><label for="jobSort">Реті</label><select id="jobSort" aria-controls="jobResults"><option value="newest">Жаңалары алдымен</option><option value="budget">Бюджеті жоғары</option></select></div>
 </div>
 <div class="search-summary"><p id="jobCount" role="status" aria-live="polite">Жұмыстар жүктелуде…</p><button class="btn alt small" id="refreshJobs" type="button">Жаңарту</button></div>
@@ -110,7 +111,7 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}head
 <div class="job-form-grid">
 <div><label for="jobCustomer">Атыңыз *</label><input id="jobCustomer" name="jobCustomer" required maxlength="80" autocomplete="name" placeholder="Атыңыз"></div>
 <div><label for="jobPhone">Телефоныңыз *</label><input id="jobPhone" name="jobPhone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx" aria-describedby="jobPrivacy"></div>
-<div><label for="jobService">Жұмыс түрі *</label><select id="jobService" name="jobService" required><option value="" disabled selected>Жұмыс түрін таңдаңыз</option><option value="Толық пәтер жөндеу">Толық пәтер жөндеу</option><option value="Левкас жұмыстары">Левкас жұмыстары</option><option value="Плитка жұмыстары">Плитка жұмыстары</option><option value="Электрик">Электрик</option><option value="Сантехник">Сантехник</option><option value="Маляр жұмыстары">Маляр жұмыстары</option><option value="Гипсокартон">Гипсокартон</option><option value="Әрлеу жұмыстары">Әрлеу жұмыстары</option><option value="Басқа жөндеу">Басқа жөндеу</option></select></div>
+<div><label for="jobService">Жұмыс түрі *</label><select id="jobService" name="jobService" required><option value="" disabled selected>Жұмыс түрін таңдаңыз</option><option value="Толық пәтер жөндеу">Толық пәтер жөндеу</option><option value="Левкас жұмыстары">Левкас жұмыстары</option><option value="Плитка жұмыстары">Плитка жұмыстары</option><option value="Электрик">Электрик</option><option value="Сантехник">Сантехник</option><option value="Маляр жұмыстары">Маляр жұмыстары</option><option value="Гипсокартон">Гипсокартон</option><option value="Ағаш ұстасы">Ағаш ұстасы</option><option value="Әрлеу жұмыстары">Әрлеу жұмыстары</option><option value="Басқа жөндеу">Басқа жөндеу</option></select></div>
 <div><label for="jobDistrict">Аудан немесе тұрғын үй кешені <span class="field-optional">(міндетті емес)</span></label><input id="jobDistrict" name="jobDistrict" maxlength="80" placeholder="Көше, үй және пәтер нөмірін жазбаңыз"></div>
 <div><label for="jobArea">Ауданы, м² <span class="field-optional">(міндетті емес)</span></label><input id="jobArea" name="jobArea" type="number" min="1" max="10000" step="0.1" inputmode="decimal" placeholder="Мысалы: 25"></div>
 <div><label for="jobBudget">Жұмыс бюджеті, ₸ <span class="field-optional">(міндетті емес)</span></label><input id="jobBudget" name="jobBudget" type="number" min="1" max="100000000" step="1" inputmode="numeric" placeholder="Белгісіз болса, бос қалдырыңыз"></div>
@@ -168,7 +169,7 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}head
 <div class="selection-panel" id="selectedMasterPanel" hidden><p id="selectedMasterLabel"></p><button class="btn alt small" id="clearSelectedMaster" type="button">Шеберді алып тастау</button></div>
 <label for="customer">Атыңыз</label><input id="customer" name="customer" required maxlength="80" autocomplete="name" placeholder="Атыңыз">
 <label for="phone">Байланыс телефоны</label><input id="phone" name="phone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx" aria-describedby="phoneHint"><p class="form-note" id="phoneHint">SARAI сізбен осы нөмір арқылы байланыса алады.</p>
-<label for="service">Қызмет түрі</label><select id="service" name="service" required><option value="" disabled selected>Қызметті таңдаңыз</option><option value="Толық пәтер жөндеу">Толық пәтер жөндеу</option><option value="Левкас жұмыстары">Левкас жұмыстары</option><option value="Плитка жұмыстары">Плитка жұмыстары</option><option value="Электрик">Электрик</option><option value="Сантехник">Сантехник</option><option value="Маляр жұмыстары">Маляр жұмыстары</option><option value="Гипсокартон">Гипсокартон</option><option value="Әрлеу жұмыстары">Әрлеу жұмыстары</option><option value="Басқа жөндеу">Басқа жөндеу</option></select>
+<label for="service">Қызмет түрі</label><select id="service" name="service" required><option value="" disabled selected>Қызметті таңдаңыз</option><option value="Толық пәтер жөндеу">Толық пәтер жөндеу</option><option value="Левкас жұмыстары">Левкас жұмыстары</option><option value="Плитка жұмыстары">Плитка жұмыстары</option><option value="Электрик">Электрик</option><option value="Сантехник">Сантехник</option><option value="Маляр жұмыстары">Маляр жұмыстары</option><option value="Гипсокартон">Гипсокартон</option><option value="Ағаш ұстасы">Ағаш ұстасы</option><option value="Әрлеу жұмыстары">Әрлеу жұмыстары</option><option value="Басқа жөндеу">Басқа жөндеу</option></select>
 <label for="details">Жұмыс сипаттамасы</label><textarea id="details" name="details" maxlength="1000" placeholder="Қандай жұмыс қажет, қашан бастағыңыз келеді?"></textarea>
 <div class="actions"><button class="btn" type="submit" id="prepareOrder">WhatsApp хабарламасын дайындау</button></div>
 <p class="form-note" id="orderHint">Өтінім алдымен SARAI-ға жіберіледі. Таңдаған шеберіңіз хабарламада көрсетіледі.</p>
@@ -258,6 +259,7 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}head
     'Сантехник': 'Сантехник',
     'Маляр жұмыстары': 'Малярные работы',
     'Гипсокартон': 'Гипсокартон',
+    'Ағаш ұстасы': 'Плотник',
     'Басқа жөндеу': 'Другие ремонтные работы',
     'Басқа жұмыстар': 'Другие работы',
     'Левкас жұмыстары': 'Левкасные работы',
@@ -788,7 +790,7 @@ refreshContactLinks();
   refreshShare();
 }());
 </script>
-<script src="./master-model.js?v=2"></script>
+<script src="./master-model.js?v=3"></script>
 <script src="./masters.js?v=3"></script>
 <script src="./jobs.js?v=4"></script>
 </body>
