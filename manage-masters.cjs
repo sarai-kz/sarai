@@ -32,6 +32,7 @@ function applyRequest(source, payload, identity, now = new Date().toISOString())
 async function main() {
   const fs = require('node:fs');
   const event = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'));
+  if (event.issue && event.issue.title.startsWith('[SARAI] Тапсырыс')) return require('./manage-jobs.cjs').main();
   const owner = event.repository.owner;
   const issue = event.issue;
   const identity = {ownerLogin: owner.login, ownerId: owner.id, authorId: issue.user.id, authorLogin: issue.user.login, actor: process.env.GITHUB_ACTOR, repository: process.env.GITHUB_REPOSITORY, issueNumber: issue.number};

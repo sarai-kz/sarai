@@ -3,6 +3,13 @@
   const model = SaraiMasters;
   const t = SaraiI18n.text;
   const element = id => document.getElementById(id);
+  const favoritesKey = 'sarai-favorite-masters-v1';
+  function readFavorites() {
+    try { const ids = JSON.parse(localStorage.getItem(favoritesKey) || '[]'); return new Set(Array.isArray(ids) ? ids.slice(0,500).filter(id => typeof id === 'string' && /^[a-z0-9][a-z0-9-]{2,63}$/.test(id)) : []); }
+    catch (error) { return new Set(); }
+  }
+  let favorites = readFavorites();
+  const aliases = {levkas:'левкасшы левкасшик левкасщик шпаклевка', electrician:'электрик электрика жарық розетка', plumber:'сантехник сантехника құбыр', tile:'плитка кафель плиточник', painter:'маляр бояу покраска', drywall:'гипсокартон', carpenter:'плотник столяр ағаш ұстасы', finisher:'отделка әрлеу', renovation:'ремонт жөндеу', other:'басқа другие'};
   const listState = {records: [], status: 'loading'};
   const make = (tag, className, text) => {
     const node = document.createElement(tag);
@@ -26,7 +33,17 @@
     order.type = 'button';
     order.setAttribute('aria-label', t('{name} шеберіне SARAI арқылы өтінім беру',{name:record.name}));
     order.addEventListener('click', () => selectMaster({id: record.id, name: record.name, trade: trade.service}));
-    actions.append(order);
+    const favorite = make('button', 'btn alt small favorite-button', t(favorites.has(record.id) ? '♥ Таңдаулыда' : '♡ Таңдаулыға'));
+    favorite.type = 'button'; favorite.id = 'favorite-' + record.id;
+    favorite.setAttribute('aria-pressed', String(favorites.has(record.id)));
+    favorite.setAttribute('aria-label', t('{name}: таңдаулыға сақтау', {name:record.name}));
+    favorite.addEventListener('click', () => {
+      if (favorites.has(record.id)) favorites.delete(record.id); else favorites.add(record.id);
+      try {localStorage.setItem(favoritesKey,JSON.stringify([...favorites])); element('favoritesStatus').textContent=t('Таңдаулылар осы браузерде сақталды.');}
+      catch(error){element('favoritesStatus').textContent=t('Сақтау қолжетімсіз. Таңдаулылар осы бетте ғана қалады.');}
+      render(); (document.getElementById(favorite.id) || element('masterFavorites')).focus();
+    });
+    actions.append(order, favorite);
     article.append(actions);
     return article;
   }
@@ -35,14 +52,14 @@
     const trade = element('masterTrade').value;
     const active = listState.records.filter(record => record.active);
     const records = active.filter(record => {
-      const aliases = record.trade === 'levkas' ? 'левкасшы левкасшик левкасщик' : '';
-      const text = model.search([record.name, record.description, t(record.description), model.trades[record.trade].label, t(model.trades[record.trade].label), aliases].join(' '));
-      return (trade === 'all' || record.trade === trade) && query.every(word => text.includes(word));
+
+      const text = model.search([record.name, record.description, t(record.description), model.trades[record.trade].label, t(model.trades[record.trade].label), aliases[record.trade] || ''].join(' '));
+      return (trade === 'all' || record.trade === trade) && (!element('masterFavorites').checked || favorites.has(record.id)) && query.every(word => text.includes(word));
     });
     const ready = listState.status === 'ready';
     element('masterResults').replaceChildren(...(ready ? records.map(card) : []));
     element('noMasters').hidden = !ready || records.length > 0;
-    element('noMastersText').textContent = t(active.length ? 'Бұл іздеу бойынша шебер табылмады. Басқа сөзбен іздеңіз немесе мамандық сүзгісін өзгертіңіз.' : 'Әзірге жарияланған шебер жоқ. Тапсырысыңызды SARAI-ға қалдыра аласыз.');
+    element('noMastersText').textContent = t(element('masterFavorites').checked && !favorites.size ? 'Алдымен шебер карточкасындағы жүрекшені басып сақтаңыз.' : active.length ? 'Бұл іздеу бойынша шебер табылмады. Басқа сөзбен іздеңіз немесе мамандық сүзгісін өзгертіңіз.' : 'Әзірге жарияланған шебер жоқ. Тапсырысыңызды SARAI-ға қалдыра аласыз.');
     element('mastersLoading').hidden = listState.status !== 'loading';
     element('mastersError').hidden = listState.status !== 'error';
     element('masterCount').textContent = ready ? t('{count} шебер табылды',{count:records.length}) : t(listState.status === 'error' ? 'Тізім жүктелмеді' : 'Шеберлер жүктелуде…');
@@ -68,8 +85,11 @@
   function clear() {
     element('masterSearch').value = '';
     element('masterTrade').value = 'all';
+    element('masterFavorites').checked = false;
     render();
   }
+  element('masterFavorites').addEventListener('change', render);
+  window.addEventListener('storage', event => {if (event.key === favoritesKey || event.key === null) {favorites = readFavorites(); render();}});
   element('masterSearch').addEventListener('input', render);
   element('masterTrade').addEventListener('change', render);
   element('clearMasterSearch').addEventListener('click', clear);

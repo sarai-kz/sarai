@@ -2,6 +2,8 @@
   'use strict';
   const byId = id => document.getElementById(id);
   const t = SaraiI18n.text;
+  const model = SaraiJobs;
+  const openJobs = () => boardState.jobs.filter(job => job.status === 'open');
   const boardState = {jobs: [], status: 'loading', hasLoaded: false, refreshing: false, refreshError: false};
   const jobIdPattern = /^SARAI-[A-Z0-9-]{3,60}$/i;
   const notificationReadKey = 'sarai-read-jobs-v1';
@@ -22,9 +24,6 @@
       window.localStorage.setItem(notificationReadKey, JSON.stringify({version: 1, read: Array.from(readJobIds)}));
     } catch (error) { /* Read state still works for this page when storage is unavailable. */ }
   }
-  const serviceNames = new Set(Array.from(byId('jobService').options).map(option => option.value).filter(Boolean));
-  const startChoices = new Set(Array.from(byId('jobStart').options).map(option => option.value));
-  const publicFields = new Set(['id', 'status', 'city', 'service', 'title', 'description', 'district', 'area', 'budget', 'start', 'published_at']);
   const phoneInPublicText = /\+?[78](?:[\s().-]*\d){10}(?!\d)|(?:^|\D)7\d{2}[\s().-]*\d{3}[\s().-]*\d{2}[\s().-]*\d{2}(?!\d)/;
   const otherContactInPublicText = /(?:https?:\/\/|www\.|wa\.me\/|t\.me\/|[\w.+-]+@[\w.-]+\.[a-z]{2,})/i;
   const containsContact = value => phoneInPublicText.test(value) || otherContactInPublicText.test(value);
@@ -73,7 +72,7 @@
     publicLines.push(t('Ауданы:') + ' ' + (area === null ? t('Нақтыланады') : formatNumber(area) + ' м²'));
     publicLines.push(t('Жұмыс бюджеті:') + ' ' + (budget === null ? t('Келісімді') : money(budget)));
     publicLines.push(t('Бастау мерзімі:') + ' ' + t(start), '', t('Сипаттама:') + ' ' + description);
-    const message = [t('SARAI — жұмыс жариялау өтінімі'), '', t('Байланыс мәліметтері (ашық тізімге қоспау):'), t('Аты:') + ' ' + name, t('Телефон:') + ' ' + phone, '', t('Жариялауға арналған мәліметтер:'), ...publicLines, '', t('Клиенттің аты мен телефонын жарияламай, тексергеннен кейін жұмыс тізіміне қосуды сұраймын.')].join('\n');
+    const message = [t('SARAI — жұмыс жариялау өтінімі'), t('Өтінім нөмірі:') + ' ' + requestReference('J'), '', t('Байланыс мәліметтері (ашық тізімге қоспау):'), t('Аты:') + ' ' + name, t('Телефон:') + ' ' + phone, '', t('Жариялауға арналған мәліметтер:'), ...publicLines, '', t('Клиенттің аты мен телефонын жарияламай, тексергеннен кейін жұмыс тізіміне қосуды сұраймын.')].join('\n');
     byId('jobPreviewTitle').textContent = title;
     byId('jobPreviewMeta').textContent = ['Астана', area === null ? '' : formatNumber(area) + ' м²', budget === null ? t('Бюджет: келісімді') : money(budget), t(start)].filter(Boolean).join(' · ');
     byId('jobPreviewDescription').textContent = description;
@@ -90,21 +89,6 @@
   });
   byId('copyJob').addEventListener('click', () => copyText(byId('jobMessage'), 'jobCopyStatus'));
 
-  function readPublicJob(raw) {
-    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('Invalid job record');
-    if (Object.keys(raw).some(key => !publicFields.has(key))) throw new Error('Unexpected public field');
-    if (typeof raw.id !== 'string' || !jobIdPattern.test(raw.id)) throw new Error('Invalid job ID');
-    if (!['open', 'closed'].includes(raw.status) || raw.city !== 'Астана' || !serviceNames.has(raw.service)) throw new Error('Invalid job category');
-    const title = typeof raw.title === 'string' ? cleanText(raw.title) : '';
-    const description = typeof raw.description === 'string' ? cleanText(raw.description) : '';
-    const district = raw.district == null ? '' : typeof raw.district === 'string' ? cleanText(raw.district) : null;
-    if (title.length < 8 || title.length > 100 || description.length < 20 || description.length > 1200 || district === null || district.length > 80) throw new Error('Invalid job text');
-    if ([title, description, district].some(containsContact)) throw new Error('Contact in public job');
-    if (raw.area != null && (typeof raw.area !== 'number' || !Number.isFinite(raw.area) || raw.area < 1 || raw.area > 10000)) throw new Error('Invalid job area');
-    if (raw.budget != null && (typeof raw.budget !== 'number' || !Number.isInteger(raw.budget) || raw.budget < 1 || raw.budget > 100000000)) throw new Error('Invalid job budget');
-    if (!startChoices.has(raw.start) || typeof raw.published_at !== 'string' || !/^\d{4}-\d{2}-\d{2}T/.test(raw.published_at) || !Number.isFinite(Date.parse(raw.published_at))) throw new Error('Invalid job date');
-    return {id: raw.id, status: raw.status, city: raw.city, service: raw.service, title, description, district, area: raw.area == null ? null : raw.area, budget: raw.budget == null ? null : raw.budget, start: raw.start, published_at: raw.published_at};
-  }
 
   function textElement(tag, className, text) {
     const element = document.createElement(tag);
@@ -120,7 +104,7 @@
   }
 
   function renderNotifications() {
-    const unread = boardState.hasLoaded ? boardState.jobs.filter(job => !readJobIds.has(job.id)).length : 0;
+    const unread = boardState.hasLoaded ? openJobs().filter(job => !readJobIds.has(job.id)).length : 0;
     const badge = byId('jobNotificationBadge');
     badge.hidden = unread === 0;
     badge.textContent = unread > 99 ? '99+' : String(unread);
@@ -133,14 +117,14 @@
     if (!boardState.hasLoaded) feedback = t(boardState.status === 'error' ? 'Хабарламаларды жүктеу мүмкін болмады. Қайта көріңіз.' : 'Хабарламалар жүктелуде…');
     else if (boardState.refreshing) feedback = t('Жаңа жұмыстар тексерілуде…');
     else if (boardState.refreshError) feedback = t('Жаңарту сәтсіз. Соңғы жүктелген жұмыстар көрсетіліп тұр.');
-    else if (!boardState.jobs.length) feedback = t('Әзірге жарияланған жұмыс жоқ');
+    else if (!openJobs().length) feedback = t('Әзірге жарияланған жұмыс жоқ');
     else feedback = t(unread ? 'Жаңа тапсырыс: {count}' : 'Барлық хабарлама қаралды.', {count: unread});
     byId('jobNotificationsFeedback').textContent = feedback;
     byId('readAllJobNotifications').disabled = unread === 0;
-    const listKey = JSON.stringify([SaraiI18n.language, boardState.jobs, Array.from(readJobIds).sort()]);
+    const listKey = JSON.stringify([SaraiI18n.language, openJobs(), Array.from(readJobIds).sort()]);
     if (notificationListKey === listKey) return;
     notificationListKey = listKey;
-    const jobs = boardState.jobs.slice().sort((a, b) => Number(!readJobIds.has(b.id)) - Number(!readJobIds.has(a.id)) || Date.parse(b.published_at) - Date.parse(a.published_at));
+    const jobs = openJobs().slice().sort((a, b) => Number(!readJobIds.has(b.id)) - Number(!readJobIds.has(a.id)) || Date.parse(b.published_at) - Date.parse(a.published_at));
     const items = jobs.map(job => {
       const item = document.createElement('li');
       const link = document.createElement('a');
@@ -166,6 +150,7 @@
     byId('jobSearch').value = '';
     byId('jobServiceFilter').value = 'all';
     byId('jobSort').value = 'newest';
+    byId('jobStatusFilter').value = 'open';
     renderJobs();
   }
 
@@ -183,7 +168,7 @@
     card.id = 'job-' + job.id;
     const meta = document.createElement('div');
     meta.className = 'job-meta';
-    meta.append(textElement('span', 'pill', job.city), textElement('span', 'pill', t(job.service)));
+    meta.append(textElement('span', 'pill', job.city), textElement('span', 'pill', t(job.service)), textElement('span', 'pill job-status-' + job.status, t(model.statuses[job.status])));
     card.append(meta, textElement('h3', '', SaraiI18n.title(job)), textElement('p', 'job-description', job.description));
     const facts = document.createElement('dl');
     facts.className = 'job-facts';
@@ -196,6 +181,7 @@
     card.append(facts, textElement('p', 'job-date', job.id + ' · ' + publicJobDate(job, false)));
     const actions = document.createElement('div');
     actions.className = 'actions';
+    if (job.status === 'open') {
     const offer = textElement('a', 'btn whatsapp', t('Осы жұмысқа ұсыныс беру'));
     offer.target = '_blank';
     offer.rel = 'noopener noreferrer';
@@ -203,6 +189,18 @@
     const message = [t('Сәлеметсіз бе! SARAI сайтындағы жұмысқа ұсыныс бергім келеді.'), t('Жұмыс нөмірі:') + ' ' + job.id, t('Жұмыс:') + ' ' + SaraiI18n.title(job), t('Қызмет:') + ' ' + t(job.service), '', t('Мамандығым:') + ' ', t('Ұсынысым:') + ' ', t('Бос уақытым:') + ' '].join('\n');
     offer.href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(message);
     actions.append(offer);
+    }
+    const share = textElement('button', 'btn alt small', t('Жұмыс сілтемесін көшіру'));
+    share.type = 'button';
+    const shared = textElement('p', 'copy-status', ''); shared.setAttribute('role', 'status');
+    const linkField = document.createElement('input'); linkField.readOnly = true; linkField.hidden = true; linkField.setAttribute('aria-label', t('Жұмыс сілтемесі'));
+    share.addEventListener('click', async () => {
+      const url = new URL('https://sarai-kz.github.io/sarai/'); url.searchParams.set('lang', SaraiI18n.language); url.hash = 'job-' + job.id;
+      try { await navigator.clipboard.writeText(url.href); shared.textContent = t('Жұмыс сілтемесі көшірілді.'); }
+      catch (error) { linkField.value = url.href; linkField.hidden = false; linkField.focus(); linkField.select(); shared.textContent = t('Сілтемені қолмен көшіріңіз.'); }
+    });
+    actions.append(share); card.append(linkField, shared);
+
     card.append(actions);
     return card;
   }
@@ -211,9 +209,10 @@
     const ready = boardState.status === 'ready';
     const words = normalizedWords(byId('jobSearch').value).split(' ').filter(Boolean);
     const service = byId('jobServiceFilter').value;
+    const status = byId('jobStatusFilter').value;
     const jobs = boardState.jobs.filter(job => {
       const text = normalizedWords([job.title, SaraiI18n.title(job), job.description, job.service, t(job.service), job.city, job.district].join(' '));
-      return (service === 'all' || job.service === service) && words.every(word => text.includes(word));
+      return (service === 'all' || job.service === service) && (status === 'all' || job.status === status) && words.every(word => text.includes(word));
     }).sort((a, b) => byId('jobSort').value === 'budget' ? (b.budget || 0) - (a.budget || 0) || Date.parse(b.published_at) - Date.parse(a.published_at) : Date.parse(b.published_at) - Date.parse(a.published_at));
     byId('jobResults').replaceChildren(...(ready ? jobs.map(renderJob) : []));
     byId('jobsLoading').hidden = boardState.status !== 'loading';
@@ -226,6 +225,7 @@
 
   async function loadJobs() {
     if (boardState.refreshing) return;
+    const firstLoad = !boardState.hasLoaded;
     boardState.refreshing = true;
     if (!boardState.hasLoaded) {
       boardState.status = 'loading';
@@ -240,16 +240,13 @@
       const response = await fetch('./data/jobs.json', {cache: 'no-store', signal: controller.signal});
       if (!response.ok) throw new Error('Job feed unavailable');
       const data = await response.json();
-      if (!data || data.version !== 1 || !Array.isArray(data.jobs) || data.jobs.length > 500) throw new Error('Invalid job feed');
-      const jobs = data.jobs.map(readPublicJob);
-      if (new Set(jobs.map(job => job.id)).size !== jobs.length) throw new Error('Duplicate job ID');
-      const openJobs = jobs.filter(job => job.status === 'open');
-      changed = changed || JSON.stringify(boardState.jobs) !== JSON.stringify(openJobs);
-      boardState.jobs = openJobs;
+      const jobs = model.feed(data).jobs;
+      changed = changed || JSON.stringify(boardState.jobs) !== JSON.stringify(jobs);
+      boardState.jobs = jobs;
       boardState.status = 'ready';
       boardState.hasLoaded = true;
       boardState.refreshError = false;
-      const activeIds = new Set(openJobs.map(job => job.id));
+      const activeIds = new Set(openJobs().map(job => job.id));
       const readCount = readJobIds.size;
       readJobIds = new Set(Array.from(readJobIds).filter(id => activeIds.has(id)));
       if (readJobIds.size !== readCount) saveReadJobIds();
@@ -265,11 +262,25 @@
       clearTimeout(timeout);
       boardState.refreshing = false;
       if (changed) renderJobs();
+      if (firstLoad && boardState.hasLoaded) revealLinkedJob();
       updateJobLoadState();
       renderNotifications();
     }
   }
 
+  function revealLinkedJob() {
+    if (!location.hash.startsWith('#job-') || !boardState.hasLoaded) return;
+    const id = location.hash.slice(5);
+    const job = boardState.jobs.find(item => item.id === id);
+    byId('jobLinkNotice').hidden = Boolean(job);
+    byId('jobLinkNotice').textContent = job ? '' : t('Бұл нөмірдегі жұмыс табылмады. Барлық жұмысты қарап көріңіз.');
+    if (!job) return;
+    byId('jobSearch').value = ''; byId('jobServiceFilter').value = 'all'; byId('jobStatusFilter').value = job.status;
+    renderJobs();
+    const card = byId('job-' + job.id); card.tabIndex = -1; card.focus({preventScroll:true}); card.scrollIntoView({block:'start'});
+  }
+  window.addEventListener('hashchange', revealLinkedJob);
+  byId('jobStatusFilter').addEventListener('change', renderJobs);
   byId('jobSearch').addEventListener('input', renderJobs);
   byId('jobServiceFilter').addEventListener('change', renderJobs);
   byId('jobSort').addEventListener('change', renderJobs);
@@ -288,7 +299,7 @@
   });
   byId('refreshJobNotifications').addEventListener('click', loadJobs);
   byId('readAllJobNotifications').addEventListener('click', () => {
-    boardState.jobs.forEach(job => readJobIds.add(job.id));
+    openJobs().forEach(job => readJobIds.add(job.id));
     saveReadJobIds();
     renderNotifications();
   });
@@ -296,7 +307,7 @@
     const link = event.target.closest('a[data-notification-job]');
     if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button) return;
     const id = link.dataset.notificationJob;
-    if (!boardState.jobs.some(job => job.id === id)) return;
+    if (!openJobs().some(job => job.id === id)) return;
     event.preventDefault();
     readJobIds.add(id);
     saveReadJobIds();

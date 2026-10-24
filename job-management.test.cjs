@@ -1,0 +1,36 @@
+'use strict';
+const assert = require('node:assert/strict');
+const model = require('./job-model.js');
+const {parseBody, applyRequest} = require('./manage-jobs.cjs');
+const original = require('./data/jobs.json');
+const owner = {ownerLogin:'sarai-kz',ownerId:345260523,authorLogin:'sarai-kz',authorId:345260523,actor:'sarai-kz',repository:'sarai-kz/sarai',issueNumber:100};
+const record = {id:'SARAI-TEST-CARPENTER',status:'open',city:'Астана',service:'Ағаш ұстасы',title:'Ағаш есікті жөндеу',description:'Есіктің ағаш жақтауын және тұтқасын жөндеу қажет.',district:'Есіл',area:null,budget:50000,start:'Келісеміз',published_at:'2026-10-24T12:00:00Z'};
+const snapshot=JSON.stringify(original);
+const payload=model.request(record,null);
+const encoded=new URL(model.issueUrl(payload));
+assert.equal(encoded.origin,'https://github.com');assert.equal(encoded.pathname,'/sarai-kz/sarai/issues/new');assert.deepEqual(parseBody(encoded.searchParams.get('body')),payload);
+const added=applyRequest(original,payload,owner,'2026-10-24T12:00:01Z');
+assert.equal(JSON.stringify(original),snapshot);assert.equal(added.feed.jobs.at(-1).status,'open');
+assert.equal(added.feed.jobs.length,original.jobs.length+1);
+for(const identity of [{...owner,actor:'visitor'},{...owner,authorId:1},{...owner,ownerId:1,authorId:1},{...owner,repository:'visitor/sarai'},{...owner,authorLogin:'visitor'}])assert.throws(()=>applyRequest(original,payload,identity),/Only the repository owner/);
+const progress=model.request({...record,status:'in_progress'},model.revision(added.feed.jobs.at(-1)));
+const started=applyRequest(added.feed,progress,{...owner,issueNumber:101},'2026-10-24T12:01:00Z');
+assert.equal(started.feed.jobs.at(-1).status,'in_progress');
+const finished=applyRequest(started.feed,model.request({...record,status:'closed'},model.revision(started.feed.jobs.at(-1))),{...owner,issueNumber:102},'2026-10-24T12:02:00Z');
+assert.equal(finished.feed.jobs.at(-1).status,'closed');
+assert.throws(()=>applyRequest(finished.feed,progress,{...owner,issueNumber:103}),/Reload the management page/);
+assert.equal(applyRequest(started.feed,progress,{...owner,issueNumber:101}).changed,false);
+assert.equal(applyRequest(finished.feed,model.request({...record,status:'open'},model.revision(finished.feed.jobs.at(-1))),{...owner,issueNumber:104}).feed.jobs.at(-1).status,'open');
+assert.throws(()=>applyRequest(original,{...payload,destination:'index.html'},owner),/Invalid request action/);
+assert.throws(()=>applyRequest(original,{...payload,job:{...record,phone:'77000000000'}},owner),/Unexpected request field/);
+for(const secret of ['+7 (700) 000-00-00','87000000000','700 000 00 00','https://example.com','wa.me/77000000000','client@example.com']){
+  for(const field of ['title','description','district'])assert.throws(()=>model.job({...record,[field]:'Ашық жұмыс сипаттамасы '+secret}),/телефоны/);
+}
+for(const change of [{status:'__proto__'},{service:'unknown'},{city:'Алматы'},{area:Infinity},{area:0},{budget:2.5},{budget:100000001},{published_at:'2026-10-24'},{updated_at:'bad'},{last_request:0},{client:'Жеке аты'}])assert.throws(()=>model.job({...record,...change}));
+assert.throws(()=>model.feed({version:1,jobs:[record,record]}),/қайталанған/);
+assert.throws(()=>parseBody('not a request'),/Missing/);
+assert.throws(()=>applyRequest(added.feed,model.request({...record,published_at:'2026-10-25T12:00:00Z'},model.revision(added.feed.jobs.at(-1))),{...owner,issueNumber:105}),/date must be preserved/);
+const long=model.request({...record,description:'Ағаш '.repeat(240).trim()},null);
+assert.deepEqual(parseBody(new URL(model.issueUrl(long)).searchParams.get('body')),long);
+assert.equal(model.feed(original).jobs.length,original.jobs.length);
+console.log('Job management checks passed: owner authorization, private contacts, lifecycle, stale updates, duplicate retries, legacy data and Unicode request encoding.');
