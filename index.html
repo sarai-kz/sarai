@@ -24,10 +24,11 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 @media(max-width:620px){.job-form-grid,.job-list-controls{grid-template-columns:1fr}.job-form-grid .wide,.job-list-controls>div:first-child{grid-column:auto}.jobs-section{border-radius:0}.job-facts{gap:14px}.job-steps{gap:6px}.job-steps span{padding:7px 9px;font-size:12px}}
 .master-card{min-width:0}.master-card h3,.master-description{overflow-wrap:anywhere}.master-description{white-space:pre-wrap;line-height:1.6}.owner-link{display:inline-block;margin-top:14px;font-size:12px;text-underline-offset:3px;color:#c5d6dc}
 
-header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto}header nav{justify-content:center}
+header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}header nav{justify-content:center}
 .language-switch{display:flex;gap:4px;align-items:center;padding:4px;border:1px solid #cbd9de;border-radius:12px;white-space:nowrap}.language-switch a{padding:8px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:750;line-height:1.2}.language-switch a[aria-current]{background:var(--gold);color:var(--ink)}
 .site-share{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 13px;border:1px solid #cbd9de;border-radius:12px;background:transparent;color:var(--ink);font-weight:650;font-size:14px;white-space:nowrap}.site-share:hover{background:#eaf1f3}.site-share svg{width:20px;height:20px;flex:none}.site-share-dialog{width:min(420px,calc(100% - 32px));max-height:calc(100% - 32px);overflow:auto;border:0;border-radius:18px;padding:24px;color:var(--ink);background:white;box-shadow:0 16px 64px #102b3940}.site-share-dialog::backdrop{background:#102b3980}.share-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.share-heading h2{font-size:22px;text-align:left;margin:0}.share-close{display:flex;align-items:center;justify-content:center;width:44px;height:44px;flex:none;border:0;border-radius:10px;background:#eaf1f3;color:var(--ink);font-size:26px}.site-share-dialog p{line-height:1.6}.site-share-dialog input{font-size:14px}.share-actions{display:grid;gap:10px;margin-top:18px}.share-actions .btn{width:100%}.site-share-dialog .copy-status{margin-bottom:0}
-@media(max-width:620px){header{grid-template-columns:minmax(0,1fr) auto auto;text-align:left;gap:8px;padding:12px}header nav{grid-column:1/-1;grid-row:2;margin-top:0}.language-switch{grid-column:2;grid-row:1;justify-self:end}.brand{justify-self:start;width:160px;min-width:0}.site-share{grid-column:3;grid-row:1;width:44px;height:44px;padding:10px}.site-share-label{display:none}.site-share-dialog{padding:20px}}
+.job-notifications{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;flex:none;border:1px solid #cbd9de;border-radius:12px;background:white;color:var(--ink)}.job-notifications:hover{background:#eaf1f3}.job-notifications svg{width:22px;height:22px}.notification-badge{position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;padding:0 5px;border:2px solid white;border-radius:12px;background:#b63f31;color:white;font-size:11px;font-weight:800;line-height:16px}.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}.job-notifications-dialog{width:min(520px,calc(100% - 32px))}.notifications-note{font-size:14px;color:#526b76}.notifications-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:18px 0 12px}.notification-feedback{padding:12px 14px;background:#eaf1f3;border-radius:10px;font-size:14px;line-height:1.5}.notification-list{list-style:none;padding:0;margin:16px 0;display:grid;gap:10px}.notification-job{display:block;padding:15px;border:1px solid #dce6e9;border-radius:12px;text-decoration:none;color:var(--ink);overflow-wrap:anywhere}.notification-job:hover{border-color:var(--teal)}.notification-job[data-unread="true"]{border-color:#86bdb6;background:#e5f4f2}.notification-job-title{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;font-size:16px;line-height:1.45}.notification-new{flex:none;border-radius:20px;padding:3px 8px;background:var(--teal);color:white;font-size:11px;font-weight:700}.notification-meta,.notification-date{display:block;margin-top:8px;font-size:13px;line-height:1.5;color:#526b76}.notification-date{font-size:12px}.notification-all{width:100%}.job-card{scroll-margin-top:24px}.job-refresh-notice{font-size:14px;color:#986116;line-height:1.6;margin:12px 0 0}
+@media(max-width:620px){header{grid-template-columns:minmax(0,1fr) auto auto;text-align:left;gap:8px;padding:12px}header nav{grid-column:1/-1;grid-row:3;margin-top:0}.language-switch{grid-column:2/4;grid-row:1;justify-self:end}.brand{grid-column:1;grid-row:1/3;justify-self:start;width:160px;min-width:0}.job-notifications{grid-column:2;grid-row:2;justify-self:end}.site-share{grid-column:3;grid-row:2;width:44px;height:44px;padding:10px}.site-share-label{display:none}.site-share-dialog{padding:20px}}
 </style>
 </head>
 <body id="top">
@@ -36,8 +37,18 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto}header na
 <svg class="brand-logo" viewBox="150 160 1340 650" width="192" height="93" aria-hidden="true" focusable="false"><image href="sarai-logo.png" width="1635" height="962"/></svg></a>
 <nav aria-label="Басты мәзір"><a href="#post-job">Жұмыс жариялау</a><a href="#jobs">Жұмыстар</a><a href="#calculator">Калькулятор</a><a href="#masters">Шеберлер</a><a href="#order">Тапсырыс</a><a href="#contact">Байланыс</a></nav>
 <div class="language-switch" role="navigation" aria-label="Тілді таңдау"><a href="?lang=kk" data-language="kk" lang="kk" hreflang="kk" aria-current="true">ҚАЗ</a><a href="?lang=ru" data-language="ru" lang="ru" hreflang="ru">РУС</a></div>
+<button class="job-notifications" id="jobNotifications" type="button" aria-label="Шеберге хабарламалар" aria-haspopup="dialog" title="Шеберге хабарламалар"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="notification-badge" id="jobNotificationBadge" aria-hidden="true" hidden></span></button>
 <button class="site-share" id="shareSite" type="button" aria-label="Сайтпен бөлісу" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"/></svg><span class="site-share-label">Бөлісу</span></button>
 </header>
+<span class="visually-hidden" id="jobNotificationStatus" role="status" aria-live="polite"></span>
+<dialog class="site-share-dialog job-notifications-dialog" id="jobNotificationsDialog" aria-labelledby="jobNotificationsTitle">
+<div class="share-heading"><h2 id="jobNotificationsTitle">Шеберге хабарламалар</h2><button class="share-close" id="closeJobNotifications" type="button" aria-label="Жабу">×</button></div>
+<p class="notifications-note">SARAI жариялаған жаңа жұмыстар осы жерде көрінеді. Сайт ашық тұрғанда тізім әр минут сайын жаңарады.</p>
+<div class="notifications-toolbar"><button class="btn alt small" id="readAllJobNotifications" type="button" disabled>Барлығын оқылды деп белгілеу</button><button class="btn alt small" id="refreshJobNotifications" type="button">Жаңарту</button></div>
+<p class="notification-feedback" id="jobNotificationsFeedback" role="status">Хабарламалар жүктелуде…</p>
+<ul class="notification-list" id="jobNotificationList" aria-label="Жарияланған жұмыстар"></ul>
+<a class="btn notification-all" id="viewAllNotificationJobs" href="#jobs">Барлық жұмысты көру</a>
+</dialog>
 <dialog class="site-share-dialog" id="siteShareDialog" aria-labelledby="siteShareTitle">
 <div class="share-heading"><h2 id="siteShareTitle">Сайтпен бөлісу</h2><button class="share-close" id="closeSiteShare" type="button" aria-label="Жабу">×</button></div>
 <p>Сайтты WhatsApp арқылы жіберіңіз немесе сілтемесін көшіріңіз.</p>
@@ -77,6 +88,7 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto}header na
 <div><label for="jobSort">Реті</label><select id="jobSort" aria-controls="jobResults"><option value="newest">Жаңалары алдымен</option><option value="budget">Бюджеті жоғары</option></select></div>
 </div>
 <div class="search-summary"><p id="jobCount" role="status" aria-live="polite">Жұмыстар жүктелуде…</p><button class="btn alt small" id="refreshJobs" type="button">Жаңарту</button></div>
+<p class="job-refresh-notice" id="jobRefreshNotice" role="status" hidden></p>
 </div>
 <div id="jobBoard" aria-busy="true">
 <div class="grid" id="jobResults"></div>
@@ -200,6 +212,21 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto}header na
     'SARAI басты бет': 'SARAI — главная',
     'Басты мәзір': 'Главное меню',
     'Тілді таңдау': 'Выбор языка',
+    'Шеберге хабарламалар': 'Уведомления для мастера',
+    'Шеберге хабарламалар: {count} жаңа тапсырыс': 'Уведомления для мастера: новых заказов — {count}',
+    'SARAI жариялаған жаңа жұмыстар осы жерде көрінеді. Сайт ашық тұрғанда тізім әр минут сайын жаңарады.': 'Здесь появляются новые заказы, опубликованные SARAI. Пока сайт открыт, список обновляется каждую минуту.',
+    'Барлығын оқылды деп белгілеу': 'Отметить всё прочитанным',
+    'Хабарламалар жүктелуде…': 'Уведомления загружаются…',
+    'Жарияланған жұмыстар': 'Опубликованные заказы',
+    'Барлық жұмысты көру': 'Посмотреть все заказы',
+    'Жаңа тапсырыс: {count}': 'Новых заказов: {count}',
+    'Жаңа тапсырыс жоқ.': 'Новых заказов нет.',
+    'Барлық хабарлама қаралды.': 'Все уведомления прочитаны.',
+    'Хабарламаларды жүктеу мүмкін болмады. Қайта көріңіз.': 'Не удалось загрузить уведомления. Попробуйте ещё раз.',
+    'Жаңа жұмыстар тексерілуде…': 'Проверяем новые заказы…',
+    'Жаңарту сәтсіз. Соңғы жүктелген жұмыстар көрсетіліп тұр.': 'Не удалось обновить список. Показаны заказы, загруженные ранее.',
+    'Жаңа': 'Новое',
+    '{title} жұмысын ашу': 'Открыть заказ «{title}»',
     'Бөлісу': 'Поделиться',
     'Сайтпен бөлісу': 'Поделиться сайтом',
     'Жабу': 'Закрыть',
@@ -763,7 +790,7 @@ refreshContactLinks();
 </script>
 <script src="./master-model.js?v=2"></script>
 <script src="./masters.js?v=3"></script>
-<script src="./jobs.js?v=3"></script>
+<script src="./jobs.js?v=4"></script>
 </body>
 </html>
 
