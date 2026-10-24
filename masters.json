@@ -30,6 +30,16 @@
       "active": true,
       "updated_at": "2026-10-23T18:13:00.590Z",
       "last_request": 3
+    },
+    {
+      "id": "m-fafe05fc-78e5-46a2-8204-1adab32d0fe0",
+      "name": "Мұхаммедали",
+      "city": "Астана",
+      "trade": "carpenter",
+      "description": "Жұмыс тәжірибесі 8 жыл",
+      "active": true,
+      "updated_at": "2026-10-24T16:56:18.729Z",
+      "last_request": 4
     }
   ]
 }
