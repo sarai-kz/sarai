@@ -50,6 +50,16 @@
       "active": true,
       "updated_at": "2026-10-24T17:05:55.063Z",
       "last_request": 5
+    },
+    {
+      "id": "m-ca696210-2d15-4d36-a2bb-d1811fc86138",
+      "name": "Кенжебек",
+      "city": "Астана",
+      "trade": "tile",
+      "description": "Опыт работы 10 лет",
+      "active": true,
+      "updated_at": "2026-10-24T17:28:54.424Z",
+      "last_request": 6
     }
   ]
 }
