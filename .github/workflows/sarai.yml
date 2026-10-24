@@ -16,7 +16,8 @@ jobs:
       github.event_name == 'issues' &&
       github.actor == github.repository_owner &&
       github.event.issue.user.id == github.event.repository.owner.id &&
-      startsWith(github.event.issue.title, '[SARAI] Шебер')
+      (startsWith(github.event.issue.title, '[SARAI] Шебер') ||
+       startsWith(github.event.issue.title, '[SARAI] Тапсырыс'))
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -25,7 +26,7 @@ jobs:
         with:
           ref: main
           persist-credentials: false
-      - name: Validate owner request and update masters
+      - name: Validate owner request and update public records
         run: node manage-masters.cjs
         env:
           GH_TOKEN: ${{ github.token }}
@@ -53,9 +54,17 @@ jobs:
       - name: Prepare public site files
         run: |
           node -e "require('./master-model.js').feed(require('./masters.json'))"
+          node master-management.test.cjs
+          if [ -f job-model.js ]; then
+            node job-management.test.cjs
+            node -e "require('./job-model.js').feed(require('./data/jobs.json'))"
+          fi
           mkdir -p _site/data
           cp index.html sarai-logo.png jobs.js masters.js master-model.js masters.json admin.html admin.js _site/
           cp data/jobs.json _site/data/
+          if [ -f job-model.js ]; then
+            cp job-model.js admin-jobs.html admin-jobs.js site-tools.js site-tools.css _site/
+          fi
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4
         with:
