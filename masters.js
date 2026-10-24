@@ -10,7 +10,8 @@
   }
   let favorites = readFavorites();
   const aliases = {levkas:'левкасшы левкасшик левкасщик шпаклевка', electrician:'электрик электрика жарық розетка', plumber:'сантехник сантехника құбыр', tile:'плитка кафель плиточник', painter:'маляр бояу покраска', drywall:'гипсокартон', carpenter:'плотник столяр ағаш ұстасы', finisher:'отделка әрлеу', renovation:'ремонт жөндеу', other:'басқа другие'};
-  const listState = {records: [], status: 'loading'};
+  const pageSize = 3;
+  const listState = {records: [], status: 'loading', page: 1};
   const make = (tag, className, text) => {
     const node = document.createElement(tag);
     node.className = className;
@@ -57,12 +58,20 @@
       return (trade === 'all' || record.trade === trade) && (!element('masterFavorites').checked || favorites.has(record.id)) && query.every(word => text.includes(word));
     });
     const ready = listState.status === 'ready';
-    element('masterResults').replaceChildren(...(ready ? records.map(card) : []));
+    const pageCount = Math.max(1, Math.ceil(records.length / pageSize));
+    listState.page = Math.max(1, Math.min(listState.page, pageCount));
+    const start = (listState.page - 1) * pageSize;
+    const pageRecords = records.slice(start, start + pageSize);
+    element('masterResults').replaceChildren(...(ready ? pageRecords.map(card) : []));
+    element('masterPagination').hidden = !ready || pageCount <= 1;
+    element('previousMasterPage').disabled = listState.page <= 1;
+    element('nextMasterPage').disabled = listState.page >= pageCount;
+    element('masterPageStatus').textContent = t('{page} / {pages} бет', {page: listState.page, pages: pageCount});
     element('noMasters').hidden = !ready || records.length > 0;
     element('noMastersText').textContent = t(element('masterFavorites').checked && !favorites.size ? 'Алдымен шебер карточкасындағы жүрекшені басып сақтаңыз.' : active.length ? 'Бұл іздеу бойынша шебер табылмады. Басқа сөзбен іздеңіз немесе мамандық сүзгісін өзгертіңіз.' : 'Әзірге жарияланған шебер жоқ. Тапсырысыңызды SARAI-ға қалдыра аласыз.');
     element('mastersLoading').hidden = listState.status !== 'loading';
     element('mastersError').hidden = listState.status !== 'error';
-    element('masterCount').textContent = ready ? t('{count} шебер табылды',{count:records.length}) : t(listState.status === 'error' ? 'Тізім жүктелмеді' : 'Шеберлер жүктелуде…');
+    element('masterCount').textContent = ready ? t(records.length > pageSize ? '{count} шебер табылды · {start}–{end} көрсетілді' : '{count} шебер табылды', {count: records.length, start: start + 1, end: start + pageRecords.length}) : t(listState.status === 'error' ? 'Тізім жүктелмеді' : 'Шеберлер жүктелуде…');
     element('masterResults').setAttribute('aria-busy', String(listState.status === 'loading'));
   }
   async function load() {
@@ -86,12 +95,26 @@
     element('masterSearch').value = '';
     element('masterTrade').value = 'all';
     element('masterFavorites').checked = false;
+    listState.page = 1;
     render();
   }
-  element('masterFavorites').addEventListener('change', render);
+  function filter() {
+    listState.page = 1;
+    render();
+  }
+  function changePage(direction) {
+    if (listState.status !== 'ready') return;
+    listState.page += direction;
+    render();
+    element('masterResults').focus({preventScroll: true});
+    element('masterResults').scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start'});
+  }
+  element('previousMasterPage').addEventListener('click', () => changePage(-1));
+  element('nextMasterPage').addEventListener('click', () => changePage(1));
+  element('masterFavorites').addEventListener('change', filter);
   window.addEventListener('storage', event => {if (event.key === favoritesKey || event.key === null) {favorites = readFavorites(); render();}});
-  element('masterSearch').addEventListener('input', render);
-  element('masterTrade').addEventListener('change', render);
+  element('masterSearch').addEventListener('input', filter);
+  element('masterTrade').addEventListener('change', filter);
   element('clearMasterSearch').addEventListener('click', clear);
   element('clearEmptySearch').addEventListener('click', clear);
   element('retryMasters').addEventListener('click', load);
@@ -103,4 +126,3 @@
   });
   load();
 }());
-

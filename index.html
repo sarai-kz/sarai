@@ -23,6 +23,7 @@ footer{text-align:center;padding:28px 18px;background:var(--ink);color:white;fon
 @media(max-width:800px){.job-list-controls{grid-template-columns:1fr 1fr}.job-list-controls>div:first-child{grid-column:1/-1}}
 @media(max-width:620px){.job-form-grid,.job-list-controls{grid-template-columns:1fr}.job-form-grid .wide,.job-list-controls>div:first-child{grid-column:auto}.jobs-section{border-radius:0}.job-facts{gap:14px}.job-steps{gap:6px}.job-steps span{padding:7px 9px;font-size:12px}}
 .master-card{min-width:0}.master-card h3,.master-description{overflow-wrap:anywhere}.master-description{white-space:pre-wrap;line-height:1.6}.owner-link{display:inline-block;margin-top:14px;font-size:12px;text-underline-offset:3px;color:#c5d6dc}
+.master-pagination{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:24px}.master-pagination .btn{min-height:44px}.master-page-status{font-size:14px;font-weight:650;white-space:nowrap}
 
 header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}header nav{justify-content:center}
 .language-switch{display:flex;gap:4px;align-items:center;padding:4px;border:1px solid #cbd9de;border-radius:12px;white-space:nowrap}.language-switch a{padding:8px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:750;line-height:1.2}.language-switch a[aria-current]{background:var(--gold);color:var(--ink)}
@@ -160,7 +161,8 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}head
 <label class="favorites-filter"><input type="checkbox" id="masterFavorites">Тек таңдаулы шеберлер</label><p class="muted" id="favoritesStatus" role="status" aria-live="polite">Таңдаулылар осы браузерде сақталады.</p>
 <div class="search-summary"><p id="masterCount" role="status" aria-live="polite">Шеберлер жүктелуде…</p><button class="btn alt small" id="clearMasterSearch" type="button">Сүзгіні тазарту</button></div>
 </div>
-<div class="grid" id="masterResults" aria-busy="true"></div>
+<div class="grid" id="masterResults" aria-busy="true" tabindex="-1" aria-labelledby="mastersTitle"></div>
+<nav class="master-pagination" id="masterPagination" aria-label="Шеберлер тізімінің беттері" hidden><button class="btn alt small" id="previousMasterPage" type="button" aria-controls="masterResults">← Алдыңғы</button><span class="master-page-status" id="masterPageStatus" role="status" aria-live="polite" aria-atomic="true"></span><button class="btn alt small" id="nextMasterPage" type="button" aria-controls="masterResults">Келесі →</button></nav>
 <div class="card empty-results" id="mastersLoading">Шеберлер жүктелуде…</div>
 <div class="card empty-results" id="mastersError" role="alert" hidden><p>Шеберлерді жүктеу мүмкін болмады. Интернет байланысын тексеріңіз.</p><button class="btn alt" id="retryMasters" type="button">Қайта жүктеу</button></div>
 <div class="card empty-results" id="noMasters" hidden><p id="noMastersText">Бұл іздеу бойынша шебер табылмады.</p><button class="btn alt" id="clearEmptySearch" type="button">Барлық шеберді көрсету</button></div>
@@ -228,6 +230,11 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}head
 (function (root) {
   'use strict';
   const ru = {
+    "Шеберлер тізімінің беттері": "Страницы списка мастеров",
+    "← Алдыңғы": "← Назад",
+    "Келесі →": "Далее →",
+    "{page} / {pages} бет": "Страница {page} из {pages}",
+    "{count} шебер табылды · {start}–{end} көрсетілді": "Найдено мастеров: {count} · показаны {start}–{end}",
     "SARAI мүмкіндіктері": "Возможности SARAI",
     "Клиентке": "Для клиента",
     "Шеберге": "Для мастера",
@@ -881,10 +888,9 @@ refreshContactLinks();
 }());
 </script>
 <script src="./master-model.js?v=3"></script>
-<script src="./masters.js?v=4"></script>
+<script src="./masters.js?v=5"></script>
 <script src="./job-model.js?v=1"></script>
 <script src="./jobs.js?v=5"></script>
 <script src="./site-tools.js?v=1"></script>
 </body>
 </html>
-
