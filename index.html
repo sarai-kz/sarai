@@ -31,6 +31,7 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}head
 .site-share{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 13px;border:1px solid #cbd9de;border-radius:12px;background:transparent;color:var(--ink);font-weight:650;font-size:14px;white-space:nowrap}.site-share:hover{background:#eaf1f3}.site-share svg{width:20px;height:20px;flex:none}.site-share-dialog{width:min(420px,calc(100% - 32px));max-height:calc(100% - 32px);overflow:auto;border:0;border-radius:18px;padding:24px;color:var(--ink);background:white;box-shadow:0 16px 64px #102b3940}.site-share-dialog::backdrop{background:#102b3980}.share-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.share-heading h2{font-size:22px;text-align:left;margin:0}.share-close{display:flex;align-items:center;justify-content:center;width:44px;height:44px;flex:none;border:0;border-radius:10px;background:#eaf1f3;color:var(--ink);font-size:26px}.site-share-dialog p{line-height:1.6}.site-share-dialog input{font-size:14px}.share-actions{display:grid;gap:10px;margin-top:18px}.share-actions .btn{width:100%}.site-share-dialog .copy-status{margin-bottom:0}
 .job-notifications{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;flex:none;border:1px solid #cbd9de;border-radius:12px;background:white;color:var(--ink)}.job-notifications:hover{background:#eaf1f3}.job-notifications svg{width:22px;height:22px}.notification-badge{position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;padding:0 5px;border:2px solid white;border-radius:12px;background:#b63f31;color:white;font-size:11px;font-weight:800;line-height:16px}.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}.job-notifications-dialog{width:min(520px,calc(100% - 32px))}.notifications-note{font-size:14px;color:#526b76}.notifications-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:18px 0 12px}.notification-feedback{padding:12px 14px;background:#eaf1f3;border-radius:10px;font-size:14px;line-height:1.5}.notification-list{list-style:none;padding:0;margin:16px 0;display:grid;gap:10px}.notification-job{display:block;padding:15px;border:1px solid #dce6e9;border-radius:12px;text-decoration:none;color:var(--ink);overflow-wrap:anywhere}.notification-job:hover{border-color:var(--teal)}.notification-job[data-unread="true"]{border-color:#86bdb6;background:#e5f4f2}.notification-job-title{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;font-size:16px;line-height:1.45}.notification-new{flex:none;border-radius:20px;padding:3px 8px;background:var(--teal);color:white;font-size:11px;font-weight:700}.notification-meta,.notification-date{display:block;margin-top:8px;font-size:13px;line-height:1.5;color:#526b76}.notification-date{font-size:12px}.notification-all{width:100%}.job-card{scroll-margin-top:24px}.job-refresh-notice{font-size:14px;color:#986116;line-height:1.6;margin:12px 0 0}
 @media(max-width:620px){header{grid-template-columns:minmax(0,1fr) auto auto;text-align:left;gap:8px;padding:12px}header nav{grid-column:1/-1;grid-row:3;margin-top:0}.language-switch{grid-column:2/4;grid-row:1;justify-self:end}.brand{grid-column:1;grid-row:1/3;justify-self:start;width:160px;min-width:0}.job-notifications{grid-column:2;grid-row:2;justify-self:end}.site-share{grid-column:3;grid-row:2;width:44px;height:44px;padding:10px}.site-share-label{display:none}.site-share-dialog{padding:20px}}
+.job-offer-dialog{width:min(600px,calc(100% - 24px));max-height:calc(100dvh - 24px)}.job-offer-dialog h2{overflow-wrap:anywhere}.job-offer-context{padding:12px 14px;background:#e5f4f2;border-radius:10px;overflow-wrap:anywhere}.job-offer-dialog .prepared textarea{min-height:260px}.job-offer-dialog .actions .btn{min-height:44px}.job-offer-dialog .job-form-grid{gap:0 14px}
 </style>
 <link rel="stylesheet" href="./site-tools.css?v=1">
 </head>
@@ -58,6 +59,30 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}head
 <label for="siteShareUrl">Сайт сілтемесі</label><input id="siteShareUrl" type="url" readonly spellcheck="false" autocomplete="off" data-no-translate>
 <div class="share-actions"><a class="btn whatsapp" id="siteShareWhatsApp" target="_blank" rel="noopener noreferrer">WhatsApp арқылы бөлісу</a><button class="btn alt" id="copySiteShare" type="button">Сілтемені көшіру</button></div>
 <p class="copy-status" id="siteShareStatus" role="status" aria-live="polite"></p>
+</dialog>
+<dialog class="site-share-dialog job-offer-dialog" id="jobOfferDialog" aria-labelledby="jobOfferTitle" aria-describedby="jobOfferContext">
+<div class="share-heading"><h2 id="jobOfferTitle">Жұмысқа ұсыныс беру</h2><button class="share-close" id="closeJobOffer" type="button" aria-label="Жабу">×</button></div>
+<p class="job-offer-context" id="jobOfferContext" data-no-translate></p>
+<p class="job-required-note">* — міндетті өрістер</p>
+<form id="jobOfferForm">
+<div class="job-form-grid">
+<div><label for="offerName">Аты-жөніңіз *</label><input id="offerName" name="offerName" required maxlength="80" autocomplete="name"></div>
+<div><label for="offerPhone">Телефоныңыз *</label><input id="offerPhone" name="offerPhone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx"></div>
+<div class="wide"><label for="offerSpecialty">Мамандығыңыз *</label><input id="offerSpecialty" name="offerSpecialty" required minlength="2" maxlength="120" placeholder="Мысалы: плитка шебері"></div>
+<div class="wide"><label for="offerProposal">Ұсынысыңыз және бағасы *</label><textarea id="offerProposal" name="offerProposal" required minlength="10" maxlength="800" rows="3" placeholder="Қандай жұмысты жасайсыз? Бағасын немесе қалай келісетініңізді жазыңыз."></textarea></div>
+<div class="wide"><label for="offerStart">Қашан бастай аласыз? *</label><input id="offerStart" name="offerStart" required minlength="2" maxlength="120" placeholder="Мысалы: ертең немесе 28 қазаннан бастап"></div>
+</div>
+<p class="privacy-note">Байланыс деректеріңіз бен ұсынысыңыз SARAI-ға WhatsApp арқылы жіберіледі. Ашық тізімде жарияланбайды.</p>
+<div class="actions"><button class="btn" type="submit">Ұсыныс хабарламасын дайындау</button></div>
+</form>
+<p class="privacy-note" id="offerUnavailable" role="alert" hidden></p>
+<div class="prepared" id="jobOfferPrepared" hidden>
+<h3 id="jobOfferPreparedTitle" tabindex="-1">Ұсыныс хабарламасы дайын</h3>
+<p class="form-note">Мәтінді тексеріңіз. WhatsApp ашылғанда «Жіберу» батырмасын басыңыз.</p>
+<label for="jobOfferMessage">SARAI-ға жіберілетін толық хабарлама</label><textarea id="jobOfferMessage" readonly rows="10" data-no-translate></textarea>
+<div class="actions"><a class="btn whatsapp" id="sendOfferWhatsApp" target="_blank" rel="noopener noreferrer">SARAI-ға WhatsApp-та жіберу</a><button class="btn alt" id="copyOffer" type="button">Мәтінді көшіру</button></div>
+<span class="copy-status" id="offerCopyStatus" role="status" aria-live="polite"></span>
+</div>
 </dialog>
 <div class="hero">
 <h1>Үйіңіздің жаңа жолы</h1>
@@ -535,6 +560,26 @@ header{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto}head
     'Мамандығым:': 'Моя специальность:',
     'Ұсынысым:': 'Моё предложение:',
     'Бос уақытым:': 'Когда могу начать:',
+    'Жұмысқа ұсыныс беру': 'Предложить услуги по заказу',
+    'Аты-жөніңіз *': 'Ваше имя *',
+    'Мамандығыңыз *': 'Ваша специальность *',
+    'Мысалы: плитка шебері': 'Например: плиточник',
+    'Ұсынысыңыз және бағасы *': 'Ваше предложение и цена *',
+    'Қандай жұмысты жасайсыз? Бағасын немесе қалай келісетініңізді жазыңыз.': 'Какие работы выполните? Укажите цену или как её согласуете.',
+    'Қашан бастай аласыз? *': 'Когда можете начать? *',
+    'Мысалы: ертең немесе 28 қазаннан бастап': 'Например: завтра или с 28 октября',
+    'Байланыс деректеріңіз бен ұсынысыңыз SARAI-ға WhatsApp арқылы жіберіледі. Ашық тізімде жарияланбайды.': 'Ваши контакты и предложение передаются SARAI через WhatsApp. В открытом списке они не публикуются.',
+    'Ұсыныс хабарламасын дайындау': 'Подготовить предложение',
+    'Ұсыныс хабарламасы дайын': 'Предложение готово',
+    'Мәтінді тексеріңіз. WhatsApp ашылғанда «Жіберу» батырмасын басыңыз.': 'Проверьте текст. Когда откроется WhatsApp, нажмите «Отправить».',
+    'SARAI — шебердің ұсынысы': 'SARAI — предложение мастера',
+    'Дереккөз: SARAI сайты': 'Источник: сайт SARAI',
+    'Жұмыс сілтемесі:': 'Ссылка на заказ:',
+    'Шебердің аты-жөні:': 'Имя мастера:',
+    'Шебердің телефоны:': 'Телефон мастера:',
+    'Ұсынысыңызды кемінде 10 таңбамен жазыңыз.': 'Опишите предложение: не менее 10 символов.',
+    'Қашан бастай алатыныңызды жазыңыз.': 'Укажите, когда можете начать.',
+    'Бұл жұмысқа қазір ұсыныс жіберу мүмкін емес. Тізімді жаңартыңыз.': 'Сейчас нельзя отправить предложение по этому заказу. Обновите список.',
     '{count} жұмыс көрсетілді': 'Показано заказов: {count}',
     'барлығы {count}': 'всего {count}',
     'Жұмыстар жүктелмеді': 'Не удалось загрузить заказы',
@@ -891,7 +936,8 @@ refreshContactLinks();
 <script src="./master-model.js?v=3"></script>
 <script src="./masters.js?v=5"></script>
 <script src="./job-model.js?v=1"></script>
-<script src="./jobs.js?v=5"></script>
+<script src="./jobs.js?v=6"></script>
 <script src="./site-tools.js?v=1"></script>
 </body>
 </html>
+

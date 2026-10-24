@@ -33,6 +33,116 @@
     return value.toLowerCase().replace(/[ұүіәңөғқё]/g, letter => letters[letter]).replace(/[^a-zа-я0-9]+/g, ' ').trim();
   };
 
+  const offerState = {job: null, trigger: null};
+  const offerFields = ['offerName', 'offerPhone', 'offerSpecialty', 'offerProposal', 'offerStart'];
+  function jobUrl(job) {
+    const url = new URL('https://sarai-kz.github.io/sarai/');
+    url.searchParams.set('lang', SaraiI18n.language);
+    url.hash = 'job-' + job.id;
+    return url.href;
+  }
+  function invalidateOffer() {
+    byId('jobOfferPrepared').hidden = true;
+    byId('sendOfferWhatsApp').removeAttribute('href');
+    byId('jobOfferMessage').value = '';
+    byId('offerCopyStatus').textContent = '';
+    byId('offerUnavailable').hidden = true;
+    byId('offerUnavailable').textContent = '';
+  }
+  function offerUnavailable() {
+    invalidateOffer();
+    byId('offerUnavailable').textContent = t('Бұл жұмысқа қазір ұсыныс жіберу мүмкін емес. Тізімді жаңартыңыз.');
+    byId('offerUnavailable').hidden = false;
+  }
+  function refreshOfferContext() {
+    const job = offerState.job;
+    if (job) byId('jobOfferContext').textContent = job.id + ' · ' + SaraiI18n.title(job);
+  }
+  function openOffer(job, trigger) {
+    offerState.job = job;
+    offerState.trigger = trigger;
+    byId('jobOfferForm').reset();
+    offerFields.forEach(id => byId(id).setCustomValidity(''));
+    invalidateOffer();
+    refreshOfferContext();
+    byId('jobOfferDialog').showModal();
+    byId('jobOfferDialog').scrollTop = 0;
+    byId('offerName').focus({preventScroll: true});
+  }
+  function currentOfferJob() {
+    return offerState.job && boardState.jobs.find(job => job.id === offerState.job.id && job.status === 'open');
+  }
+  function refreshOfferMessage() {
+    const job = currentOfferJob();
+    if (!job) return false;
+    offerState.job = job;
+    refreshOfferContext();
+    const message = [
+      t('SARAI — шебердің ұсынысы'),
+      t('Дереккөз: SARAI сайты'),
+      t('Жұмыс нөмірі:') + ' ' + job.id,
+      t('Жұмыс:') + ' ' + SaraiI18n.title(job),
+      t('Қала: Астана') + (job.district ? ' · ' + job.district : ''),
+      t('Қызмет:') + ' ' + t(job.service),
+      t('Жұмыс сілтемесі:') + ' ' + jobUrl(job),
+      '',
+      t('Шебердің аты-жөні:') + ' ' + cleanText(byId('offerName').value),
+      t('Шебердің телефоны:') + ' ' + normalizePhone(byId('offerPhone').value),
+      t('Мамандығым:') + ' ' + cleanText(byId('offerSpecialty').value),
+      t('Ұсынысым:') + ' ' + cleanText(byId('offerProposal').value),
+      t('Бос уақытым:') + ' ' + cleanText(byId('offerStart').value)
+    ].join('\n');
+    byId('jobOfferMessage').value = message;
+    byId('sendOfferWhatsApp').href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(message);
+    return true;
+  }
+  function validateOffer() {
+    byId('offerName').setCustomValidity(cleanText(byId('offerName').value) ? '' : t('Аты-жөніңізді енгізіңіз.'));
+    byId('offerPhone').setCustomValidity(normalizePhone(byId('offerPhone').value) ? '' : t('Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.'));
+    byId('offerSpecialty').setCustomValidity(cleanText(byId('offerSpecialty').value).length >= 2 ? '' : t('Мамандығыңызды енгізіңіз.'));
+    byId('offerProposal').setCustomValidity(cleanText(byId('offerProposal').value).length >= 10 ? '' : t('Ұсынысыңызды кемінде 10 таңбамен жазыңыз.'));
+    byId('offerStart').setCustomValidity(cleanText(byId('offerStart').value).length >= 2 ? '' : t('Қашан бастай алатыныңызды жазыңыз.'));
+    return byId('jobOfferForm').reportValidity();
+  }
+  byId('jobOfferForm').addEventListener('input', event => {
+    if (typeof event.target.setCustomValidity === 'function') event.target.setCustomValidity('');
+    invalidateOffer();
+  });
+  byId('jobOfferForm').addEventListener('change', invalidateOffer);
+  byId('jobOfferForm').addEventListener('submit', event => {
+    event.preventDefault();
+    invalidateOffer();
+    if (!validateOffer()) return;
+    if (!refreshOfferMessage()) {
+      offerUnavailable();
+      byId('offerUnavailable').scrollIntoView({block: 'nearest'});
+      return;
+    }
+    byId('jobOfferPrepared').hidden = false;
+    byId('jobOfferPreparedTitle').focus({preventScroll: true});
+    byId('jobOfferPrepared').scrollIntoView({behavior: 'smooth', block: 'start'});
+  });
+  byId('sendOfferWhatsApp').addEventListener('click', event => {
+    if (!validateOffer() || !refreshOfferMessage()) {
+      event.preventDefault();
+      if (!currentOfferJob()) offerUnavailable();
+      else invalidateOffer();
+    }
+  });
+  byId('copyOffer').addEventListener('click', () => {
+    if (!validateOffer()) return;
+    if (!refreshOfferMessage()) { offerUnavailable(); return; }
+    copyText(byId('jobOfferMessage'), 'offerCopyStatus');
+  });
+  byId('closeJobOffer').addEventListener('click', () => byId('jobOfferDialog').close());
+  byId('jobOfferDialog').addEventListener('close', () => {
+    if (offerState.trigger && offerState.trigger.isConnected) offerState.trigger.focus({preventScroll: true});
+    byId('jobOfferForm').reset();
+    invalidateOffer();
+    offerState.job = null;
+    offerState.trigger = null;
+  });
+
   function invalidateJobRequest() {
     byId('jobPrepared').hidden = true;
     byId('sendJobWhatsApp').removeAttribute('href');
@@ -182,12 +292,11 @@
     const actions = document.createElement('div');
     actions.className = 'actions';
     if (job.status === 'open') {
-    const offer = textElement('a', 'btn whatsapp', t('Осы жұмысқа ұсыныс беру'));
-    offer.target = '_blank';
-    offer.rel = 'noopener noreferrer';
+    const offer = textElement('button', 'btn whatsapp', t('Осы жұмысқа ұсыныс беру'));
+    offer.type = 'button';
+    offer.setAttribute('aria-haspopup', 'dialog');
     offer.setAttribute('aria-label', t('{title} жұмысына ұсыныс беру',{title:SaraiI18n.title(job)}));
-    const message = [t('Сәлеметсіз бе! SARAI сайтындағы жұмысқа ұсыныс бергім келеді.'), t('Жұмыс нөмірі:') + ' ' + job.id, t('Жұмыс:') + ' ' + SaraiI18n.title(job), t('Қызмет:') + ' ' + t(job.service), '', t('Мамандығым:') + ' ', t('Ұсынысым:') + ' ', t('Бос уақытым:') + ' '].join('\n');
-    offer.href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(message);
+    offer.addEventListener('click', () => openOffer(job, offer));
     actions.append(offer);
     }
     const share = textElement('button', 'btn alt small', t('Жұмыс сілтемесін көшіру'));
@@ -195,9 +304,9 @@
     const shared = textElement('p', 'copy-status', ''); shared.setAttribute('role', 'status');
     const linkField = document.createElement('input'); linkField.readOnly = true; linkField.hidden = true; linkField.setAttribute('aria-label', t('Жұмыс сілтемесі'));
     share.addEventListener('click', async () => {
-      const url = new URL('https://sarai-kz.github.io/sarai/'); url.searchParams.set('lang', SaraiI18n.language); url.hash = 'job-' + job.id;
-      try { await navigator.clipboard.writeText(url.href); shared.textContent = t('Жұмыс сілтемесі көшірілді.'); }
-      catch (error) { linkField.value = url.href; linkField.hidden = false; linkField.focus(); linkField.select(); shared.textContent = t('Сілтемені қолмен көшіріңіз.'); }
+      const url = jobUrl(job);
+      try { await navigator.clipboard.writeText(url); shared.textContent = t('Жұмыс сілтемесі көшірілді.'); }
+      catch (error) { linkField.value = url; linkField.hidden = false; linkField.focus(); linkField.select(); shared.textContent = t('Сілтемені қолмен көшіріңіз.'); }
     });
     actions.append(share); card.append(linkField, shared);
 
@@ -246,6 +355,16 @@
       boardState.status = 'ready';
       boardState.hasLoaded = true;
       boardState.refreshError = false;
+      if (offerState.job) {
+        const job = currentOfferJob();
+        if (!job) {
+          offerUnavailable();
+        } else {
+          offerState.job = job;
+          refreshOfferContext();
+          if (!byId('jobOfferPrepared').hidden) refreshOfferMessage();
+        }
+      }
       const activeIds = new Set(openJobs().map(job => job.id));
       const readCount = readJobIds.size;
       readJobIds = new Set(Array.from(readJobIds).filter(id => activeIds.has(id)));
@@ -334,6 +453,12 @@
     renderNotifications();
     if (!byId('jobPrepared').hidden) prepareJobRequest();
     byId('jobCopyStatus').textContent = '';
+    refreshOfferContext();
+    if (!byId('jobOfferPrepared').hidden) {
+      if (!refreshOfferMessage()) offerUnavailable();
+      else byId('offerCopyStatus').textContent = '';
+    }
+    if (!byId('offerUnavailable').hidden) byId('offerUnavailable').textContent = t('Бұл жұмысқа қазір ұсыныс жіберу мүмкін емес. Тізімді жаңартыңыз.');
   });
   window.addEventListener('storage', event => {
     if (event.key !== notificationReadKey && event.key !== null) return;
@@ -349,3 +474,4 @@
   }, 60000);
   loadJobs();
 }());
+
