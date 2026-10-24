@@ -24,9 +24,6 @@
       window.localStorage.setItem(notificationReadKey, JSON.stringify({version: 1, read: Array.from(readJobIds)}));
     } catch (error) { /* Read state still works for this page when storage is unavailable. */ }
   }
-  const phoneInPublicText = /\+?[78](?:[\s().-]*\d){10}(?!\d)|(?:^|\D)7\d{2}[\s().-]*\d{3}[\s().-]*\d{2}[\s().-]*\d{2}(?!\d)/;
-  const otherContactInPublicText = /(?:https?:\/\/|www\.|wa\.me\/|t\.me\/|[\w.+-]+@[\w.-]+\.[a-z]{2,})/i;
-  const containsContact = value => phoneInPublicText.test(value) || otherContactInPublicText.test(value);
   const cleanText = value => value.replace(/\r\n?/g, '\n').trim();
   const normalizedWords = value => {
     const letters = {'ұ':'у','ү':'у','і':'и','ә':'а','ң':'н','ө':'о','ғ':'г','қ':'к','ё':'е'};
@@ -142,63 +139,6 @@
     offerState.job = null;
     offerState.trigger = null;
   });
-
-  function invalidateJobRequest() {
-    byId('jobPrepared').hidden = true;
-    byId('sendJobWhatsApp').removeAttribute('href');
-    byId('jobCopyStatus').textContent = '';
-  }
-
-  function validatePublicText(id, minimum, label) {
-    const field = byId(id);
-    const value = cleanText(field.value);
-    let message = '';
-    if (value.length < minimum) message = t('{label} кемінде {count} таңба болуы керек.',{label:t(label),count:minimum});
-    if (containsContact(value)) message = t('Телефон мен сілтемені осы өріске қоспаңыз. Телефонды бөлек өріске енгізіңіз.');
-    field.setCustomValidity(message);
-    return value;
-  }
-
-  byId('postJobForm').addEventListener('input', event => {
-    if (typeof event.target.setCustomValidity === 'function') event.target.setCustomValidity('');
-    invalidateJobRequest();
-  });
-  byId('postJobForm').addEventListener('change', invalidateJobRequest);
-  function prepareJobRequest() {
-    const name = cleanText(byId('jobCustomer').value);
-    const phone = normalizePhone(byId('jobPhone').value);
-    byId('jobCustomer').setCustomValidity(name ? '' : t('Атыңызды енгізіңіз.'));
-    byId('jobPhone').setCustomValidity(phone ? '' : t('Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.'));
-    const description = validatePublicText('jobDescription', 20, 'Жұмыс сипаттамасы');
-    const district = validatePublicText('jobDistrict', 0, 'Аудан атауы');
-    if (!byId('postJobForm').reportValidity()) return false;
-    const service = byId('jobService').value;
-    const title = (t(service) + (district ? ' · ' + district : '')).slice(0, 100);
-    const area = byId('jobArea').value === '' ? null : Number(byId('jobArea').value);
-    const budget = byId('jobBudget').value === '' ? null : Number(byId('jobBudget').value);
-    const start = byId('jobStart').value;
-    const publicLines = [t('Жұмыс:') + ' ' + title, t('Қала: Астана'), t('Қызмет:') + ' ' + t(service)];
-    if (district) publicLines.push(t('Аудан / тұрғын үй кешені:') + ' ' + district);
-    publicLines.push(t('Ауданы:') + ' ' + (area === null ? t('Нақтыланады') : formatNumber(area) + ' м²'));
-    publicLines.push(t('Жұмыс бюджеті:') + ' ' + (budget === null ? t('Келісімді') : money(budget)));
-    publicLines.push(t('Бастау мерзімі:') + ' ' + t(start), '', t('Сипаттама:') + ' ' + description);
-    const message = [t('SARAI — жұмыс жариялау өтінімі'), t('Өтінім нөмірі:') + ' ' + requestReference('J'), '', t('Байланыс мәліметтері (ашық тізімге қоспау):'), t('Аты:') + ' ' + name, t('Телефон:') + ' ' + phone, '', t('Жариялауға арналған мәліметтер:'), ...publicLines, '', t('Клиенттің аты мен телефонын жарияламай, тексергеннен кейін жұмыс тізіміне қосуды сұраймын.')].join('\n');
-    byId('jobPreviewTitle').textContent = title;
-    byId('jobPreviewMeta').textContent = ['Астана', area === null ? '' : formatNumber(area) + ' м²', budget === null ? t('Бюджет: келісімді') : money(budget), t(start)].filter(Boolean).join(' · ');
-    byId('jobPreviewDescription').textContent = description;
-    byId('jobMessage').value = message;
-    byId('sendJobWhatsApp').href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent(message);
-    byId('jobPrepared').hidden = false;
-    return true;
-  }
-  byId('postJobForm').addEventListener('submit', event => {
-    event.preventDefault();
-    if (!prepareJobRequest()) return;
-    byId('jobPreparedTitle').focus({preventScroll: true});
-    byId('jobPrepared').scrollIntoView({behavior: 'smooth', block: 'nearest'});
-  });
-  byId('copyJob').addEventListener('click', () => copyText(byId('jobMessage'), 'jobCopyStatus'));
-
 
   function textElement(tag, className, text) {
     const element = document.createElement(tag);
@@ -451,8 +391,6 @@
   document.addEventListener('sarai:languagechange', () => {
     renderJobs();
     renderNotifications();
-    if (!byId('jobPrepared').hidden) prepareJobRequest();
-    byId('jobCopyStatus').textContent = '';
     refreshOfferContext();
     if (!byId('jobOfferPrepared').hidden) {
       if (!refreshOfferMessage()) offerUnavailable();
