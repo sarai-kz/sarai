@@ -1,8 +1,27 @@
-.role-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding-bottom:12px}.role-choices .card{display:flex;flex-direction:column;min-width:0;border:1px solid #dce6e9}.role-choices .pill{align-self:flex-start}.role-choices h2{text-align:left;margin:15px 0 10px;font-size:26px;line-height:1.3;overflow-wrap:anywhere}.role-choices p{flex:1;line-height:1.65;color:#526b76;margin:0;overflow-wrap:anywhere}.role-choices .actions{margin-top:18px}.role-choices .btn{font-size:14px}
-#masterResults{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:calc((100% - 24px)/3);align-items:stretch;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;padding:4px 0 12px}#masterResults .master-card{display:flex;flex-direction:column;scroll-snap-align:start}#masterResults .pill{align-self:flex-start}#masterResults .master-actions{margin-top:auto;padding-top:12px}
+.role-choices{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-bottom:12px}.role-choices .card{border:1px solid #dce6e9}.role-choices h2{text-align:left;margin:15px 0 10px;font-size:26px}.role-choices p{line-height:1.65;color:#526b76;margin:0}.role-choices .actions{margin-top:18px}.role-choices .btn{font-size:14px}
 .favorites-filter{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;line-height:1.5}.favorites-filter input{width:18px;height:18px;margin:0;accent-color:#087f76}.favorite-button[aria-pressed="true"]{background:#e5f4f2;color:#08766c}.favorite-button{min-height:44px}
 .job-status-in_progress{background:#fff0d5;color:#875000}.job-status-closed{background:#edf0f2;color:#526b76}.job-list-controls{grid-template-columns:2fr 1fr 1fr 1fr}.job-card .copy-status:empty{display:none}.job-card .copy-status{margin:0}.job-card .actions{padding-top:12px}
 .process-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.process-grid h3{font-size:20px;line-height:1.45}.process-grid p{font-size:15px;line-height:1.7;color:#526b76}.step-number{display:grid;place-items:center;border-radius:12px;background:#ffca69;color:#17313b;width:40px;height:40px;font-size:22px;font-weight:800}.faq-section{padding-top:12px}.faq-section details{margin-bottom:12px;border:1px solid #dce6e9}.faq-section summary{cursor:pointer;font-weight:650;line-height:1.6}.faq-section details p{line-height:1.7;color:#526b76;margin-bottom:0}.back-to-top{position:fixed;right:16px;bottom:24px;padding:10px 14px;background:white;border:1px solid #cbd9de;border-radius:24px;box-shadow:0 4px 16px #102b391a;font-size:13px;text-decoration:none;z-index:19}.connection-note{padding:14px 20px;background:#fff0d5;color:#754600;text-align:center;line-height:1.6}
 @media(max-width:900px){.job-list-controls{grid-template-columns:1fr 1fr}.job-list-controls>div:first-child{grid-column:1/-1}}
-@media(max-width:620px){.process-grid,.job-list-controls{grid-template-columns:1fr}.role-choices{gap:12px}.role-choices .card{padding:14px 12px}.role-choices h2{font-size:clamp(17px,4.6vw,20px);margin:12px 0 8px}.role-choices p{font-size:13px;line-height:1.55}.role-choices .actions{display:grid;gap:8px;margin-top:14px}.role-choices .actions .btn{display:grid;align-items:center;min-width:0;min-height:44px;padding:9px 6px;font-size:12px;line-height:1.4}.role-choices .pill{font-size:11px;padding:5px 8px}#masterResults{grid-auto-columns:calc((100% - 12px)/2)}#masterResults .master-card{position:relative;padding:12px}#masterResults .pill{margin-right:40px;margin-bottom:14px}#masterResults h3{font-size:18px}#masterResults .master-trade{font-size:14px}#masterResults .master-description{font-size:13px}#masterResults .master-actions{display:block}#masterResults .order-link{width:100%;font-size:12px}#masterResults .favorite-button{position:absolute;top:8px;right:8px}.job-list-controls>div:first-child{grid-column:auto}.back-to-top{bottom:calc(90px + env(safe-area-inset-bottom,0px))}.faq-section details{padding:18px}.process-grid .card{padding:20px}}
+@media(max-width:620px){.role-choices,.process-grid,.job-list-controls{grid-template-columns:1fr}.role-choices h2{font-size:23px}.role-choices{gap:12px}.role-choices .actions .btn{min-width:0}.job-list-controls>div:first-child{grid-column:auto}.back-to-top{bottom:calc(90px + env(safe-area-inset-bottom,0px))}.faq-section details{padding:18px}.process-grid .card{padding:20px}}
+
+/* Keep the PDF layout side by side on small screens. */
+@media(max-width:620px){
+.role-choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.role-choices .card{display:flex;flex-direction:column;min-width:0;padding:14px 12px}
+.role-choices .pill{align-self:flex-start;font-size:11px;padding:5px 8px}
+.role-choices h2{font-size:clamp(17px,4.6vw,20px);line-height:1.3;margin:12px 0 8px;overflow-wrap:anywhere}
+.role-choices p{flex:1;font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+.role-choices .actions{display:grid;gap:8px;margin-top:14px}
+.role-choices .actions .btn{display:grid;align-items:center;min-width:0;min-height:44px;padding:9px 6px;font-size:12px;line-height:1.4}
+#masterResults{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:calc((100% - 12px)/2);align-items:stretch;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;padding:4px 0 12px}
+#masterResults .master-card{display:flex;flex-direction:column;position:relative;padding:12px;scroll-snap-align:start}
+#masterResults .pill{align-self:flex-start;margin-right:40px;margin-bottom:14px}
+#masterResults h3{font-size:18px}
+#masterResults .master-trade{font-size:14px}
+#masterResults .master-description{font-size:13px}
+#masterResults .master-actions{display:block;margin-top:auto;padding-top:12px}
+#masterResults .order-link{width:100%;font-size:12px}
+#masterResults .favorite-button{position:absolute;top:8px;right:8px}
+}
 
