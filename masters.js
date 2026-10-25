@@ -97,15 +97,18 @@
     element('masterFavorites').checked = false;
     listState.page = 1;
     render();
+    element('masterResults').scrollLeft = 0;
   }
   function filter() {
     listState.page = 1;
     render();
+    element('masterResults').scrollLeft = 0;
   }
   function changePage(direction) {
     if (listState.status !== 'ready') return;
     listState.page += direction;
     render();
+    element('masterResults').scrollLeft = 0;
     element('masterResults').focus({preventScroll: true});
     element('masterResults').scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start'});
   }
@@ -126,3 +129,4 @@
   });
   load();
 }());
+
