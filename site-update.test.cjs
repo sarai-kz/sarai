@@ -10,6 +10,59 @@ const oldVersion = '1'.repeat(64);
 const newVersion = '2'.repeat(64);
 const flush = () => new Promise(resolve => setImmediate(resolve));
 
+async function checkSharing() {
+  const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+  const script = Array.from(html.matchAll(/<script>([\s\S]*?)<\/script>/g), match => match[1]).find(code => code.includes('function shareData()'));
+  assert.ok(script, 'test the actual native, WhatsApp and copy-link handlers');
+  for (const native of [true, false]) {
+    for (const version of [oldVersion, newVersion, 'development', undefined]) {
+      const elements = new Map();
+      const events = {};
+      const shared = [];
+      const copied = [];
+      const element = id => {
+        if (!elements.has(id)) elements.set(id, {
+          events: {}, open: false, value: '', href: '',
+          addEventListener(event, handler) { this.events[event] = handler; },
+          showModal() { this.open = true; }, close() { this.open = false; }, focus() {}, select() {}
+        });
+        return elements.get(id);
+      };
+      const context = {
+        URL, Date: {now: () => 1793090000000},
+        location: {href: 'https://sarai-kz.github.io/sarai/?lang=ru&phone=private&name=private&_sarai_update=old#order'},
+        SaraiI18n: {language: 'ru', text: value => value},
+        navigator: {clipboard: {writeText: async value => copied.push(value)}},
+        document: {
+          getElementById: element,
+          querySelector: () => version === undefined ? null : {content: version},
+          addEventListener: (name, handler) => { events[name] = handler; }
+        }
+      };
+      if (native) context.navigator.share = async data => { shared.push(data); };
+      vm.runInNewContext(script, context);
+      const expectedVersion = [oldVersion, newVersion].includes(version) ? version : '1793090000000';
+      for (const language of ['ru', 'kk']) {
+        context.SaraiI18n.language = language;
+        events['sarai:languagechange']();
+        const expected = 'https://sarai-kz.github.io/sarai/?lang=' + language + '&v=' + expectedVersion;
+        assert.equal(element('siteShareUrl').value, expected);
+        const whatsapp = new URL(element('siteShareWhatsApp').href);
+        assert.equal(whatsapp.origin, 'https://wa.me');
+        assert.ok(whatsapp.searchParams.get('text').endsWith('\n' + expected));
+        assert.ok(!whatsapp.searchParams.get('text').includes('private'));
+        await element('shareSite').events.click();
+        if (native) assert.equal(shared.at(-1).url, expected);
+        else assert.equal(element('siteShareDialog').open, true);
+        await element('copySiteShare').events.click();
+        assert.equal(copied.at(-1), expected);
+        assert.equal(new URL(expected).hash, '');
+        assert.deepEqual(Array.from(new URL(expected).searchParams.keys()), ['lang', 'v']);
+      }
+    }
+  }
+}
+
 function app({version = oldVersion, language = 'ru', fields = [], online = true, response} = {}) {
   const ids = new Map();
   function element(id) {
@@ -56,6 +109,7 @@ function app({version = oldVersion, language = 'ru', fields = [], online = true,
 }
 
 async function main() {
+  await checkSharing();
   const current = app();
   await flush();
   assert.equal(current.element('siteUpdateMessage').hidden, true);
@@ -160,6 +214,6 @@ async function main() {
     fs.unlinkSync(path.join(missing, 'app.js'));
     assert.throws(() => prepare(missing), /Missing local asset/);
   } finally { fs.rmSync(folder, {recursive: true, force: true}); }
-  console.log('Site update detection, draft protection, offline handling, navigation and build checks passed.');
+  console.log('Native, WhatsApp and copied release links; update detection, draft protection, offline handling, navigation and build checks passed.');
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

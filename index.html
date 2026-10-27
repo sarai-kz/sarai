@@ -886,9 +886,11 @@ refreshContactLinks();
   const status = document.getElementById('siteShareStatus');
   const t = SaraiI18n.text;
   function shareData() {
-    // Share only the public homepage and selected language, never form data or URL parameters.
+    // Share the public homepage, selected language and release version, never form data or page query parameters.
     const url = new URL('https://sarai-kz.github.io/sarai/');
     url.searchParams.set('lang', SaraiI18n.language);
+    const version = document.querySelector('meta[name="sarai-version"]')?.content;
+    url.searchParams.set('v', /^[a-f0-9]{64}$/.test(version || '') ? version : String(Date.now()));
     return {title: 'SARAI', text: t('Астанада жөндеуге шебер табыңыз, жұмыс жариялаңыз және жөндеу құнын есептеңіз.'), url: url.href};
   }
   function refreshShare() {
