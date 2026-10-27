@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=794">
 <meta name="theme-color" content="#102b39">
+<meta name="sarai-version" content="development">
 <meta name="description" content="SARAI: Астанада жөндеу жұмысын жариялаңыз, ашық тапсырыстарды көріңіз, жөндеу құнын есептеп, шебер табыңыз.">
 <title>SARAI — Үйіңіздің жаңа жолы</title>
 <style>
@@ -938,6 +939,16 @@ refreshContactLinks();
 <script src="./job-model.js?v=1"></script>
 <script src="./jobs.js?v=pdf-original-20261027"></script>
 <script src="./site-tools.js?v=1"></script>
+<div class="site-updater" id="siteUpdater" data-no-translate>
+<p class="site-update-message" id="siteUpdateMessage" role="status" aria-live="polite" hidden></p>
+<button class="site-refresh" id="refreshSite" type="button"><span aria-hidden="true">↻</span> <span id="siteRefreshLabel">Жаңарту</span></button>
+</div>
+<dialog class="site-share-dialog site-refresh-confirm" id="siteRefreshConfirm" aria-labelledby="siteRefreshTitle" data-no-translate>
+<h2 id="siteRefreshTitle">Сайтты жаңарту керек пе?</h2>
+<p id="siteRefreshWarning">Толтырылған форма жаңартқанда тазаланады. Алдымен өтінімді жіберіңіз немесе жаңартуды жалғастырыңыз.</p>
+<div class="actions"><button class="btn alt" id="cancelSiteRefresh" type="button">Формаға оралу</button><button class="btn" id="confirmSiteRefresh" type="button">Жаңарту</button></div>
+</dialog>
+<script src="./site-update.js?v=1"></script>
 </body>
 </html>
 
