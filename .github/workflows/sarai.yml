@@ -55,6 +55,7 @@ jobs:
         run: |
           node -e "require('./master-model.js').feed(require('./masters.json'))"
           node master-management.test.cjs
+          node site-update.test.cjs
           if [ -f job-model.js ]; then
             node job-management.test.cjs
             node -e "require('./job-model.js').feed(require('./data/jobs.json'))"
@@ -65,6 +66,8 @@ jobs:
           if [ -f job-model.js ]; then
             cp job-model.js admin-jobs.html admin-jobs.js site-tools.js site-tools.css _site/
           fi
+          cp site-update.js _site/
+          node prepare-site.cjs _site
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4
         with:
