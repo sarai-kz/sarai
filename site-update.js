@@ -37,6 +37,7 @@
   }
 
   function hasDraft() {
+    if (typeof window.SaraiLeanHasDraft === 'function' && window.SaraiLeanHasDraft()) return true;
     return Array.from(document.querySelectorAll('form input, form textarea, form select')).some(field => {
       if (field.disabled || ['hidden', 'submit', 'button'].includes(field.type)) return false;
       if (['checkbox', 'radio'].includes(field.type)) return field.checked !== field.defaultChecked;

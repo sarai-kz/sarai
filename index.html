@@ -75,6 +75,7 @@ body{min-width:794px;zoom:var(--sarai-page-scale,1)}
 <label for="siteShareUrl">Сайт сілтемесі</label><input id="siteShareUrl" type="url" readonly spellcheck="false" autocomplete="off" data-no-translate>
 <div class="share-actions"><a class="btn whatsapp" id="siteShareWhatsApp" target="_blank" rel="noopener noreferrer">WhatsApp арқылы бөлісу</a><button class="btn alt" id="copySiteShare" type="button">Сілтемені көшіру</button></div>
 <p class="copy-status" id="siteShareStatus" role="status" aria-live="polite"></p>
+<p class="form-note"><a href="#invite-tool">Жеке шақыру сілтемесін алу</a></p>
 </dialog>
 <dialog class="site-share-dialog job-offer-dialog" id="jobOfferDialog" aria-labelledby="jobOfferTitle" aria-describedby="jobOfferContext">
 <div class="share-heading"><h2 id="jobOfferTitle">Жұмысқа ұсыныс беру</h2><button class="share-close" id="closeJobOffer" type="button" aria-label="Жабу">×</button></div>
@@ -166,6 +167,7 @@ body{min-width:794px;zoom:var(--sarai-page-scale,1)}
 <div><label for="jobBudget">Жұмыс бюджеті, ₸ <span class="field-optional">(міндетті емес)</span></label><input id="jobBudget" name="jobBudget" type="number" min="1" max="100000000" step="1" inputmode="numeric" placeholder="Белгісіз болса, бос қалдырыңыз"></div>
 <div class="wide"><label for="jobStart">Қашан бастау керек?</label><select id="jobStart" name="jobStart"><option value="Келісеміз">Келісеміз</option><option value="Мүмкіндігінше тез">Мүмкіндігінше тез</option><option value="Бір апта ішінде">Бір апта ішінде</option><option value="Бір ай ішінде">Бір ай ішінде</option></select></div>
 <div class="wide"><label for="jobDescription">Жұмыс сипаттамасы *</label><textarea id="jobDescription" name="jobDescription" required minlength="20" maxlength="1200" rows="5" placeholder="Қандай жұмыс, көлемі және қазіргі жағдайы қандай? Телефон мен нақты мекенжайды қоспаңыз."></textarea></div>
+<div class="wide"><label for="jobReferral">Шақырған адамның коды <span class="field-optional">(міндетті емес)</span></label><input id="jobReferral" name="jobReferral" class="referral-code-input" maxlength="14" pattern="SARAI-[A-HJ-NP-Z2-9]{8}" placeholder="SARAI-XXXXXXXX" autocomplete="off" spellcheck="false" autocapitalize="characters" aria-describedby="jobReferralNote"><p class="form-note" id="jobReferralNote">Сілтемемен келсеңіз, код автоматты толады. Шақыруды SARAI қолмен тексереді.</p></div>
 </div>
 <p class="privacy-note" id="jobPrivacy">Атыңыз бен телефоныңыз тек SARAI-ға жіберіледі. Ашық тізімге жұмыс сипаттамасы, аудан, көлемі және бюджеті ғана шығады.</p>
 <div class="actions"><button class="btn" type="submit">Жариялау өтінімін дайындау</button></div>
@@ -190,6 +192,8 @@ body{min-width:794px;zoom:var(--sarai-page-scale,1)}
 <div class="result" id="result" aria-live="polite"></div>
 <p class="muted">Бұл — үлгілік бағалар бойынша алдын ала есеп. Нақты баға материалдар мен жұмыс көлеміне байланысты.</p>
 <div class="calculator-actions"><button class="btn alt" id="calculate" type="button">Қайта есептеу</button><button class="btn" id="useEstimate" type="button">Осы есеппен тапсырыс беру</button></div>
+<div class="lean-tool-links"><a class="btn alt" id="openEstimateTool" href="#estimate-tool">PDF смета құрастыру</a><a class="btn alt" href="#invite-tool">Досыңды шақыр</a></div>
+<p class="form-note">Өз бағаларыңызбен смета жасаңыз немесе SARAI-ға жеке сілтемемен шақырыңыз.</p>
 </div>
 </section>
 <section class="wrap" id="masters" aria-labelledby="mastersTitle">
@@ -222,6 +226,7 @@ body{min-width:794px;zoom:var(--sarai-page-scale,1)}
 <label for="phone">Байланыс телефоны</label><input id="phone" name="phone" type="tel" inputmode="tel" required maxlength="30" autocomplete="tel" placeholder="+7 7xx xxx xx xx" aria-describedby="phoneHint"><p class="form-note" id="phoneHint">SARAI сізбен осы нөмір арқылы байланыса алады.</p>
 <label for="service">Қызмет түрі</label><select id="service" name="service" required><option value="" disabled selected>Қызметті таңдаңыз</option><option value="Толық пәтер жөндеу">Толық пәтер жөндеу</option><option value="Левкас жұмыстары">Левкас жұмыстары</option><option value="Плитка жұмыстары">Плитка жұмыстары</option><option value="Электрик">Электрик</option><option value="Сантехник">Сантехник</option><option value="Маляр жұмыстары">Маляр жұмыстары</option><option value="Гипсокартон">Гипсокартон</option><option value="Ағаш ұстасы">Ағаш ұстасы</option><option value="Әрлеу жұмыстары">Әрлеу жұмыстары</option><option value="Басқа жөндеу">Басқа жөндеу</option></select>
 <label for="details">Жұмыс сипаттамасы</label><textarea id="details" name="details" maxlength="1000" placeholder="Қандай жұмыс қажет, қашан бастағыңыз келеді?"></textarea>
+<label for="orderReferral">Шақырған адамның коды <span class="field-optional">(міндетті емес)</span></label><input id="orderReferral" name="orderReferral" class="referral-code-input" maxlength="14" pattern="SARAI-[A-HJ-NP-Z2-9]{8}" placeholder="SARAI-XXXXXXXX" autocomplete="off" spellcheck="false" autocapitalize="characters" aria-describedby="orderReferralNote"><p class="form-note" id="orderReferralNote">Сілтемемен келсеңіз, код автоматты толады. Шақыруды SARAI қолмен тексереді.</p>
 <div class="actions"><button class="btn" type="submit" id="prepareOrder">WhatsApp хабарламасын дайындау</button></div>
 <p class="form-note" id="orderHint">Өтінім алдымен SARAI-ға жіберіледі. Таңдаған шеберіңіз хабарламада көрсетіледі.</p>
 <div class="prepared" id="prepared" hidden>
@@ -250,6 +255,8 @@ body{min-width:794px;zoom:var(--sarai-page-scale,1)}
 <label for="specialty">Мамандығыңыз</label><select id="specialty" required><option value="" disabled selected>Мамандықты таңдаңыз</option></select>
 <label for="masterExperience">Жұмыс тәжірибесі (жыл)</label><input id="masterExperience" type="number" min="0" max="60" step="1" inputmode="numeric" placeholder="Мысалы: 5">
 <label for="masterAbout">Қосымша дағдылар және бос уақытыңыз</label><textarea id="masterAbout" maxlength="500" rows="3" placeholder="Қандай жұмыстарды орындайсыз, қашан бастай аласыз?"></textarea>
+<label for="joinReferral">Шақырған адамның коды <span class="field-optional">(міндетті емес)</span></label><input id="joinReferral" name="joinReferral" class="referral-code-input" maxlength="14" pattern="SARAI-[A-HJ-NP-Z2-9]{8}" placeholder="SARAI-XXXXXXXX" autocomplete="off" spellcheck="false" autocapitalize="characters" aria-describedby="joinReferralNote"><p class="form-note" id="joinReferralNote">Сілтемемен келсеңіз, код автоматты толады. Шақыруды SARAI қолмен тексереді.</p>
+<p class="form-note">Сынақ кезеңінде қосылу және тапсырыс алу тегін. Кейінгі ақылы шарттар алдын ала хабарланады.</p>
 <p class="privacy-note">Байланыс деректері тек SARAI-ға жіберіледі. Жұмыс фотоларын WhatsApp-та осы хабарламаға тіркей аласыз.</p>
 <div class="actions"><button class="btn" id="joinButton" type="submit">Тіркелу мәтінін дайындау</button></div>
 <div class="prepared" id="joinPrepared" hidden><label for="joinText">Дайын хабарлама</label><textarea id="joinText" readonly rows="5"></textarea><div class="actions"><a class="btn whatsapp" id="joinSendWhatsApp" target="_blank" rel="noopener noreferrer">SARAI-ға WhatsApp-та жіберу</a><button class="btn alt" id="joinCopy" type="button">Көшіру</button></div><span class="copy-status" id="joinCopyStatus" role="status" aria-live="polite"></span></div>
@@ -263,15 +270,123 @@ body{min-width:794px;zoom:var(--sarai-page-scale,1)}
 <details class="card"><summary>Жұмыстың фотосын қалай жіберемін?</summary><p>Өтінімді WhatsApp-та жібергенде, сол чатқа жұмыс фотоларын немесе бейнені қосыңыз.</p></details>
 <details class="card"><summary>Шебермен байланысты кім үйлестіреді?</summary><p>Өтінім SARAI-ға түседі. SARAI клиент пен шебердің байланысын және жұмыс туралы келісуді үйлестіреді.</p></details>
 <details class="card"><summary>Шебер ретінде қалай қосыламын?</summary><p>Тіркелу формасына аты-жөніңізді, телефоныңызды, мамандығыңыз бен тәжірибеңізді енгізіп, хабарламаны SARAI-ға жіберіңіз. Қосылу шарттары жеке келісіледі.</p></details>
-<details class="card"><summary>Комиссия қалай келісіледі?</summary><p>Комиссия мөлшері мен төлеу мерзімі шебермен жұмыс басталғанға дейін жеке келісіледі.</p></details>
+<details class="card"><summary>Комиссия қалай келісіледі?</summary><p>Сынақ кезеңінде қосылу және тапсырыс алу тегін. Кейінгі ақылы шарттар алдын ала хабарланады.</p><p>Клиент шеберге жұмысының ақысын келісілген шартпен төлейді.</p></details>
 </section></main>
+<section class="sarai-tool-view" id="estimate-tool" aria-labelledby="estimateToolTitle" hidden>
+<div class="tool-shell">
+<div class="tool-topbar"><a class="tool-brand" href="#calculator" aria-label="SARAI басты бет"><svg viewBox="150 160 1340 650" width="150" height="73" aria-hidden="true"><image href="sarai-logo.png" width="1635" height="962"/></svg></a><div class="language-switch" aria-label="Тілді таңдау"><a href="?lang=kk#estimate-tool" data-language="kk" lang="kk">ҚАЗ</a><a href="?lang=ru#estimate-tool" data-language="ru" lang="ru">РУС</a></div><a class="tool-back" href="#calculator">← Сайтқа</a></div>
+<div class="tool-heading"><span class="pill">Сынақ кезеңінде тегін</span><h1 id="estimateToolTitle" tabindex="-1">Жұмыс сметасы</h1><p>Жұмыстарды, көлемді және өз бағаларыңызды енгізіп, PDF құжатын жүктеңіз.</p></div>
+<form id="estimateToolForm" class="estimate-editor" novalidate>
+<div class="card tool-project"><div><label for="estimateProject">Жоба атауы</label><input id="estimateProject" maxlength="100" placeholder="Мысалы: пәтерді жөндеу" autocomplete="off"></div><div><label for="estimateAuthor">Орындаушы <span class="field-optional">(міндетті емес)</span></label><input id="estimateAuthor" maxlength="80" placeholder="Атыңыз немесе бригада атауы" autocomplete="off"></div><div><label for="estimateDate">Есеп күні</label><input id="estimateDate" type="date" min="2000-01-01" max="2099-12-31" required></div></div>
+<div class="estimate-section-heading"><h2>Жұмыстар тізімі</h2><span id="estimateRowCount" data-no-translate></span></div>
+<div id="estimateItems" class="estimate-items" data-no-translate></div>
+<button class="btn alt add-estimate-row" id="addEstimateRow" type="button">+ Жұмыс қосу</button>
+<div class="card tool-notes"><label for="estimateNotes">Ескерту <span class="field-optional">(міндетті емес)</span></label><textarea id="estimateNotes" maxlength="600" rows="3" placeholder="Материалдар, мерзімдер немесе келісілетін қосымша шарттар"></textarea><p class="form-note">Тізімге енгізілген жолдар ғана жалпы сомаға кіреді. Нақты баға мен жұмыс көлемін клиентпен келісіңіз.</p></div>
+<div class="card estimate-summary"><div><span class="muted">Жалпы сома</span><output id="estimateGrandTotal" data-no-translate>0 ₸</output></div><div class="estimate-download-actions"><button class="btn" id="downloadEstimatePdf" type="submit">PDF дайындау</button><button class="btn alt" id="shareEstimatePdf" type="button" hidden>PDF бөлісу</button></div><p class="form-note">Смета SARAI-ға автоматты түрде жіберілмейді. Дайын PDF файлын өзіңіз сақтап, клиентке жібере аласыз.</p><div id="preparedPdfPanel" class="prepared-pdf" hidden><a class="btn whatsapp" id="saveEstimatePdf">Дайын PDF жүктеу</a></div><p id="estimateToolStatus" class="tool-status" role="status" aria-live="polite" data-no-translate></p></div>
+</form>
+<p class="tool-crosslink"><a href="#invite-tool">SARAI-ға досыңды шақыр</a></p>
+</div></section>
+<section class="sarai-tool-view" id="invite-tool" aria-labelledby="inviteToolTitle" hidden>
+<div class="tool-shell invite-shell">
+<div class="tool-topbar"><a class="tool-brand" href="#calculator" aria-label="SARAI басты бет"><svg viewBox="150 160 1340 650" width="150" height="73" aria-hidden="true"><image href="sarai-logo.png" width="1635" height="962"/></svg></a><div class="language-switch" aria-label="Тілді таңдау"><a href="?lang=kk#invite-tool" data-language="kk" lang="kk">ҚАЗ</a><a href="?lang=ru#invite-tool" data-language="ru" lang="ru">РУС</a></div><a class="tool-back" href="#calculator">← Сайтқа</a></div>
+<div class="tool-heading"><span class="pill">Астана · SARAI</span><h1 id="inviteToolTitle" tabindex="-1">Досыңды шақыр</h1><p>Жеке сілтемеңізді таныс шеберге немесе жөндеу қажет адамға жіберіңіз.</p></div>
+<div class="card invite-step"><span class="step-number">1</span><div><h2>Шақыру кодыңызды алыңыз</h2><p>Кодта телефон немесе жеке деректер болмайды. Код осы браузерде сақталады.</p><button class="btn" id="createInviteCode" type="button">Код жасау</button><p class="tool-status" id="inviteStorageStatus" role="status" data-no-translate></p></div></div>
+<div id="personalInvitePanel" hidden>
+<div class="card invite-step"><span class="step-number">2</span><div><h2>Кодты SARAI-ға тіркетіңіз</h2><label for="personalInviteCode">Менің шақыру кодым</label><input class="referral-code-input" id="personalInviteCode" readonly autocomplete="off" spellcheck="false" data-no-translate><p>Кодты WhatsApp-та жіберіңіз. SARAI оны сізбен байланыстырып, шақыруларды қолмен тексереді.</p><a class="btn whatsapp" id="registerInviteCode" target="_blank" rel="noopener noreferrer">Кодымды SARAI-ға жіберу</a></div></div>
+<div class="card invite-step"><span class="step-number">3</span><div><h2>Жеке сілтемемен бөлісіңіз</h2><label for="personalInviteUrl">Шақыру сілтемесі</label><input id="personalInviteUrl" type="url" readonly autocomplete="off" spellcheck="false" data-no-translate><div class="actions"><button class="btn" id="copyInviteUrl" type="button">Сілтемені көшіру</button><a class="btn alt" id="shareInviteWhatsApp" target="_blank" rel="noopener noreferrer">WhatsApp-та бөлісу</a></div><p class="tool-status" id="personalInviteStatus" role="status" aria-live="polite" data-no-translate></p></div></div>
+</div>
+<div class="card invite-explanation"><h2>Шақыру қалай есептеледі?</h2><p>Сілтемемен келген адамның өтініміне сіздің кодыңыз қосылады. Ол хабарламаны WhatsApp-та SARAI-ға өзі жібергенде, SARAI шақыруды тексере алады.</p><p>Код жасау тіркелу немесе бонустың расталуы болып саналмайды. Шақыру есебі мен қосымша мүмкіндік шарттарын SARAI-мен жеке нақтылаңыз.</p><p class="privacy-note">Таныстарыңызбен ерікті бөлісіңіз. Топқа жариялау алдында әкімшісімен келісіңіз.</p><a class="btn alt" href="#estimate-tool">Тегін PDF смета құрастыру</a></div>
+<details class="card restore-invite"><summary>Бұрынғы шақыру кодым бар</summary><label for="restoreInviteCode">SARAI-ға тіркеткен кодыңыз</label><input id="restoreInviteCode" maxlength="14" class="referral-code-input" placeholder="SARAI-XXXXXXXX" autocomplete="off" spellcheck="false" autocapitalize="characters"><button class="btn alt" id="restoreInviteButton" type="button">Осы кодты қолдану</button><p class="tool-status" id="restoreInviteStatus" role="status" data-no-translate></p></details>
+</div></section>
 <a class="back-to-top" id="backToTop" href="#top" hidden>↑ Жоғары</a>
-<footer>© 2026 SARAI · Астана<br>Үйіңіздің жаңа жолы<br><a href="tel:+77027935200">+7 702 793 52 00</a><br><a class="owner-link" href="./admin.html">Иесіне: басқару</a></footer>
+<footer>© 2026 SARAI · Астана<br>Үйіңіздің жаңа жолы<br><a href="tel:+77027935200">+7 702 793 52 00</a><br><a class="owner-link" href="#estimate-tool">PDF смета құрастыру</a> · <a class="owner-link" href="#invite-tool">Досыңды шақыр</a><br><a class="owner-link" href="./admin.html">Иесіне: басқару</a></footer>
 <div class="mobile-bar" aria-label="Жылдам әрекеттер"><a class="btn" href="#calculator">Жөндеуді есептеу</a><a class="btn whatsapp" id="mobileWhatsApp" href="https://wa.me/77027935200" target="_blank" rel="noopener noreferrer" aria-label="SARAI-ға WhatsApp арқылы жазу">WhatsApp</a></div>
 <script>
 (function (root) {
   'use strict';
   const ru = {
+    "PDF дайындау": "Подготовить PDF",
+    "Дайын PDF жүктеу": "Скачать готовый PDF",
+    "PDF дайын. Оны жүктеу батырмасымен сақтаңыз.": "PDF готов. Сохраните его кнопкой скачивания.",
+    "Жеке шақыру сілтемесін алу": "Получить личную ссылку приглашения",
+    "Шақырған адамның коды": "Код пригласившего",
+    "Сілтемемен келсеңіз, код автоматты толады. Шақыруды SARAI қолмен тексереді.": "Если вы пришли по ссылке, код заполнится автоматически. SARAI проверяет приглашения вручную.",
+    "PDF смета құрастыру": "Составить PDF-смету",
+    "Досыңды шақыр": "Пригласить знакомого",
+    "Өз бағаларыңызбен смета жасаңыз немесе SARAI-ға жеке сілтемемен шақырыңыз.": "Составьте смету по своим ценам или пригласите знакомых в SARAI по личной ссылке.",
+    "Сынақ кезеңінде қосылу және тапсырыс алу тегін. Кейінгі ақылы шарттар алдын ала хабарланады.": "В тестовый период регистрация и получение заказов бесплатны. О будущих платных условиях сообщим заранее.",
+    "Клиент шеберге жұмысының ақысын келісілген шартпен төлейді.": "Клиент оплачивает работу мастера по согласованным условиям.",
+    "← Сайтқа": "← На сайт",
+    "Сынақ кезеңінде тегін": "Бесплатно в тестовый период",
+    "Жұмыс сметасы": "Смета работ",
+    "Жұмыстарды, көлемді және өз бағаларыңызды енгізіп, PDF құжатын жүктеңіз.": "Укажите работы, объем и свои цены, затем скачайте PDF-документ.",
+    "Жоба атауы": "Название проекта",
+    "Мысалы: пәтерді жөндеу": "Например: ремонт квартиры",
+    "Орындаушы": "Исполнитель",
+    "Атыңыз немесе бригада атауы": "Ваше имя или название бригады",
+    "Есеп күні": "Дата расчета",
+    "Жұмыстар тізімі": "Список работ",
+    "+ Жұмыс қосу": "+ Добавить работу",
+    "Ескерту": "Примечание",
+    "Материалдар, мерзімдер немесе келісілетін қосымша шарттар": "Материалы, сроки или дополнительные условия для согласования",
+    "Тізімге енгізілген жолдар ғана жалпы сомаға кіреді. Нақты баға мен жұмыс көлемін клиентпен келісіңіз.": "В итог входят только добавленные строки. Согласуйте окончательные цены и объем работ с клиентом.",
+    "Жалпы сома": "Итоговая сумма",
+    "PDF жүктеу": "Скачать PDF",
+    "PDF бөлісу": "Поделиться PDF",
+    "Смета SARAI-ға автоматты түрде жіберілмейді. Дайын PDF файлын өзіңіз сақтап, клиентке жібере аласыз.": "Смета не отправляется в SARAI автоматически. Вы можете сохранить готовый PDF и отправить его клиенту.",
+    "SARAI-ға досыңды шақыр": "Пригласить знакомого в SARAI",
+    "Астана · SARAI": "Астана · SARAI",
+    "Жеке сілтемеңізді таныс шеберге немесе жөндеу қажет адамға жіберіңіз.": "Отправьте личную ссылку знакомому мастеру или человеку, которому нужен ремонт.",
+    "Шақыру кодыңызды алыңыз": "Получите код приглашения",
+    "Кодта телефон немесе жеке деректер болмайды. Код осы браузерде сақталады.": "Код не содержит телефона или личных данных. Он сохраняется в этом браузере.",
+    "Код жасау": "Создать код",
+    "Кодты SARAI-ға тіркетіңіз": "Зарегистрируйте код в SARAI",
+    "Менің шақыру кодым": "Мой код приглашения",
+    "Кодты WhatsApp-та жіберіңіз. SARAI оны сізбен байланыстырып, шақыруларды қолмен тексереді.": "Отправьте код в WhatsApp. SARAI свяжет его с вами и будет проверять приглашения вручную.",
+    "Кодымды SARAI-ға жіберу": "Отправить мой код в SARAI",
+    "Жеке сілтемемен бөлісіңіз": "Поделитесь личной ссылкой",
+    "Шақыру сілтемесі": "Ссылка приглашения",
+    "WhatsApp-та бөлісу": "Поделиться в WhatsApp",
+    "Шақыру қалай есептеледі?": "Как учитываются приглашения?",
+    "Сілтемемен келген адамның өтініміне сіздің кодыңыз қосылады. Ол хабарламаны WhatsApp-та SARAI-ға өзі жібергенде, SARAI шақыруды тексере алады.": "Ваш код добавляется в заявку человека, пришедшего по ссылке. Когда он сам отправит сообщение в SARAI через WhatsApp, SARAI сможет проверить приглашение.",
+    "Код жасау тіркелу немесе бонустың расталуы болып саналмайды. Шақыру есебі мен қосымша мүмкіндік шарттарын SARAI-мен жеке нақтылаңыз.": "Создание кода не означает регистрацию или подтверждение бонуса. Учет приглашений и условия дополнительных возможностей уточняйте лично в SARAI.",
+    "Таныстарыңызбен ерікті бөлісіңіз. Топқа жариялау алдында әкімшісімен келісіңіз.": "Делитесь добровольно со знакомыми. Перед публикацией в группе согласуйте ее с администратором.",
+    "Тегін PDF смета құрастыру": "Составить PDF-смету бесплатно",
+    "Бұрынғы шақыру кодым бар": "У меня уже есть код приглашения",
+    "SARAI-ға тіркеткен кодыңыз": "Ваш код, зарегистрированный в SARAI",
+    "Осы кодты қолдану": "Использовать этот код",
+    "Шақыруға өз кодыңызды енгізбеңіз.": "Не указывайте собственный код в поле пригласившего.",
+    "Кодты тексеріңіз. Үлгі: SARAI-ABCDEFGH.": "Проверьте код. Пример: SARAI-ABCDEFGH.",
+    "SARAI — шақыру кодын тіркеу": "SARAI — регистрация кода приглашения",
+    "Менің кодым:": "Мой код:",
+    "Осы кодты менімен байланыстырып, расталған шақыруларды есепке алуыңызды сұраймын.": "Прошу связать этот код со мной и учитывать подтвержденные приглашения.",
+    "SARAI: Астанада шебер табыңыз, өтінім қалдырыңыз немесе тегін PDF смета жасаңыз.": "SARAI: найдите мастера в Астане, оставьте заявку или бесплатно составьте PDF-смету.",
+    "Код осы браузерде сақталды. Енді оны SARAI-ға тіркетіңіз.": "Код сохранен в этом браузере. Теперь зарегистрируйте его в SARAI.",
+    "Браузер кодты сақтай алмады. Кодты көшіріп алып, SARAI-ға жіберіңіз.": "Браузер не смог сохранить код. Скопируйте его и отправьте в SARAI.",
+    "Код жасау мүмкін болмады. Бетті жаңартып көріңіз немесе SARAI-ға жазыңыз.": "Не удалось создать код. Обновите страницу или напишите в SARAI.",
+    "Код қолданылды. Оның сізге тиесілі екенін SARAI растайды.": "Код применен. Принадлежность кода вам подтверждает SARAI.",
+    "Мысалы: қабырғаны бояу": "Например: покраска стен",
+    "Жұмыс {number}": "Работа {number}",
+    "Жою": "Удалить",
+    "{number}-жолды алып тастау": "Удалить строку {number}",
+    "Жұмыс немесе материал атауы": "Работа или материал",
+    "Көлемі": "Объем",
+    "Өлшем бірлігі": "Единица",
+    "Бірлік бағасы, ₸": "Цена за единицу, ₸",
+    "Жол сомасы": "Сумма строки",
+    "дана": "шт.",
+    "жиынтық": "компл.",
+    "сағат": "ч.",
+    "Жөндеу жұмыстары": "Ремонтные работы",
+    "Жұмыс атауын енгізіңіз.": "Укажите название работы.",
+    "Көлемді 0,001–100 000 аралығында, ең көбі үш ондық таңбамен енгізіңіз.": "Введите объем от 0,001 до 100 000, не более трех знаков после запятой.",
+    "Бағаны 0–100 000 000 аралығында, ең көбі екі ондық таңбамен енгізіңіз.": "Введите цену от 0 до 100 000 000, не более двух знаков после запятой.",
+    "Есеп мәліметтерін тексеріңіз: жолдар мен жалпы сома рұқсат етілген шектен аспауы керек.": "Проверьте расчет: строки и итоговая сумма должны быть в допустимых пределах.",
+    "PDF дайындалып жатыр…": "Готовим PDF…",
+    "PDF жүктеу басталды. Құрылғыңыздағы жүктемелерді тексеріңіз.": "Загрузка PDF началась. Проверьте загрузки на своем устройстве.",
+    "PDF жасау мүмкін болмады. Мәліметтерді тексеріп, қайта көріңіз.": "Не удалось создать PDF. Проверьте данные и попробуйте еще раз.",
+    "Бөлісу мүмкін болмады. PDF файлын жүктеп, қолмен жіберіңіз.": "Не удалось поделиться. Скачайте PDF и отправьте файл вручную.",
+    "Үлгілік жөндеу есебі:": "Примерный расчет ремонта:",
     "Шеберлер тізімінің беттері": "Страницы списка мастеров",
     "← Алдыңғы": "← Назад",
     "Келесі →": "Далее →",
@@ -807,6 +922,8 @@ function normalizePhone(value) {
 }
 function buildOrderMessage() {
   const lines = [t('SARAI тапсырыс'),t('Өтінім нөмірі:') + ' ' + requestReference('C'),t('Қала: Астана'),t('Аты:') + ' ' + $('customer').value.trim(),t('Телефон:') + ' ' + normalizePhone($('phone').value),t('Қызмет:') + ' ' + t($('service').value)];
+  const referral = window.SaraiReferral?.line('orderReferral');
+  if (referral) lines.push(referral);
   if (state.master) lines.push(t('Шебер:') + ' ' + state.master.name);
   if (state.estimate) {
     lines.push('',t('Жөндеудің алдын ала есебі:'),t('Ауданы:') + ' ' + formatNumber(state.estimate.area) + ' м²',t('Жөндеу түрі:') + ' ' + t(state.estimate.label),t('Үлгілік баға:') + ' ' + money(state.estimate.rate) + '/м²',t('Болжамды жалпы құны:') + ' ' + money(state.estimate.total),t('Нақты баға жұмыс көлеміне байланысты келісіліп анықталады.'));
@@ -829,6 +946,7 @@ $('orderForm').addEventListener('submit',event => {
   const phone = normalizePhone($('phone').value);
   $('customer').setCustomValidity(name ? '' : t('Атыңызды енгізіңіз.'));
   $('phone').setCustomValidity(phone ? '' : t('Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.'));
+  window.SaraiReferral?.validate('orderReferral');
   if (!$('orderForm').reportValidity()) return;
   refreshOrderMessage();
   $('prepared').hidden = false;
@@ -854,7 +972,11 @@ function refreshContactLinks() {
   });
 }
 function refreshJoinMessage() {
-  $('joinText').value = [t('SARAI шебер ретінде тіркелу'),t('Өтінім нөмірі:') + ' ' + requestReference('M'),t('Қала: Астана'),t('Аты-жөні:') + ' ' + $('masterName').value.trim(),t('Телефон:') + ' ' + normalizePhone($('joinPhone').value),t('Мамандығы:') + ' ' + t($('specialty').value),t('Жұмыс тәжірибесі:') + ' ' + ($('masterExperience').value === '' ? t('Көрсетілмеген') : t('{count} жыл',{count:$('masterExperience').value})),t('Қосымша мәлімет:') + ' ' + $('masterAbout').value.trim(),'',t('Жұмыс фотоларын осы чатқа қосамын.')].join('\n');
+  const lines = [t('SARAI шебер ретінде тіркелу'),t('Өтінім нөмірі:') + ' ' + requestReference('M'),t('Қала: Астана'),t('Аты-жөні:') + ' ' + $('masterName').value.trim(),t('Телефон:') + ' ' + normalizePhone($('joinPhone').value),t('Мамандығы:') + ' ' + t($('specialty').value),t('Жұмыс тәжірибесі:') + ' ' + ($('masterExperience').value === '' ? t('Көрсетілмеген') : t('{count} жыл',{count:$('masterExperience').value})),t('Қосымша мәлімет:') + ' ' + $('masterAbout').value.trim()];
+  const referral = window.SaraiReferral?.line('joinReferral');
+  if (referral) lines.push(referral);
+  lines.push('',t('Жұмыс фотоларын осы чатқа қосамын.'));
+  $('joinText').value = lines.join('\n');
   $('joinSendWhatsApp').href = 'https://wa.me/' + saraiContact.phone + '?text=' + encodeURIComponent($('joinText').value);
 }
 $('joinForm').addEventListener('submit',event => {
@@ -864,6 +986,7 @@ $('joinForm').addEventListener('submit',event => {
   $('joinPhone').setCustomValidity(normalizePhone($('joinPhone').value) ? '' : t('Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.'));
   $('masterName').setCustomValidity(name ? '' : t('Аты-жөніңізді енгізіңіз.'));
   $('specialty').setCustomValidity(specialty ? '' : t('Мамандығыңызды енгізіңіз.'));
+  window.SaraiReferral?.validate('joinReferral');
   if (!$('joinForm').reportValidity()) return;
   refreshJoinMessage();
   $('joinPrepared').hidden = false;

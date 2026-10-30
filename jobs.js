@@ -171,6 +171,7 @@
     byId('jobPhone').setCustomValidity(phone ? '' : t('Телефон нөмірін толық енгізіңіз: +7 7xx xxx xx xx.'));
     const description = validatePublicText('jobDescription', 20, 'Жұмыс сипаттамасы');
     const district = validatePublicText('jobDistrict', 0, 'Аудан атауы');
+    window.SaraiReferral?.validate('jobReferral');
     if (!byId('postJobForm').reportValidity()) return false;
     const service = byId('jobService').value;
     const title = (t(service) + (district ? ' · ' + district : '')).slice(0, 100);
@@ -182,7 +183,8 @@
     publicLines.push(t('Ауданы:') + ' ' + (area === null ? t('Нақтыланады') : formatNumber(area) + ' м²'));
     publicLines.push(t('Жұмыс бюджеті:') + ' ' + (budget === null ? t('Келісімді') : money(budget)));
     publicLines.push(t('Бастау мерзімі:') + ' ' + t(start), '', t('Сипаттама:') + ' ' + description);
-    const message = [t('SARAI — жұмыс жариялау өтінімі'), t('Өтінім нөмірі:') + ' ' + requestReference('J'), '', t('Байланыс мәліметтері (ашық тізімге қоспау):'), t('Аты:') + ' ' + name, t('Телефон:') + ' ' + phone, '', t('Жариялауға арналған мәліметтер:'), ...publicLines, '', t('Клиенттің аты мен телефонын жарияламай, тексергеннен кейін жұмыс тізіміне қосуды сұраймын.')].join('\n');
+    const referral = window.SaraiReferral?.line('jobReferral');
+    const message = [t('SARAI — жұмыс жариялау өтінімі'), t('Өтінім нөмірі:') + ' ' + requestReference('J'), '', t('Байланыс мәліметтері (ашық тізімге қоспау):'), t('Аты:') + ' ' + name, t('Телефон:') + ' ' + phone, ...(referral ? [referral] : []), '', t('Жариялауға арналған мәліметтер:'), ...publicLines, '', t('Клиенттің аты мен телефонын жарияламай, тексергеннен кейін жұмыс тізіміне қосуды сұраймын.')].join('\n');
     byId('jobPreviewTitle').textContent = title;
     byId('jobPreviewMeta').textContent = ['Астана', area === null ? '' : formatNumber(area) + ' м²', budget === null ? t('Бюджет: келісімді') : money(budget), t(start)].filter(Boolean).join(' · ');
     byId('jobPreviewDescription').textContent = description;

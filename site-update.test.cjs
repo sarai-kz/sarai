@@ -216,4 +216,4 @@ async function main() {
   } finally { fs.rmSync(folder, {recursive: true, force: true}); }
   console.log('Native, WhatsApp and copied release links; update detection, draft protection, offline handling, navigation and build checks passed.');
 }
-main().catch(error => { console.error(error); process.exitCode = 1; });
+main().then(() => require('./lean-tools.test.cjs')).catch(error => { console.error(error); process.exitCode = 1; });
